@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Even Spacing Calculator - Precision Layout Tool</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #f97316;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .section {
+            background: white;
+            margin: 2rem 0;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: #f97316;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature {
+            padding: 1.5rem;
+            background: #fff7ed;
+            border-radius: 8px;
+            border-left: 4px solid #f97316;
+        }
+
+        .feature h3 {
+            color: #333;
+            margin-bottom: 0.75rem;
+            font-size: 1.25rem;
+        }
+
+        .feature p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .use-cases {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .use-case {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%);
+            border-radius: 8px;
+        }
+
+        .use-case h4 {
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .problem-solution {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+        }
+
+        .problem-solution h3 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .comparison-col h4 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .comparison-col ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .comparison-col li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .comparison-col li::before {
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .before li::before {
+            content: "✗";
+            color: #fca5a5;
+        }
+
+        .after li::before {
+            content: "✓";
+            color: #86efac;
+        }
+
+        footer {
+            background: #2d3748;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        footer a {
+            color: #90cdf4;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: white;
+            text-decoration: none;
+            opacity: 0.9;
+        }
+
+        .back-link:hover {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .section h2 {
+                font-size: 1.5rem;
+            }
+
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <a href="https://prodirt-llc.github.io/" class="back-link">← Back to ProDirt Apps</a>
+        <img src="logo.png" alt="Even Spacing Calculator Logo" style="width: 120px; height: 120px; margin-bottom: 1rem; border-radius: 20px;">
+        <h1>Even Spacing Calculator</h1>
+        <p>Say goodbye to scrap paper math and guesswork</p>
+        <a href="https://play.google.com/store/apps/details?id=even.spacingcalculator" class="cta-button">Download Free on Google Play</a>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <h2>Perfect Spacing, Every Time</h2>
+            <p>The Even Spacing Calculator is the ultimate tool for woodworkers, DIY enthusiasts, and construction professionals who need perfectly distributed layouts in seconds. Whether you're installing railing balusters, fence pickets, deck planks, bookshelves, or wall art, this app handles the complex math so you can focus on building.</p>
+            
+            <div class="problem-solution">
+                <h3>The Problem with Traditional Methods</h3>
+                <div class="comparison">
+                    <div class="comparison-col before">
+                        <h4>Before: Manual Calculation</h4>
+                        <ul>
+                            <li>Time-consuming trial and error</li>
+                            <li>Scrap paper covered in crossed-out math</li>
+                            <li>Uneven spacing that looks amateur</li>
+                            <li>Wasted materials from mistakes</li>
+                            <li>Frustration and rework</li>
+                        </ul>
+                    </div>
+                    <div class="comparison-col after">
+                        <h4>After: Even Spacing Calculator</h4>
+                        <ul>
+                            <li>Instant, accurate results</li>
+                            <li>Professional measurements in seconds</li>
+                            <li>Perfectly even distribution</li>
+                            <li>Zero waste from calculation errors</li>
+                            <li>Confidence and precision</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔧 Key Features</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <h3>Imperial Precision</h3>
+                    <p>Customize accuracy up to 1/64" for meticulous detail work. Perfect for fine woodworking where every fraction matters.</p>
+                </div>
+
+                <div class="feature">
+                    <h3>Metric Support</h3>
+                    <p>Now supports both Imperial (inches) and Metric (mm) measurements. Work in whatever system you prefer.</p>
+                </div>
+
+                <div class="feature">
+                    <h3>On-Center Measurements</h3>
+                    <p>Get the exact center-point for every piece, ensuring perfect alignment for posts, balusters, and more.</p>
+                </div>
+
+                <div class="feature">
+                    <h3>Detailed Measurement Table</h3>
+                    <p>Toggleable view that lists the "start" and "center" positions for every single piece—perfect for long runs like fences or decks.</p>
+                </div>
+
+                <div class="feature">
+                    <h3>Edge Offset Controls</h3>
+                    <p>NEW: Set inset spacing from edges for professional-looking layouts with proper margins.</p>
+                </div>
+
+                <div class="feature">
+                    <h3>Item Thickness Calculator</h3>
+                    <p>NEW: Calculate exact spacing including the width or thickness of your materials for gap-accurate layouts.</p>
+                </div>
+
+                <div class="feature">
+                    <h3>Export & Share</h3>
+                    <p>Save and share your measurements with your team or for future reference. No more losing your calculations.</p>
+                </div>
+
+                <div class="feature">
+                    <h3>100% Free</h3>
+                    <p>No subscriptions, no ads blocking your view, no paywalls. Professional tools shouldn't cost a fortune.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📐 Perfect For</h2>
+            <div class="use-cases">
+                <div class="use-case">
+                    <h4>Carpentry & Woodworking</h4>
+                    <p>Balusters, spindles, shelving, cabinet hardware, and trim work. Get professional results every time.</p>
+                </div>
+
+                <div class="use-case">
+                    <h4>Construction Projects</h4>
+                    <p>Fence posts, deck boards, siding, framing studs, and structural layouts. Build with confidence.</p>
+                </div>
+
+                <div class="use-case">
+                    <h4>Home Decor & Design</h4>
+                    <p>Picture frames, wall hooks, gallery walls, floating shelves, and lighting fixtures. Achieve that designer look.</p>
+                </div>
+
+                <div class="use-case">
+                    <h4>Outdoor Projects</h4>
+                    <p>Deck railings, fence pickets, pergola beams, and garden borders. Perfect outdoor spacing in any weather.</p>
+                </div>
+
+                <div class="use-case">
+                    <h4>Furniture Building</h4>
+                    <p>Drawer pulls, shelf pins, table legs, and decorative details. Precision for custom furniture.</p>
+                </div>
+
+                <div class="use-case">
+                    <h4>DIY Enthusiasts</h4>
+                    <p>Any task where "eyeballing it" just isn't good enough. Stop guessing, start measuring.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>How It Works</h2>
+            <p>Using the Even Spacing Calculator is simple:</p>
+            <ol style="margin-top: 1rem; margin-left: 2rem; color: #666; line-height: 2;">
+                <li><strong>Enter your total length</strong> – The distance you need to fill (wall, fence, deck, etc.)</li>
+                <li><strong>Input the number of pieces</strong> – How many items you're installing</li>
+                <li><strong>Add item width (optional)</strong> – The thickness or width of each piece</li>
+                <li><strong>Set edge offsets (optional)</strong> – Inset from the edges if needed</li>
+                <li><strong>Get precise measurements</strong> – Instant calculations with exact spacing between and center positions for each piece</li>
+            </ol>
+            <p style="margin-top: 1.5rem; color: #666;">View the detailed table to see start and center measurements for every single piece. Export your layout to reference while working, or share it with your crew.</p>
+        </div>
+
+        <div class="section">
+            <h2>The ProDirt Difference</h2>
+            <p>Like all ProDirt apps, Even Spacing Calculator follows our core principles:</p>
+            <ul style="margin-top: 1rem; margin-left: 2rem; color: #666;">
+                <li style="margin-bottom: 0.5rem;"><strong>No Subscriptions:</strong> Free forever. Professional tools shouldn't require monthly payments.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Privacy First:</strong> Your measurements stay on your device. No cloud uploads, no tracking.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Works Offline:</strong> No internet required. Use it on the job site, in the shop, anywhere.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Built by People Who Build:</strong> Designed by someone who understands the frustration of uneven spacing.</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin: 3rem 0;">
+            <p style="font-size: 1.2rem; color: #666; margin-bottom: 1.5rem;">Stop calculating and start creating.</p>
+            <a href="https://play.google.com/store/apps/details?id=even.spacingcalculator" class="cta-button">Download Even Spacing Calculator Free</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 ProDirt LLC. All rights reserved.</p>
+        <p style="margin-top: 1rem;">
+            <a href="https://prodirt-llc.github.io/">More Apps</a> | 
+            <a href="mailto:contact.prodirt@gmail.com">Contact</a> | 
+            <a href="https://idletools.blogspot.com">Developer Blog</a>
+        </p>
+        <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">A Virginia-based outdoor software company.</p>
+    </footer>
+</body>
+</html>

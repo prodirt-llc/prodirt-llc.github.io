@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BandPass - Real-Time Audio Frequency Filter & Spectrogram</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #FF8E00 0%, #FF6B00 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #FF8E00;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .section {
+            background: white;
+            margin: 2rem 0;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: #FF8E00;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature {
+            padding: 1.5rem;
+            background: #fff8f0;
+            border-radius: 8px;
+            border-left: 4px solid #FF8E00;
+        }
+
+        .feature h3 {
+            color: #333;
+            margin-bottom: 0.75rem;
+            font-size: 1.25rem;
+        }
+
+        .feature p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .use-cases {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .use-case {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #fff8f0 0%, #ffe6cc 100%);
+            border-radius: 8px;
+        }
+
+        .use-case h4 {
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .tech-highlight {
+            background: linear-gradient(135deg, #FF8E00 0%, #FF6B00 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+        }
+
+        .tech-highlight h3 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        footer {
+            background: #2d3748;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        footer a {
+            color: #FF8E00;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: white;
+            text-decoration: none;
+            opacity: 0.9;
+        }
+
+        .back-link:hover {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .section h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <a href="https://prodirt-llc.github.io/" class="back-link">← Back to ProDirt Apps</a>
+        <img src="logo.png" alt="BandPass Logo" style="width: 100px; height: 100px; margin: 0 auto 1.5rem auto; display: block; border-radius: 18px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+        <h1>BandPass</h1>
+        <p>Real-time audio filtering with live spectrogram visualization</p>
+        <a href="https://play.google.com/store/apps/details?id=com.bandpass" class="cta-button">Download Free on Google Play</a>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <h2>Isolate Any Sound Frequency</h2>
+            <p>BandPass transforms your phone into a professional audio frequency analyzer and filter. Isolate specific sounds from background noise—perfect for diagnosing vehicle problems, troubleshooting machinery, analyzing audio recordings, or exploring the hidden frequencies around you. See and hear what you've been missing.</p>
+            
+            <div class="tech-highlight">
+                <h3>🎛️ Professional-Grade DSP</h3>
+                <p>BandPass uses cascaded 4-stage biquad filters (48dB/octave rolloff) for surgical precision in frequency isolation. The same digital signal processing technology used in professional audio equipment, now in your pocket.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>✨ Key Features</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <h3>Real-Time Frequency Filtering</h3>
+                    <p>Drag interactive handles on the live spectrogram to select exactly which frequencies you want to hear. Everything outside your selection is silenced—isolate engine whines, bearing noise, or any specific sound instantly.</p>
+                </div>
+
+                <div class="feature">
+                    <h3>Live Spectrogram Waterfall</h3>
+                    <p>See sound as it happens with a scrolling frequency visualization. Logarithmic scaling highlights the full audible range from deep rumbles (20Hz) to high-pitched whines (15kHz+).</p>
+                </div>
+
+                <div class="feature">
+                    <h3>Quick Presets</h3>
+                    <p>Jump to common frequency ranges instantly: Voice (85Hz-3kHz), Rumble (20-250Hz), Whine (2-8kHz). Create and save unlimited custom presets for your specific diagnostic needs.</p>
+                </div>
+
+                <div class="feature">
+                    <h3>Recording & Playback</h3>
+                    <p>Record raw audio for later analysis. Play back recordings and adjust filters in real-time—perfect for comparing "before and after" or sharing diagnostic findings with others.</p>
+                </div>
+
+                <div class="feature">
+                    <h3>Adjustable Gain Control</h3>
+                    <p>Amplify quiet sounds up to 20x to hear subtle noises clearly. Essential for detecting faint bearing noise, electrical whines, or distant mechanical sounds.</p>
+                </div>
+
+                <div class="feature">
+                    <h3>100% Free & Private</h3>
+                    <p>No subscriptions, no ads during analysis, no cloud uploads. Your audio stays on your device. Professional diagnostic tools shouldn't require monthly payments.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔧 Built For</h2>
+            <div class="use-cases">
+                <div class="use-case">
+                    <h4>Automotive Diagnostics</h4>
+                    <p>Isolate engine knock, bearing whine, belt squeal, exhaust leaks, or electrical noise. Find the exact frequency of mysterious sounds to diagnose issues faster.</p>
+                </div>
+
+                <div class="use-case">
+                    <h4>HVAC & Appliance Repair</h4>
+                    <p>Identify compressor noise, fan bearing problems, or vibration frequencies in refrigerators, AC units, and machinery. Filter out ambient noise to focus on the problem.</p>
+                </div>
+
+                <div class="use-case">
+                    <h4>Audio Production</h4>
+                    <p>Analyze recordings for unwanted hum, electrical interference, or specific frequency problems. Perfect for field recording troubleshooting and acoustic analysis.</p>
+                </div>
+
+                <div class="use-case">
+                    <h4>Home & Building</h4>
+                    <p>Track down mysterious humming, buzzing, or vibration sources. Isolate HVAC noise, plumbing sounds, or electrical interference frequencies.</p>
+                </div>
+
+                <div class="use-case">
+                    <h4>Electronics & Ham Radio</h4>
+                    <p>Analyze RF interference, power supply noise, or audio circuit issues. Visualize and filter specific frequency bands for troubleshooting and testing.</p>
+                </div>
+
+                <div class="use-case">
+                    <h4>Education & Exploration</h4>
+                    <p>Explore the frequency spectrum of everyday sounds. Perfect for teaching acoustics, physics, or music theory with real-world examples.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>How It Works</h2>
+            <ol style="margin-left: 2rem; color: #666; line-height: 1.8;">
+                <li style="margin-bottom: 0.75rem;"><strong>Start Monitoring:</strong> Tap START to begin real-time audio analysis. The spectrogram immediately displays all frequencies from your microphone.</li>
+                <li style="margin-bottom: 0.75rem;"><strong>Adjust Frequency Range:</strong> Drag the green handles on the spectrogram to select your target frequency band. Everything outside is filtered out instantly.</li>
+                <li style="margin-bottom: 0.75rem;"><strong>Fine-Tune & Listen:</strong> Use presets for quick selection or fine-tune manually. Increase gain to amplify quiet sounds. The filtered audio plays in real-time.</li>
+                <li style="margin-bottom: 0.75rem;"><strong>Record & Analyze:</strong> Tap the record button to capture raw audio. Play back recordings later and adjust filters to isolate different sounds from the same recording.</li>
+            </ol>
+        </div>
+
+        <div class="section">
+            <h2>The ProDirt Difference</h2>
+            <p>Like all ProDirt apps, BandPass follows our core principles:</p>
+            <ul style="margin-top: 1rem; margin-left: 2rem; color: #666;">
+                <li style="margin-bottom: 0.5rem;"><strong>No Subscriptions:</strong> Free forever. Professional diagnostic tools shouldn't expire.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Privacy First:</strong> Your audio stays on your device. No cloud uploads, no tracking, no permissions beyond microphone access.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Works Offline:</strong> No internet required. Use it anywhere, anytime—in the garage, under a vehicle, or in remote locations.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Built by Problem Solvers:</strong> Created by someone who actually diagnoses mechanical issues, not just another generic audio app.</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin: 3rem 0;">
+            <a href="https://play.google.com/store/apps/details?id=com.bandpass" class="cta-button">Download BandPass Free</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 ProDirt LLC. All rights reserved.</p>
+        <p style="margin-top: 1rem;">
+            <a href="https://prodirt-llc.github.io/">More Apps</a> | 
+            <a href="/cdn-cgi/l/email-protection#c1a2aeafb5a0a2b5efb1b3aea5a8b3b581a6aca0a8adefa2aeac">Contact</a> | 
+            <a href="https://idletools.blogspot.com">Developer Blog</a>
+        </p>
+        <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">A Virginia-based outdoor software company.</p>
+    </footer>
+</body>
+</html>

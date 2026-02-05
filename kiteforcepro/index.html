@@ -1,139 +1,349 @@
-# ![Kite Force Pro](logo.png) Kite Force Pro
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kite Force Pro - Professional Kite Pull Force Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-**Professional Kite Pull Force Calculator**
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
 
-[← Back to ProDirt Apps](/)
+        .hero {
+            background: linear-gradient(135deg, #0EA5E9 0%, #0284C7 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
 
----
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
 
-## 📊 What is Kite Force Pro?
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
 
-Kite Force Pro calculates the exact pull force your kite will generate under current weather conditions using real aerodynamic principles. Essential for safety planning, line selection, and understanding your kite's performance limits.
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #0EA5E9;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
 
-### [Download on Google Play](https://play.google.com/store/apps/details?id=com.kiteforcepro)
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
 
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
 
----
+        .section {
+            background: white;
+            margin: 2rem 0;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
 
-## ⚡ Key Features
+        .section h2 {
+            color: #0EA5E9;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
 
-### 🧮 Smart Force Calculation
-- Real-time pull force in Newtons, Pounds, Kilograms
-- Automatic line strength recommendations (3x safety factor)
-- Wind analysis with flying capability warnings
-- Temperature & pressure compensation
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
 
-### 🪁 Comprehensive Kite Library
-- Save unlimited kite configurations
-- Support for Delta, Box, Parafoil, Diamond, Sled, Rokkaku
-- Photo capture for visual reference
-- Track manufacturer, cost, last flown date
+        .feature {
+            padding: 1.5rem;
+            background: #F0F9FF;
+            border-radius: 8px;
+            border-left: 4px solid #0EA5E9;
+        }
 
-### 🌤️ Live Weather Integration
-- Auto-fetch via GPS location
-- Wind speed, direction, temp, pressure
-- Interactive Windy.com wind map
-- 5-day forecast with conditions
+        .feature h3 {
+            color: #333;
+            margin-bottom: 0.75rem;
+            font-size: 1.25rem;
+        }
 
-### 🎏 Line Laundry Calculator
-- Add windsocks, flags, banners
-- Small/Medium/Large size options
-- Accurate additional pull estimation
-- Combined force calculations
+        .feature p {
+            color: #666;
+            line-height: 1.6;
+        }
 
-### 🌍 Metric & Imperial
-- Switch units instantly
-- mph ↔ m/s, °F ↔ °C, inHg ↔ hPa
-- All displays update in real-time
-- Preferences saved automatically
+        .use-cases {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
 
-### 💾 Backup & Sharing
-- Export/import entire collection
-- ZIP format with photos preserved
-- Share individual configurations
-- Auto-backup reminders
+        .use-case {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #f0f9ff 0%, #cce7f9 100%);
+            border-radius: 8px;
+        }
 
----
+        .use-case h4 {
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
 
-## 🔬 The Science Behind It
+        .tech-highlight {
+            background: linear-gradient(135deg, #0EA5E9 0%, #0284C7 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+        }
 
-Kite Force Pro uses fundamental aerodynamic principles to calculate lift force:
+        .tech-highlight h3 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
 
-```
-F = CL × A × ρ × 0.5 × V²
-```
+        .tech-highlight code {
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem 1rem;
+            display: block;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            margin: 1rem 0;
+            font-size: 1.1rem;
+        }
 
-**Where:**
-- **CL** = Lift coefficient (varies by kite shape: Delta 1.2, Parafoil 1.5, Box 0.9, etc.)
-- **A** = Kite surface area (calculated from your measurements)
-- **ρ** = Air density (calculated from temperature & pressure)
-- **V** = Wind velocity (from weather data or manual input)
+        .safety-warning {
+            background: #FEF2F2;
+            border: 2px solid #EF4444;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
 
-Air density varies with temperature and pressure—cold, high-pressure air generates more lift than warm, low-pressure air. The app calculates this automatically for maximum accuracy.
+        .safety-warning h3 {
+            color: #DC2626;
+            margin-bottom: 1rem;
+        }
 
----
+        .safety-warning ul {
+            list-style: none;
+            margin-left: 0;
+        }
 
-## ⚠️ Safety Features
+        .safety-warning li {
+            padding: 0.5rem 0;
+            color: #555;
+        }
 
-- 🚨 **Automatic warnings** when wind is too low for your kite size
-- 🔗 **Line strength recommendations** based on 3x safety factor
-- 📊 **Pull force level indicators:** Light / Moderate / Strong / EXTREME
-- 🌡️ **Weather alerts** for marginal flying conditions
+        footer {
+            background: #2d3748;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
 
----
+        footer a {
+            color: #90cdf4;
+            text-decoration: none;
+        }
 
-## 🎯 Who Is This For?
+        footer a:hover {
+            text-decoration: underline;
+        }
 
-- Sport kite flyers planning sessions
-- Single-line kite enthusiasts
-- Kite aerial photographers (KAP)
-- Kite festival organizers
-- Anyone flying kites in varying wind conditions
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: white;
+            text-decoration: none;
+            opacity: 0.9;
+        }
 
----
+        .back-link:hover {
+            opacity: 1;
+        }
 
-## 📱 App Specifications
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
 
-| Feature | Details |
-|---------|---------|
-| **Platform** | Android 7.0 (API 24) and above |
-| **Price** | Free |
-| **Permissions** | Location (GPS for weather), Camera (optional for photos), Storage (for backup/import) |
-| **Offline Mode** | Yes - all calculations work offline after weather fetch |
-| **Data Privacy** | All kite data stored locally on device |
-| **Languages** | English |
-| **Developer** | ProDirt LLC (Virginia, USA) |
+            .hero p {
+                font-size: 1.1rem;
+            }
 
----
+            .section h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <a href="https://prodirt-llc.github.io/" class="back-link">← Back to ProDirt Apps</a>
+        <img src="logo.png" alt="Kite Force Pro Logo" style="width: 100px; height: 100px; margin: 0 auto 1.5rem auto; display: block; border-radius: 18px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+        <h1>Kite Force Pro</h1>
+        <p>Professional Kite Pull Force Calculator</p>
+        <a href="https://play.google.com/store/apps/details?id=com.kiteforcepro" class="cta-button">Download on Google Play</a>
+    </div>
 
-## 💡 Use Cases
+    <div class="container">
+        <div class="section">
+            <h2>Calculate Pull Forces With Precision</h2>
+            <p>Kite Force Pro calculates the exact pull force your kite will generate under current weather conditions using real aerodynamic principles. Essential for safety planning, line selection, and understanding your kite's performance limits whether you're flying sport kites, single-line kites, or kite aerial photography rigs.</p>
+            
+            <div class="tech-highlight">
+                <h3>🔬 Real Aerodynamic Science</h3>
+                <p>Unlike simple estimators, Kite Force Pro uses the fundamental aerodynamic lift equation:</p>
+                <code>F = CL × A × ρ × 0.5 × V²</code>
+                <p>Air density is calculated from real-time temperature and pressure for maximum accuracy. Different kite shapes have different lift coefficients—Delta kites (1.2), Parafoils (1.5), Box kites (0.9), etc.</p>
+            </div>
+        </div>
 
-### Sport Kite Flyer
-*"I fly dual-line sport kites competitively. Kite Force Pro helps me choose the right line strength for competition days—essential when wind conditions vary. The forecast feature lets me plan practice sessions ahead of time."*
+        <div class="section">
+            <h2>⚡ Key Features</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <h3>Smart Force Calculation</h3>
+                    <p>Real-time pull force in Newtons, Pounds, and Kilograms. Automatic line strength recommendations with 3x safety factor. Wind analysis warns you when conditions are marginal for your kite size.</p>
+                </div>
 
-### Kite Aerial Photographer
-*"I attach a camera rig to my kites for aerial photography. Knowing exact pull forces is critical for safety—both for the camera equipment and for managing the line tension. The line laundry calculator is perfect for adding my camera suspension system."*
+                <div class="feature">
+                    <h3>Comprehensive Kite Library</h3>
+                    <p>Save unlimited kite configurations with photos. Support for Delta, Box, Parafoil, Diamond, Sled, and Rokkaku kites. Track manufacturer, product line, wind rating, cost, and last flown dates.</p>
+                </div>
 
-### Festival Organizer
-*"We organize annual kite festivals with hundreds of participants. Kite Force Pro helps us provide safety recommendations to attendees based on current conditions. The weather forecast integration is invaluable for planning event days."*
+                <div class="feature">
+                    <h3>Live Weather Integration</h3>
+                    <p>Auto-fetch current conditions via GPS. Wind speed, direction, temperature, and pressure updated automatically. Interactive Windy.com wind map shows conditions across your area.</p>
+                </div>
 
----
+                <div class="feature">
+                    <h3>5-Day Forecast</h3>
+                    <p>Plan your flying sessions ahead of time with detailed weather forecasts. See high/low temperatures and maximum wind speeds for the next 5 days.</p>
+                </div>
 
-## 🆘 Support & Contact
+                <div class="feature">
+                    <h3>Line Laundry Calculator</h3>
+                    <p>Add windsocks, flags, and banners to your force calculations. Choose Small/Medium/Large sizes for accurate additional pull estimation on your line.</p>
+                </div>
 
-Have questions or feedback? We're here to help!
+                <div class="feature">
+                    <h3>Metric & Imperial Support</h3>
+                    <p>Switch units instantly between mph ↔ m/s, °F ↔ °C, inHg ↔ hPa. All calculations and displays update in real-time. Your preferences are saved automatically.</p>
+                </div>
 
-- **Email:** [contact.prodirt@gmail.com](mailto:prodirt.co@gmail.com)
-- **Website:** [https://prodirt-llc.github.io/kiteforcepro/](https://prodirt-llc.github.io/kiteforcepro/)
+                <div class="feature">
+                    <h3>Backup & Sharing</h3>
+                    <p>Export/import your entire kite collection in ZIP format with photos preserved. Share individual kite configurations. Auto-backup reminders every 5 app launches.</p>
+                </div>
 
----
+                <div class="feature">
+                    <h3>Works Offline</h3>
+                    <p>All calculations run locally on your device. No internet required once weather is fetched. Your kite data stays private on your device.</p>
+                </div>
+            </div>
+        </div>
 
-### [Get Kite Force Pro on Google Play](https://play.google.com/store/apps/details?id=com.kiteforcepro)
+        <div class="safety-warning">
+            <h3>⚠️ Built-In Safety Features</h3>
+            <ul>
+                <li>🚨 <strong>Automatic warnings</strong> when wind is too low for your kite size to fly</li>
+                <li>🔗 <strong>Line strength recommendations</strong> based on 3x safety factor (industry standard)</li>
+                <li>📊 <strong>Pull force level indicators:</strong> Light / Moderate / Strong / EXTREME</li>
+                <li>🌡️ <strong>Weather alerts</strong> for marginal flying conditions</li>
+            </ul>
+        </div>
 
-*Built by kite flyers, for kite flyers • Made in Virginia, USA*
+        <div class="section">
+            <h2>🎯 Built For</h2>
+            <div class="use-cases">
+                <div class="use-case">
+                    <h4>Sport Kite Flyers</h4>
+                    <p>Plan competition sessions with confidence. Choose the right line strength for varying wind conditions. The forecast feature helps you prepare practice sessions ahead of time.</p>
+                </div>
 
----
+                <div class="use-case">
+                    <h4>Single-Line Enthusiasts</h4>
+                    <p>Fly large show kites safely. Know exactly what forces you're dealing with. Essential for managing multiple-line setups and line laundry trains.</p>
+                </div>
 
-© 2026 ProDirt LLC. All rights reserved.
+                <div class="use-case">
+                    <h4>Kite Aerial Photographers</h4>
+                    <p>Critical safety tool for KAP rigs. Know exact pull forces before attaching expensive camera equipment. The line laundry calculator accounts for your camera suspension system.</p>
+                </div>
 
-[Home](/) | [Contact](mailto:contact.prodirt@gmail.com) | [Blog](https://idletools.blogspot.com)
+                <div class="use-case">
+                    <h4>Festival Organizers</h4>
+                    <p>Provide safety recommendations to hundreds of participants based on current conditions. Plan event days with accurate weather forecasts.</p>
+                </div>
+
+                <div class="use-case">
+                    <h4>Kite Collectors</h4>
+                    <p>Track your entire collection with photos and detailed specs. Know which kites to fly in today's conditions. Monitor your total investment and last flown dates.</p>
+                </div>
+
+                <div class="use-case">
+                    <h4>Beginners & Students</h4>
+                    <p>Learn kite physics with real calculations. Understand how weather affects performance. See the science behind safe flying practices.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>The ProDirt Difference</h2>
+            <p>Like all ProDirt apps, Kite Force Pro follows our core principles:</p>
+            <ul style="margin-top: 1rem; margin-left: 2rem; color: #666;">
+                <li style="margin-bottom: 0.5rem;"><strong>No Subscriptions:</strong> One-time purchase. Your tools shouldn't expire.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Privacy First:</strong> Your kite data stays on your device. No cloud uploads, no tracking.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Works Offline:</strong> No internet required for calculations. Use it anywhere, anytime.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Built by People Who Care:</strong> Created by kite flyers who understand the need for accurate force calculations.</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin: 3rem 0;">
+            <a href="https://play.google.com/store/apps/details?id=com.kiteforcepro" class="cta-button">Get Kite Force Pro on Google Play</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 ProDirt LLC. All rights reserved.</p>
+        <p style="margin-top: 1rem;">
+            <a href="https://prodirt-llc.github.io/">More Apps</a> | 
+            <a href="mailto:contact.prodirt@gmail.com">Contact</a> | 
+            <a href="https://idletools.blogspot.com">Developer Blog</a>
+        </p>
+        <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">A Virginia-based outdoor software company.</p>
+    </footer>
+</body>
+</html>

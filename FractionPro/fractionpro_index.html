@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fraction Pro - Imperial Fraction Calculator for Tradespeople</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #FF6B35 0%, #d94f1a 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #FF6B35;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .section {
+            background: white;
+            margin: 2rem 0;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: #FF6B35;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature {
+            padding: 1.5rem;
+            background: #fff5f0;
+            border-radius: 8px;
+            border-left: 4px solid #FF6B35;
+        }
+
+        .feature h3 {
+            color: #333;
+            margin-bottom: 0.75rem;
+            font-size: 1.25rem;
+        }
+
+        .feature p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .use-cases {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .use-case {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #ffcab0 0%, #ffb090 100%);
+            border-radius: 8px;
+        }
+
+        .use-case h4 {
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .problem-solution {
+            background: linear-gradient(135deg, #FF6B35 0%, #d94f1a 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+        }
+
+        .problem-solution h3 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .comparison-col h4 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .comparison-col ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .comparison-col li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .comparison-col li::before {
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .before li::before {
+            content: "✗";
+            color: #fca5a5;
+        }
+
+        .after li::before {
+            content: "✓";
+            color: #86efac;
+        }
+
+        footer {
+            background: #2d3748;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        footer a {
+            color: #90cdf4;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: white;
+            text-decoration: none;
+            opacity: 0.9;
+        }
+
+        .back-link:hover {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .section h2 {
+                font-size: 1.5rem;
+            }
+
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <a href="https://prodirt-llc.github.io/" class="back-link">← Back to ProDirt Apps</a>
+        <img src="logo.png" alt="Fraction Pro Logo" style="width: 100px; height: 100px; margin: 0 auto 1.5rem auto; display: block; border-radius: 18px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+        <h1>Fraction Pro</h1>
+        <p>The fraction calculator built for people who actually use fractions</p>
+        <a href="https://play.google.com/store/apps/details?id=com.fractionpro" class="cta-button">Download Free on Google Play</a>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <h2>Built for Gloves, Not Guesswork</h2>
+            <p>Stop fighting with tiny calculator buttons when you're wearing work gloves. Fraction Pro gives you three big keypads—one for whole numbers, one for numerators, one for denominators. No more mode switching, no more mistakes, just fast fraction math when you need it.</p>
+            
+            <div class="problem-solution">
+                <h3>Why Regular Calculators Fail Tradespeople</h3>
+                <div class="comparison">
+                    <div class="comparison-col before">
+                        <h4>Before: Regular Calculators</h4>
+                        <ul>
+                            <li>Tiny buttons impossible with gloves</li>
+                            <li>Decimal-only (useless for tape measures)</li>
+                            <li>No precision rounding (1/16, 1/32, etc.)</li>
+                            <li>Can't find center marks</li>
+                            <li>No metric conversion</li>
+                        </ul>
+                    </div>
+                    <div class="comparison-col after">
+                        <h4>After: Fraction Pro</h4>
+                        <ul>
+                            <li>Three huge, glove-friendly keypads</li>
+                            <li>Native fraction support</li>
+                            <li>Round to 1/2" through 1/64"</li>
+                            <li>One-tap center/half function</li>
+                            <li>Built-in mm → inches converter</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔧 Key Features</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <h3>Three Big Keypads</h3>
+                    <p>Separate keypads for whole numbers, numerators, and denominators. No mode switching, no confusion—just tap what you need.</p>
+                </div>
+
+                <div class="feature">
+                    <h3>Glove-Friendly Design</h3>
+                    <p>Large buttons that work with work gloves, winter gloves, or bare hands. Built for job sites, not office desks.</p>
+                </div>
+
+                <div class="feature">
+                    <h3>Precision Rounding</h3>
+                    <p>Round results to match your tape measure: 1/2", 1/4", 1/8", 1/16", 1/32", or 1/64". Choose nearest, up, or down rounding.</p>
+                </div>
+
+                <div class="feature">
+                    <h3>Center/Half Function</h3>
+                    <p>Find the center point of any measurement instantly—just like a self-centering tape measure. Perfect for layout work.</p>
+                </div>
+
+                <div class="feature">
+                    <h3>MM → Inches Converter</h3>
+                    <p>Convert millimeters to fractional inches with one tap. No more looking up conversion charts for metric hardware.</p>
+                </div>
+
+                <div class="feature">
+                    <h3>Decimal Support</h3>
+                    <p>Enter decimals like 2.375 and convert them to fractions automatically. Works both ways—fractions to decimals too.</p>
+                </div>
+
+                <div class="feature">
+                    <h3>Scrolling History</h3>
+                    <p>See your last calculations at a glance. No more re-doing math because you forgot what you just calculated.</p>
+                </div>
+
+                <div class="feature">
+                    <h3>Auto-Simplification</h3>
+                    <p>Results automatically simplify. 6/8 becomes 3/4, 4/16 becomes 1/4. Always shows the proper fraction.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔨 Perfect For</h2>
+            <div class="use-cases">
+                <div class="use-case">
+                    <h4>Carpenters & Framers</h4>
+                    <p>Crown molding cuts, rafter calculations, stud spacing, and rough-in measurements. Get the math right the first time.</p>
+                </div>
+
+                <div class="use-case">
+                    <h4>Cabinetmakers</h4>
+                    <p>Face frame calculations, drawer sizing, shelf spacing, and hardware placement. Precision when it matters.</p>
+                </div>
+
+                <div class="use-case">
+                    <h4>Electricians & Plumbers</h4>
+                    <p>Box offsets, conduit bends, pipe runs, and fitting calculations. Work in fractions like you measure.</p>
+                </div>
+
+                <div class="use-case">
+                    <h4>Machinists & Fabricators</h4>
+                    <p>Part dimensions, hole spacing, material cuts, and tolerance calculations. Imperial precision up to 1/64".</p>
+                </div>
+
+                <div class="use-case">
+                    <h4>Contractors & Estimators</h4>
+                    <p>Material takeoffs, cut lists, and layout calculations. Fast math when you're juggling ten things at once.</p>
+                </div>
+
+                <div class="use-case">
+                    <h4>DIY Home Improvers</h4>
+                    <p>Deck building, fence installation, shelving projects. Stop converting to decimals and back—work in fractions.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>How It Works</h2>
+            <p>Using Fraction Pro is dead simple:</p>
+            <ol style="margin-top: 1rem; margin-left: 2rem; color: #666; line-height: 2;">
+                <li><strong>Enter your first number</strong> – Use the three keypads to punch in whole numbers and fractions</li>
+                <li><strong>Pick an operation</strong> – Add, subtract, multiply, or divide</li>
+                <li><strong>Enter your second number</strong> – Same easy input</li>
+                <li><strong>Hit equals</strong> – Get your result, rounded to your chosen precision</li>
+                <li><strong>See it all at once</strong> – Result, decimal equivalent, and metric conversion displayed together</li>
+            </ol>
+            <p style="margin-top: 1.5rem; color: #666;">Need to find the center of 5 3/4"? Just enter it and tap the ½ button. Need to convert 149mm to inches? Type it and hit "mm→in". It's that fast.</p>
+        </div>
+
+        <div class="section">
+            <h2>Real Calculator Behavior</h2>
+            <p>Fraction Pro works like a real calculator should:</p>
+            <ul style="margin-top: 1rem; margin-left: 2rem; color: #666;">
+                <li style="margin-bottom: 0.5rem;">After hitting equals, typing a new number starts fresh</li>
+                <li style="margin-bottom: 0.5rem;">Or press an operator to chain calculations together</li>
+                <li style="margin-bottom: 0.5rem;">Your calculation history scrolls up so you can reference past work</li>
+                <li style="margin-bottom: 0.5rem;">Clear button wipes everything for a fresh start</li>
+            </ul>
+            <p style="margin-top: 1rem; color: #666;">No weird behavior, no surprises—it just works the way you expect.</p>
+        </div>
+
+        <div class="section">
+            <h2>The ProDirt Difference</h2>
+            <p>Like all ProDirt apps, Fraction Pro follows our core principles:</p>
+            <ul style="margin-top: 1rem; margin-left: 2rem; color: #666;">
+                <li style="margin-bottom: 0.5rem;"><strong>No Subscriptions:</strong> Free with optional one-time purchase to remove ads. No monthly fees.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Privacy First:</strong> Your calculations stay on your device. No cloud uploads, no tracking.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Works Offline:</strong> No internet required. Use it on the job site, in the shop, anywhere.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Built by a Tradesperson:</strong> Designed by someone who actually works with imperial measurements daily.</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin: 3rem 0;">
+            <p style="font-size: 1.2rem; color: #666; margin-bottom: 1.5rem;">Stop fighting with your calculator. Get back to work.</p>
+            <a href="https://play.google.com/store/apps/details?id=com.fractionpro" class="cta-button">Download Fraction Pro Free</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 ProDirt LLC. All rights reserved.</p>
+        <p style="margin-top: 1rem;">
+            <a href="https://prodirt-llc.github.io/">More Apps</a> | 
+            <a href="mailto:contact.prodirt@gmail.com">Contact</a> | 
+            <a href="https://idletools.blogspot.com">Developer Blog</a>
+        </p>
+        <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">A Virginia-based outdoor software company.</p>
+    </footer>
+</body>
+</html>

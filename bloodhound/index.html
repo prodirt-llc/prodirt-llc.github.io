@@ -3,221 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="BloodHound - Free blood trail tracking app for ethical game recovery. No subscription required.">
+    <meta name="description" content="BloodHound - Blood trail tracking app for ethical game recovery. Free blood detection, optional GPS Trail Mode.">
     <title>BloodHound - Blood Trail Tracker</title>
     <link rel="icon" type="image/png" href="logo.png">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #f5f5f5;
-        }
-        
-        .hero {
-            background: linear-gradient(135deg, #1a3a1a 0%, #2d5a2d 100%);
-            color: white;
-            padding: 4rem 2rem;
-            text-align: center;
-        }
-        
-        .hero-logo {
-            max-width: 150px;
-            height: auto;
-            margin: 0 auto 1.5rem auto;
-            display: block;
-        }
-        
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        
-        .hero .tagline {
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-        }
-        
-        .hero .cta {
-            display: inline-block;
-            padding: 1rem 2rem;
-            background: #ff6b35;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 1.2rem;
-            font-weight: 600;
-            transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-        
-        .hero .cta:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
-        }
-        
-        section {
-            background: white;
-            margin: 2rem 0;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        
-        h2 {
-            color: #2d5a2d;
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin: 2rem 0;
-        }
-        
-        .feature {
-            text-align: center;
-            padding: 1.5rem;
-        }
-        
-        .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-        
-        .feature h3 {
-            color: #2d5a2d;
-            margin-bottom: 0.5rem;
-        }
-        
-        .video-container {
-            max-width: 400px;
-            margin: 2rem auto;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-        
-        .video-container iframe {
-            width: 100%;
-            height: 600px;
-        }
-        
-        .comparison {
-            background: linear-gradient(135deg, #fff5f0 0%, #ffe8e0 100%);
-            padding: 2rem;
-            border-radius: 8px;
-            border-left: 4px solid #ff6b35;
-        }
-        
-        .comparison h3 {
-            color: #2d5a2d;
-            margin-bottom: 1rem;
-        }
-        
-        .comparison-table {
-            width: 100%;
-            margin: 1rem 0;
-        }
-        
-        .comparison-table td {
-            padding: 0.75rem;
-        }
-        
-        .comparison-table .label {
-            font-weight: 600;
-            color: #555;
-        }
-        
-        .comparison-table .other {
-            color: #999;
-            text-decoration: line-through;
-        }
-        
-        .comparison-table .bloodhound {
-            color: #2d5a2d;
-            font-weight: 600;
-        }
-        
-        .testimonials {
-            background: #f9f9f9;
-            padding: 2rem;
-            border-radius: 8px;
-        }
-        
-        .testimonial {
-            margin: 1.5rem 0;
-            padding: 1rem;
-            background: white;
-            border-left: 4px solid #2d5a2d;
-            border-radius: 4px;
-        }
-        
-        .testimonial-text {
-            font-style: italic;
-            margin-bottom: 0.5rem;
-        }
-        
-        .testimonial-author {
-            color: #666;
-            font-size: 0.9rem;
-        }
-        
-        .mission-box {
-            background: linear-gradient(135deg, #2d5a2d 0%, #1a3a1a 100%);
-            color: white;
-            padding: 2rem;
-            border-radius: 8px;
-            margin: 2rem 0;
-        }
-        
-        .mission-box h3 {
-            color: #fff;
-            margin-bottom: 1rem;
-        }
-        
-        footer {
-            background: #2d5a2d;
-            color: white;
-            text-align: center;
-            padding: 2rem;
-            margin-top: 4rem;
-        }
-        
-        footer a {
-            color: #ff6b35;
-            text-decoration: none;
-        }
-        
-        .back-link {
-            display: inline-block;
-            margin-bottom: 1rem;
-            color: white;
-            text-decoration: none;
-            font-size: 0.9rem;
-            opacity: 0.8;
-            transition: opacity 0.3s;
-        }
-        
-        .back-link:hover {
-            opacity: 1;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; line-height: 1.6; color: #333; background: #f5f5f5; }
+        .hero { background: linear-gradient(135deg, #1a3a1a 0%, #2d5a2d 100%); color: white; padding: 4rem 2rem; text-align: center; }
+        .hero-logo { max-width: 150px; height: auto; margin: 0 auto 1.5rem auto; display: block; }
+        .hero h1 { font-size: 3rem; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .hero .tagline { font-size: 1.5rem; margin-bottom: 2rem; opacity: 0.9; }
+        .hero .cta { display: inline-block; padding: 1rem 2rem; background: #ff6b35; color: white; text-decoration: none; border-radius: 8px; font-size: 1.2rem; font-weight: 600; transition: transform 0.3s, box-shadow 0.3s; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .hero .cta:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
+        section { background: white; margin: 2rem 0; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        h2 { color: #2d5a2d; font-size: 2rem; margin-bottom: 1.5rem; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin: 2rem 0; }
+        .feature { text-align: center; padding: 1.5rem; }
+        .feature-icon { font-size: 3rem; margin-bottom: 1rem; }
+        .feature h3 { color: #2d5a2d; margin-bottom: 0.5rem; }
+        .video-container { max-width: 400px; margin: 2rem auto; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .video-container iframe { width: 100%; height: 600px; }
+        .comparison { background: linear-gradient(135deg, #fff5f0 0%, #ffe8e0 100%); padding: 2rem; border-radius: 8px; border-left: 4px solid #ff6b35; }
+        .comparison h3 { color: #2d5a2d; margin-bottom: 1rem; }
+        .comparison-table { width: 100%; margin: 1rem 0; }
+        .comparison-table td { padding: 0.75rem; }
+        .comparison-table .label { font-weight: 600; color: #555; }
+        .comparison-table .other { color: #999; text-decoration: line-through; }
+        .comparison-table .bloodhound { color: #2d5a2d; font-weight: 600; }
+        .testimonials { background: #f9f9f9; padding: 2rem; border-radius: 8px; }
+        .testimonial { margin: 1.5rem 0; padding: 1rem; background: white; border-left: 4px solid #2d5a2d; border-radius: 4px; }
+        .testimonial-text { font-style: italic; margin-bottom: 0.5rem; }
+        .testimonial-author { color: #666; font-size: 0.9rem; }
+        .mission-box { background: linear-gradient(135deg, #2d5a2d 0%, #1a3a1a 100%); color: white; padding: 2rem; border-radius: 8px; margin: 2rem 0; }
+        .mission-box h3 { color: #fff; margin-bottom: 1rem; }
+        .trail-mode-box { background: linear-gradient(135deg, #1a2a3a 0%, #2d3a5a 100%); color: white; padding: 2rem; border-radius: 8px; margin: 2rem 0; border: 2px solid #ff6b35; }
+        .trail-mode-box h3 { color: #ff6b35; margin-bottom: 1rem; font-size: 1.4rem; }
+        .trail-mode-box .price { font-size: 1.3rem; font-weight: 700; color: #7dff7d; margin: 1rem 0; }
+        .trail-features { list-style: none; margin: 1rem 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.5rem; }
+        .trail-features li { padding: 0.4rem 0; color: #ddd; }
+        .trail-features li::before { content: "✓ "; color: #ff6b35; font-weight: bold; }
+        footer { background: #2d5a2d; color: white; text-align: center; padding: 2rem; margin-top: 4rem; }
+        footer a { color: #ff6b35; text-decoration: none; }
+        .back-link { display: inline-block; margin-bottom: 1rem; color: white; text-decoration: none; font-size: 0.9rem; opacity: 0.8; transition: opacity 0.3s; }
+        .back-link:hover { opacity: 1; }
+        .badge { display: inline-block; background: #2d5a2d; color: white; font-size: 0.75rem; font-weight: bold; padding: 3px 10px; border-radius: 12px; margin-left: 8px; vertical-align: middle; }
+        .badge.paid { background: #ff6b35; }
     </style>
 </head>
 <body>
@@ -228,67 +59,62 @@
         <p class="tagline">Don't Let the Trail Go Cold</p>
         <p style="margin-bottom: 2rem;">Advanced blood detection for ethical game recovery</p>
         <a href="https://play.google.com/store/apps/details?id=bloodhound.com.bloodhound" class="cta">
-            Download Free on Google Play
+            Download on Google Play
         </a>
     </div>
-    
+
     <div class="container">
         <section>
             <h2>Why BloodHound?</h2>
             <p>Tracking wounded game is one of the most critical skills in ethical hunting. BloodHound enhances your natural tracking ability by using advanced color science to isolate blood drops that are invisible to the naked eye—especially in challenging terrain like autumn leaves, pine needles, and tall grass.</p>
-            
+
             <div class="mission-box">
                 <h3>Our Mission</h3>
                 <p>I built BloodHound after losing a deer in heavy leaf litter at dusk. The guilt of potentially wasting an animal drove me to create a tool that every hunter can access—without the expensive subscriptions that other apps charge.</p>
-                <p style="margin-top: 1rem;"><strong>BloodHound is completely free. No subscription. No trial period. Just a tool that works.</strong></p>
+                <p style="margin-top: 1rem;"><strong>BloodHound's core blood detection is free forever. Trail Mode is a one-time $3.99 upgrade for serious recoveries — no subscription, yours to keep.</strong></p>
             </div>
         </section>
-        
+
         <section>
             <h2>See It In Action</h2>
             <div class="video-container">
-                <iframe 
-                    src="https://www.youtube.com/embed/cY0sSTi-TuA" 
-                    frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                <iframe
+                    src="https://www.youtube.com/embed/cY0sSTi-TuA"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen>
                 </iframe>
             </div>
         </section>
-        
+
         <section>
-            <h2>Key Features</h2>
+            <h2>Core Features <span class="badge">Free</span></h2>
             <div class="features-grid">
                 <div class="feature">
                     <div class="feature-icon">🎨</div>
                     <h3>L*a*b* Color Detection</h3>
                     <p>Isolates red blood from brown earth and green foliage using advanced color space science</p>
                 </div>
-                
                 <div class="feature">
                     <div class="feature-icon">🌙</div>
-                    <h3>Night Vision Mode</h3>
-                    <p>Works in complete darkness with flashlight. Detects blood in shadows where regular lights fail</p>
+                    <h3>Night Mode</h3>
+                    <p>Works in complete darkness with your flashlight. Detects blood in shadows where regular lights fail</p>
                 </div>
-                
-                <div class="feature">
-                    <div class="feature-icon">📍</div>
-                    <h3>GPS Marking</h3>
-                    <p>Pin blood locations on the map. Visualize the animal's path and share with tracking partners</p>
-                </div>
-                
                 <div class="feature">
                     <div class="feature-icon">🎚️</div>
                     <h3>Adjustable Sensitivity</h3>
                     <p>Fine-tune detection for different conditions: dry blood, snow cover, heavy foliage</p>
                 </div>
-                
                 <div class="feature">
                     <div class="feature-icon">📸</div>
                     <h3>Side-by-Side Capture</h3>
                     <p>Save comparison photos showing original view and detected blood for verification</p>
                 </div>
-                
+                <div class="feature">
+                    <div class="feature-icon">📳</div>
+                    <h3>Vibration Feedback</h3>
+                    <p>Your phone buzzes when blood is detected — keep your eyes on the ground, not the screen</p>
+                </div>
                 <div class="feature">
                     <div class="feature-icon">⚡</div>
                     <h3>Real-Time Processing</h3>
@@ -296,34 +122,55 @@
                 </div>
             </div>
         </section>
-        
+
+        <section>
+            <h2>Trail Mode <span class="badge paid">$3.99 One-Time</span></h2>
+            <p style="margin-bottom: 1.5rem;">For serious recoveries, Trail Mode turns BloodHound into a full GPS tracking system. One-time purchase — no subscription, no renewals, yours forever.</p>
+
+            <div class="trail-mode-box">
+                <h3>🗺️ What's Included in Trail Mode</h3>
+                <ul class="trail-features">
+                    <li>Live GPS map tracking</li>
+                    <li>Distance &amp; time in real time</li>
+                    <li>Blood drop markers on map</li>
+                    <li>Shot location pin</li>
+                    <li>Vehicle location pin</li>
+                    <li>Camera / photo pins</li>
+                    <li>Full trail history</li>
+                    <li>KML export to OnX &amp; Google Earth</li>
+                </ul>
+                <p class="price">$3.99 — Pay once, use forever</p>
+                <a href="https://play.google.com/store/apps/details?id=bloodhound.com.bloodhound" style="display:inline-block; padding: 0.75rem 1.5rem; background: #ff6b35; color: white; text-decoration: none; border-radius: 6px; font-weight: 600;">Unlock Trail Mode</a>
+            </div>
+        </section>
+
         <section class="comparison">
             <h3>Why Choose BloodHound Over Other Apps?</h3>
             <table class="comparison-table">
                 <tr>
-                    <td class="label">Price</td>
-                    <td class="other">Others: $29.99/year</td>
-                    <td class="bloodhound">BloodHound: FREE</td>
+                    <td class="label">Blood Detection</td>
+                    <td class="other">Others: Basic filter or none</td>
+                    <td class="bloodhound">BloodHound: Advanced L*a*b* color science</td>
                 </tr>
                 <tr>
-                    <td class="label">Subscription</td>
-                    <td class="other">Others: Required annually</td>
-                    <td class="bloodhound">BloodHound: Never</td>
+                    <td class="label">GPS Trail Tracking</td>
+                    <td class="other">Others: $29.99/year subscription</td>
+                    <td class="bloodhound">BloodHound: $3.99 one-time</td>
                 </tr>
                 <tr>
                     <td class="label">Offline Use</td>
                     <td class="other">Others: Varies</td>
-                    <td class="bloodhound">BloodHound: Always works</td>
+                    <td class="bloodhound">BloodHound: Always works offline</td>
                 </tr>
                 <tr>
                     <td class="label">Data Privacy</td>
                     <td class="other">Others: May track locations</td>
-                    <td class="bloodhound">BloodHound: Everything stays local</td>
+                    <td class="bloodhound">BloodHound: Everything stays on your device</td>
                 </tr>
             </table>
-            <p style="margin-top: 1rem; font-weight: 600; color: #2d5a2d;">Your successful recovery is our success. That's why it's free.</p>
+            <p style="margin-top: 1rem; font-weight: 600; color: #2d5a2d;">Your successful recovery is our success.</p>
         </section>
-        
+
         <section>
             <h2>Perfect For</h2>
             <ul style="list-style: none; font-size: 1.1rem;">
@@ -335,7 +182,7 @@
                 <li style="padding: 0.5rem 0;">✓ All big game: Deer, Elk, Bear, Hog, Turkey</li>
             </ul>
         </section>
-        
+
         <section class="testimonials">
             <h2>What Hunters Are Saying</h2>
             <div class="testimonial">
@@ -346,20 +193,20 @@
                 More reviews coming as hunters use BloodHound in the 2026 season!
             </p>
         </section>
-        
+
         <section style="text-align: center; background: linear-gradient(135deg, #fff5f0 0%, #ffe8e0 100%);">
             <h2>Ready to Track Smarter?</h2>
             <p style="margin: 1.5rem 0; font-size: 1.1rem;">Join hunters who refuse to lose an animal to poor lighting or terrain.</p>
             <a href="https://play.google.com/store/apps/details?id=bloodhound.com.bloodhound" class="cta">
-                Download BloodHound Free
+                Download BloodHound
             </a>
         </section>
     </div>
-    
+
     <footer>
         <p>&copy; 2026 BloodHound by <a href="/">ProDirt LLC</a></p>
         <p style="margin-top: 1rem;">
-            <a href="mailto:bloodhound.support@gmail.com">Support</a> | 
+            <a href="mailto:bloodhound.support@gmail.com">Support</a> |
             <a href="https://play.google.com/store/apps/details?id=bloodhound.com.bloodhound">Google Play</a> |
             <a href="/">More Apps</a>
         </p>

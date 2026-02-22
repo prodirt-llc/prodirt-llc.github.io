@@ -7,231 +7,41 @@
     <title>ProDirt LLC - Outdoor Apps</title>
     <link rel="icon" type="image/png" href="favicon.png">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #1a3a1a 0%, #2d5a2d 100%);
-        }
-        
-        header {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 2rem 0;
-            text-align: center;
-            border-bottom: 3px solid #ff6b35;
-        }
-        
-        .header-logo {
-            max-width: 400px;
-            width: 100%;
-            height: auto;
-            margin: 0 auto 1rem auto;
-            display: block;
-            padding: 0 1rem;
-        }
-        
-        @media (max-width: 600px) {
-            .header-logo {
-                max-width: 280px;
-            }
-        }
-        
-        header p {
-            color: #ddd;
-            font-size: 1.1rem;
-            margin-top: 0.5rem;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
-        }
-        
-        .mission {
-            background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            margin: 2rem 0;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        
-        .mission h2 {
-            color: #2d5a2d;
-            margin-bottom: 1rem;
-        }
-        
-        .apps-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin: 2rem 0;
-        }
-        
-        .app-card {
-            background: white;
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .app-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-        }
-        
-        .app-card.featured {
-            border: 3px solid #ff6b35;
-            position: relative;
-        }
-        
-        .app-card.featured::before {
-            content: "FEATURED";
-            position: absolute;
-            top: -12px;
-            left: 20px;
-            background: #ff6b35;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: bold;
-        }
-        
-        .app-icon {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 1rem auto;
-            display: block;
-            border-radius: 16px;
-        }
-        
-        .app-icon.placeholder {
-            background: linear-gradient(135deg, #ff6b35, #ff8c5a);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-        }
-        
-        .app-card h3 {
-            color: #2d5a2d;
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .app-card .tagline {
-            color: #666;
-            font-style: italic;
-            margin-bottom: 1rem;
-        }
-        
-        .app-card p {
-            color: #555;
-            margin-bottom: 1rem;
-        }
-        
-        .app-card .features {
-            list-style: none;
-            margin: 1rem 0;
-        }
-        
-        .app-card .features li {
-            padding: 0.3rem 0;
-            color: #666;
-        }
-        
-        .app-card .features li::before {
-            content: "✓ ";
-            color: #2d5a2d;
-            font-weight: bold;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 0.75rem 1.5rem;
-            background: #2d5a2d;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: 600;
-            transition: background 0.3s;
-            margin-top: 1rem;
-            margin-right: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .btn:hover {
-            background: #1a3a1a;
-        }
-        
-        .btn-secondary {
-            background: #666;
-            margin-left: 0;
-        }
-        
-        .btn-secondary:hover {
-            background: #444;
-        }
-        
-        @media (max-width: 400px) {
-            .app-card .btn {
-                display: block;
-                width: 100%;
-                margin-left: 0;
-                margin-right: 0;
-                margin-bottom: 0.5rem;
-            }
-            
-            .app-card .btn-secondary {
-                margin-left: 0;
-            }
-        }
-        
-        footer {
-            background: rgba(0, 0, 0, 0.3);
-            color: #ddd;
-            text-align: center;
-            padding: 2rem 0;
-            margin-top: 4rem;
-        }
-        
-        footer a {
-            color: #ff6b35;
-            text-decoration: none;
-        }
-        
-        .principles {
-            background: #f5f5f5;
-            padding: 2rem;
-            border-radius: 8px;
-            margin: 2rem 0;
-        }
-        
-        .principles h3 {
-            color: #2d5a2d;
-            margin-bottom: 1rem;
-        }
-        
-        .principles ul {
-            list-style: none;
-        }
-        
-        .principles li {
-            padding: 0.5rem 0;
-            color: #555;
-        }
-        
-        .principles li strong {
-            color: #2d5a2d;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; line-height: 1.6; color: #333; background: linear-gradient(135deg, #1a3a1a 0%, #2d5a2d 100%); }
+        header { background: rgba(0,0,0,0.3); padding: 2rem 0; text-align: center; border-bottom: 3px solid #ff6b35; }
+        .header-logo { max-width: 400px; width: 100%; height: auto; margin: 0 auto 1rem auto; display: block; padding: 0 1rem; }
+        @media (max-width: 600px) { .header-logo { max-width: 280px; } }
+        header p { color: #ddd; font-size: 1.1rem; margin-top: 0.5rem; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
+        .mission { background: white; padding: 2rem; border-radius: 8px; margin: 2rem 0; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .mission h2 { color: #2d5a2d; margin-bottom: 1rem; }
+        .apps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 2rem 0; }
+        .app-card { background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: transform 0.3s, box-shadow 0.3s; }
+        .app-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.25); }
+        .app-card.featured { border: 3px solid #ff6b35; position: relative; }
+        .app-card.featured::before { content: "FEATURED"; position: absolute; top: -12px; left: 20px; background: #ff6b35; color: white; padding: 4px 12px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; }
+        .app-icon { width: 100px; height: 100px; margin: 0 auto 1rem auto; display: block; border-radius: 16px; }
+        .app-icon.placeholder { background: linear-gradient(135deg, #ff6b35, #ff8c5a); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; }
+        .app-card h3 { color: #2d5a2d; font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .app-card .tagline { color: #666; font-style: italic; margin-bottom: 1rem; }
+        .app-card p { color: #555; margin-bottom: 1rem; }
+        .app-card .features { list-style: none; margin: 1rem 0; }
+        .app-card .features li { padding: 0.3rem 0; color: #666; }
+        .app-card .features li::before { content: "✓ "; color: #2d5a2d; font-weight: bold; }
+        .btn { display: inline-block; padding: 0.75rem 1.5rem; background: #2d5a2d; color: white; text-decoration: none; border-radius: 6px; font-weight: 600; transition: background 0.3s; margin-top: 1rem; margin-right: 0.5rem; margin-bottom: 0.5rem; }
+        .btn:hover { background: #1a3a1a; }
+        .btn-secondary { background: #666; margin-left: 0; }
+        .btn-secondary:hover { background: #444; }
+        @media (max-width: 400px) { .app-card .btn { display: block; width: 100%; margin-left: 0; margin-right: 0; margin-bottom: 0.5rem; } .app-card .btn-secondary { margin-left: 0; } }
+        footer { background: rgba(0,0,0,0.3); color: #ddd; text-align: center; padding: 2rem 0; margin-top: 4rem; }
+        footer a { color: #ff6b35; text-decoration: none; }
+        .principles { background: #f5f5f5; padding: 2rem; border-radius: 8px; margin: 2rem 0; }
+        .principles h3 { color: #2d5a2d; margin-bottom: 1rem; }
+        .principles ul { list-style: none; }
+        .principles li { padding: 0.5rem 0; color: #555; }
+        .principles li strong { color: #2d5a2d; }
+        .price-tag { display: inline-block; background: #ff6b35; color: white; font-size: 0.75rem; font-weight: bold; padding: 2px 8px; border-radius: 10px; margin-left: 6px; vertical-align: middle; }
     </style>
 </head>
 <body>
@@ -239,13 +49,13 @@
         <img src="logo-white.png" alt="ProDirt LLC" class="header-logo">
         <p>Practical Apps for Hunters & Outdoorsmen</p>
     </header>
-    
+
     <div class="container">
         <div class="mission">
             <h2>Our Mission</h2>
             <p>Quality tools shouldn't require expensive subscriptions. We build practical apps that solve real problems—whether you're in the field, in the workshop, or working on your home. No paywalls, no gimmicks, just tools that work when you need them.</p>
         </div>
-        
+
         <div class="principles">
             <h3>Our Principles</h3>
             <ul>
@@ -255,27 +65,28 @@
                 <li><strong>Works Offline:</strong> No internet required. Use them anywhere, anytime.</li>
             </ul>
         </div>
-        
+
         <h2 style="color: white; margin: 2rem 0 1rem 0; text-align: center;">Our Apps</h2>
-        
+
         <div class="apps-grid">
             <!-- BloodHound -->
             <div class="app-card featured">
                 <img src="bloodhound/logo.png" alt="BloodHound" class="app-icon">
                 <h3>BloodHound</h3>
                 <p class="tagline">Blood Trail Tracking for Ethical Hunting</p>
-                <p>Uses advanced L*a*b* color science to detect blood invisible to the naked eye. Highlights blood drops against leaves, grass, and snow—even in complete darkness. Mark locations with GPS and map your tracking path for successful, ethical game recovery.</p>
+                <p>Uses advanced L*a*b* color science to detect blood invisible to the naked eye. Highlights blood drops against leaves, grass, and snow—even in complete darkness. Unlock Trail Mode for live GPS tracking, map markers, trail history, and KML export to OnX and Google Earth.</p>
                 <ul class="features">
-                    <li>Real-time blood detection overlay</li>
+                    <li>Real-time blood detection — free forever</li>
                     <li>Works in complete darkness with flashlight</li>
-                    <li>GPS waypoint marking</li>
-                    <li>Trail mapping & export</li>
-                    <li>100% Free, no subscription</li>
+                    <li>GPS trail tracking with live map <span class="price-tag">Trail Mode</span></li>
+                    <li>Shot, vehicle &amp; camera pins <span class="price-tag">Trail Mode</span></li>
+                    <li>KML export to OnX &amp; Google Earth <span class="price-tag">Trail Mode</span></li>
+                    <li>No subscription — Trail Mode is $3.99 once</li>
                 </ul>
                 <a href="https://play.google.com/store/apps/details?id=bloodhound.com.bloodhound" class="btn">Download Free</a>
                 <a href="/bloodhound" class="btn btn-secondary">Learn More</a>
             </div>
-            
+
             <!-- BandPass -->
             <div class="app-card">
                 <img src="bandpass/logo.png" alt="BandPass" class="app-icon">
@@ -292,7 +103,7 @@
                 <a href="https://play.google.com/store/apps/details?id=com.bandpass" class="btn">Download Free</a>
                 <a href="/bandpass" class="btn btn-secondary">Learn More</a>
             </div>
-            
+
             <!-- ColorSeeker -->
             <div class="app-card">
                 <img src="colorseeker/logo.png" alt="ColorSeeker" class="app-icon">
@@ -309,7 +120,7 @@
                 <a href="https://play.google.com/store/apps/details?id=com.colorseeker" class="btn">Download Free</a>
                 <a href="/colorseeker" class="btn btn-secondary">Learn More</a>
             </div>
-            
+
             <!-- Kite Force Pro -->
             <div class="app-card">
                 <img src="kiteforcepro/logo.png" alt="Kite Force Pro" class="app-icon">
@@ -326,7 +137,7 @@
                 <a href="https://play.google.com/store/apps/details?id=com.kiteforcepro" class="btn">Download on Google Play</a>
                 <a href="/kiteforcepro" class="btn btn-secondary">Learn More</a>
             </div>
-            
+
             <!-- Even Spacing Calculator -->
             <div class="app-card">
                 <img src="evenspacing/logo.png" alt="Even Spacing Calculator" class="app-icon">
@@ -343,8 +154,8 @@
                 <a href="https://play.google.com/store/apps/details?id=even.spacingcalculator" class="btn">Download Free</a>
                 <a href="/evenspacing" class="btn btn-secondary">Learn More</a>
             </div>
-            
-            <!-- Fraction Pro - NEW -->
+
+            <!-- Fraction Pro -->
             <div class="app-card">
                 <img src="fractionpro/logo.png" alt="Fraction Pro" class="app-icon">
                 <h3>Fraction Pro</h3>
@@ -360,8 +171,8 @@
                 <a href="https://play.google.com/store/apps/details?id=com.fractionpro" class="btn">Download Free</a>
                 <a href="/fractionpro" class="btn btn-secondary">Learn More</a>
             </div>
-            
-            <!-- Placeholder for future apps -->
+
+            <!-- Placeholder -->
             <div class="app-card">
                 <div class="app-icon placeholder">🗺️</div>
                 <h3>Your Next App</h3>
@@ -371,12 +182,12 @@
             </div>
         </div>
     </div>
-    
+
     <footer>
         <p>&copy; 2026 ProDirt LLC. All rights reserved.</p>
         <p style="margin-top: 0.5rem;">A Virginia-based outdoor software company.</p>
         <p style="margin-top: 0.5rem;">
-            <a href="mailto:contact.prodirt@gmail.com">Contact</a> | 
+            <a href="mailto:contact.prodirt@gmail.com">Contact</a> |
             <a href="https://idletools.blogspot.com">Blog</a>
         </p>
     </footer>

@@ -21,8 +21,11 @@
         .app-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.25); }
         .app-card.featured { border: 3px solid #ff6b35; position: relative; }
         .app-card.featured::before { content: "FEATURED"; position: absolute; top: -12px; left: 20px; background: #ff6b35; color: white; padding: 4px 12px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; }
+        .app-card.windows-tool { border-left: 4px solid #0078d4; }
+        .app-card.windows-tool .platform-badge { display: inline-block; background: #0078d4; color: white; font-size: 0.7rem; font-weight: bold; padding: 2px 8px; border-radius: 10px; margin-bottom: 0.75rem; }
         .app-icon { width: 100px; height: 100px; margin: 0 auto 1rem auto; display: block; border-radius: 16px; }
         .app-icon.placeholder { background: linear-gradient(135deg, #ff6b35, #ff8c5a); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; }
+        .app-icon.placeholder-blue { background: linear-gradient(135deg, #0078d4, #00b4d8); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; width: 100px; height: 100px; margin: 0 auto 1rem auto; border-radius: 16px; }
         .app-card h3 { color: #2d5a2d; font-size: 1.5rem; margin-bottom: 0.5rem; }
         .app-card .tagline { color: #666; font-style: italic; margin-bottom: 1rem; }
         .app-card p { color: #555; margin-bottom: 1rem; }
@@ -33,6 +36,8 @@
         .btn:hover { background: #1a3a1a; }
         .btn-secondary { background: #666; margin-left: 0; }
         .btn-secondary:hover { background: #444; }
+        .btn-windows { background: #0078d4; }
+        .btn-windows:hover { background: #005fa3; }
         @media (max-width: 400px) { .app-card .btn { display: block; width: 100%; margin-left: 0; margin-right: 0; margin-bottom: 0.5rem; } .app-card .btn-secondary { margin-left: 0; } }
         footer { background: rgba(0,0,0,0.3); color: #ddd; text-align: center; padding: 2rem 0; margin-top: 4rem; }
         footer a { color: #ff6b35; text-decoration: none; }
@@ -42,6 +47,9 @@
         .principles li { padding: 0.5rem 0; color: #555; }
         .principles li strong { color: #2d5a2d; }
         .price-tag { display: inline-block; background: #ff6b35; color: white; font-size: 0.75rem; font-weight: bold; padding: 2px 8px; border-radius: 10px; margin-left: 6px; vertical-align: middle; }
+        .section-divider { color: white; margin: 2rem 0 1rem 0; text-align: center; }
+        .section-divider h2 { font-size: 1.5rem; }
+        .section-divider p { color: #b0c9b0; font-size: 0.95rem; margin-top: 0.3rem; }
     </style>
 </head>
 <body>
@@ -66,7 +74,7 @@
             </ul>
         </div>
 
-        <h2 style="color: white; margin: 2rem 0 1rem 0; text-align: center;">Our Apps</h2>
+        <h2 style="color: white; margin: 2rem 0 1rem 0; text-align: center;">Mobile Apps</h2>
 
         <div class="apps-grid">
             <!-- BloodHound -->
@@ -170,6 +178,71 @@
                 </ul>
                 <a href="https://play.google.com/store/apps/details?id=com.fractionpro" class="btn">Download Free</a>
                 <a href="/FractionPro" class="btn btn-secondary">Learn More</a>
+            </div>
+        </div>
+
+        <!-- Windows Tools Section -->
+        <div class="section-divider">
+            <h2>🖥️ Windows Tools</h2>
+            <p>Free utilities for IT professionals and power users</p>
+        </div>
+
+        <div class="apps-grid">
+            <!-- Disk Space Analyzer -->
+            <div class="app-card windows-tool">
+                <div class="platform-badge">🖥️ Windows</div>
+                <div class="app-icon placeholder-blue">💾</div>
+                <h3>Disk Space Analyzer</h3>
+                <p class="tagline">SpaceSniffer-Style Treemap for MSPs</p>
+                <p>Visualize disk usage with a color-coded treemap interface. Quickly identify what's eating your storage—scan entire drives, drill into folders, filter out noise, and export reports. Built for MSPs and IT pros who need fast, clear answers. Runs perfectly in ConnectWise Automate backstage mode.</p>
+                <ul class="features">
+                    <li>Treemap visualization (red = largest, green = smallest)</li>
+                    <li>Click to drill down into folders</li>
+                    <li>Filter, exclude, and include paths</li>
+                    <li>Export to JSON, PNG, CSV, or HTML report</li>
+                    <li>SMART drive health indicator</li>
+                    <li>Runs as SYSTEM — no install required</li>
+                </ul>
+                <a href="https://github.com/prodirt-llc/DiskSpaceAnalyzer/releases" class="btn btn-windows">Download Free</a>
+                <a href="https://github.com/prodirt-llc/DiskSpaceAnalyzer" class="btn btn-secondary">View on GitHub</a>
+            </div>
+
+            <!-- Network Speed Test -->
+            <div class="app-card windows-tool">
+                <div class="platform-badge">🖥️ Windows</div>
+                <div class="app-icon placeholder-blue">📡</div>
+                <h3>Network Speed Test</h3>
+                <p class="tagline">Professional LAN Diagnostics for IT Pros</p>
+                <p>A WPF-based network diagnostic tool built for testing bandwidth, latency, jitter, and detecting asymmetry issues on your LAN. Saturate 10G/25G/40G+ links, generate customer-ready HTML reports with interactive graphs, and diagnose NIC driver issues and VoIP problems fast.</p>
+                <ul class="features">
+                    <li>Multi-threaded speed tests — saturate 10G/25G/40G+ links</li>
+                    <li>Bidirectional upload/download testing</li>
+                    <li>RTT, jitter & packet loss measurement</li>
+                    <li>Auto-detects asymmetry (>20% warns you)</li>
+                    <li>Customer-ready HTML reports with Chart.js graphs</li>
+                    <li>No install required — .NET 6+ only</li>
+                </ul>
+                <a href="https://github.com/prodirt-llc/NetworkSpeedTest/releases" class="btn btn-windows">Download Free</a>
+                <a href="https://github.com/prodirt-llc/NetworkSpeedTest" class="btn btn-secondary">View on GitHub</a>
+            </div>
+
+            <!-- Keystroke Paster -->
+            <div class="app-card windows-tool">
+                <div class="platform-badge">🖥️ Windows</div>
+                <div class="app-icon placeholder-blue">⌨️</div>
+                <h3>Keystroke Paster</h3>
+                <p class="tagline">Paste Text Anywhere — Even Where Paste Doesn't Work</p>
+                <p>Sends text as real keystrokes to any active window. Essential for pasting passwords and commands into VM consoles, VCSA/ESXi, VirtualBox, remote desktop sessions, and legacy apps where Ctrl+V simply won't work. Tiny single EXE, always on top, hotkey triggered.</p>
+                <ul class="features">
+                    <li>Global hotkey trigger (default: Ctrl+F1)</li>
+                    <li>Works in VMware ESXi, VCSA, VirtualBox consoles</li>
+                    <li>Configurable keystroke delay for slow/remote systems</li>
+                    <li>System tray minimization — stays out of your way</li>
+                    <li>Full Unicode support (passwords, symbols, newlines)</li>
+                    <li>~50KB single EXE — no install required</li>
+                </ul>
+                <a href="https://github.com/CodeBlue-Technology-LLC/KeystrokePaster/releases" class="btn btn-windows">Download Free</a>
+                <a href="https://github.com/CodeBlue-Technology-LLC/KeystrokePaster" class="btn btn-secondary">View on GitHub</a>
             </div>
 
             <!-- Placeholder -->

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="FieldQuote - Job estimating and quoting app for independent contractors. Calculate your real costs, build professional PDF quotes in under two minutes.">
+    <title>FieldQuote - Job Estimating for Independent Contractors</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; line-height: 1.6; color: #333; background: #f5f5f5; }
+        .hero { background: linear-gradient(135deg, #0f1a2e 0%, #1b2a4a 100%); color: white; padding: 4rem 2rem; text-align: center; border-bottom: 3px solid #ff6b35; }
+        .hero h1 { font-size: 2.5rem; margin-bottom: 1rem; font-weight: 700; }
+        .hero p { font-size: 1.25rem; margin-bottom: 2rem; opacity: 0.95; }
+        .cta-button { display: inline-block; background: #ff6b35; color: white; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 1.1rem; transition: transform 0.2s, box-shadow 0.2s; }
+        .cta-button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.3); background: #e55a25; }
+        .back-link { display: inline-block; margin-bottom: 1.5rem; color: white; text-decoration: none; opacity: 0.85; font-size: 0.95rem; }
+        .back-link:hover { opacity: 1; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 3rem 2rem; }
+        .section { background: white; margin: 2rem 0; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .section h2 { color: #1b2a4a; margin-bottom: 1.5rem; font-size: 2rem; }
+        .section h3 { color: #1b2a4a; margin-top: 1.5rem; margin-bottom: 0.75rem; font-size: 1.25rem; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 2rem; }
+        .feature { padding: 1.5rem; background: #f0f3f8; border-radius: 8px; border-left: 4px solid #ff6b35; }
+        .feature h3 { color: #1b2a4a; margin-top: 0; margin-bottom: 0.75rem; font-size: 1.15rem; }
+        .feature p { color: #666; line-height: 1.6; }
+        .highlight-box { background: linear-gradient(135deg, #0f1a2e 0%, #1b2a4a 100%); color: white; padding: 2rem; border-radius: 12px; margin: 2rem 0; border-left: 4px solid #ff6b35; }
+        .highlight-box h3 { color: white; margin-top: 0; margin-bottom: 1rem; font-size: 1.5rem; }
+        .highlight-box p { opacity: 0.95; margin-bottom: 0.5rem; }
+        .formula-box { background: #1e1e1e; color: #d4d4d4; padding: 1.5rem; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 0.9rem; line-height: 1.8; margin: 1.5rem 0; border-left: 4px solid #ff6b35; }
+        .formula-box .label { color: #ff6b35; font-weight: bold; }
+        .formula-box .comment { color: #6a9955; }
+        .use-cases { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+        .use-case { padding: 1.5rem; background: #f0f3f8; border-radius: 8px; border-top: 3px solid #ff6b35; }
+        .use-case h4 { color: #1b2a4a; margin-bottom: 0.5rem; font-size: 1.05rem; }
+        .use-case p { color: #666; font-size: 0.95rem; }
+        .principles-list { list-style: none; margin-top: 1rem; }
+        .principles-list li { padding: 0.6rem 0; color: #555; border-bottom: 1px solid #eee; }
+        .principles-list li:last-child { border-bottom: none; }
+        .principles-list li strong { color: #1b2a4a; }
+        .privacy-section { background: white; margin: 2rem 0; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .privacy-section h2 { color: #1b2a4a; margin-bottom: 1rem; font-size: 1.75rem; }
+        .privacy-section h3 { color: #1b2a4a; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+        .privacy-section p { color: #555; margin-bottom: 1rem; }
+        .privacy-section ul { margin-left: 1.5rem; color: #555; line-height: 1.8; }
+        .privacy-section a { color: #ff6b35; text-decoration: none; }
+        .privacy-section a:hover { text-decoration: underline; }
+        footer { background: #0f1a2e; color: #ddd; padding: 2rem; text-align: center; margin-top: 4rem; border-top: 3px solid #ff6b35; }
+        footer a { color: #ff6b35; text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+        @media (max-width: 768px) { .hero h1 { font-size: 2rem; } .hero p { font-size: 1.1rem; } .section h2 { font-size: 1.5rem; } }
+    </style>
+</head>
+<body>
+
+    <div class="hero">
+        <a href="https://prodirt-llc.github.io/" class="back-link">← Back to ProDirt Apps</a>
+        <img src="logo.png" alt="FieldQuote Logo" style="width: 100px; height: 100px; margin: 0 auto 1.5rem auto; display: block; border-radius: 18px; box-shadow: 0 4px 12px rgba(0,0,0,0.4);">
+        <h1>FieldQuote</h1>
+        <p>Job estimating built around your real costs — not industry averages</p>
+        <a href="https://play.google.com/store/apps/details?id=com.prodirt.fieldquote" class="cta-button">Download Free on Google Play</a>
+    </div>
+
+    <div class="container">
+
+        <div class="highlight-box">
+            <h3>💡 The Problem It Solves</h3>
+            <p>Every contractor gets asked "what should I charge for this?" The honest answer is: it depends on your costs. Your labor rate, your equipment, your overhead — not some industry average someone posted on Reddit.</p>
+            <p style="margin-top: 1rem;">FieldQuote makes that calculation concrete and personal. Set up your cost profile once. Every quote after that uses your actual numbers.</p>
+        </div>
+
+        <div class="section">
+            <h2>How It Works</h2>
+            <p>Enter your real costs once in your Cost Profile. From that point on, every job estimate is automatically calculated using your numbers.</p>
+
+            <div class="formula-box">
+<span class="label">True Cost/hr</span>  = Labor Rate + Equipment Cost/hr + Overhead/hr
+<span class="comment">// What it actually costs you to run for an hour</span>
+
+<span class="label">Floor Price</span>   = Σ(line item costs) + Mobilization
+<span class="comment">// Never quote below this — it's what the job costs you</span>
+
+<span class="label">Suggested Price</span> = Floor Price × (1 + your margin%)
+<span class="comment">// Slide the margin, watch the quote update live</span>
+            </div>
+
+            <p>The margin slider lets you adjust in real time — push it up for a difficult site, pull it back for a repeat client. The floor price stays locked so you can't accidentally quote yourself into a loss.</p>
+        </div>
+
+        <div class="section">
+            <h2>Features</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <h3>📋 Cost Profile</h3>
+                    <p>Set your labor rate, equipment cost, and overhead once. Live "true cost per hour" updates as you type so you know exactly what you're working with.</p>
+                </div>
+                <div class="feature">
+                    <h3>🔨 Job Builder</h3>
+                    <p>Add time-based, material, and flat-fee line items. Reusable task presets and an equipment library mean common jobs get built in seconds.</p>
+                </div>
+                <div class="feature">
+                    <h3>📍 Mobilization Calculator</h3>
+                    <p>Tap the location pin, enter the job address — drive distance fills in automatically. Address autocomplete powered by OpenRouteService.</p>
+                </div>
+                <div class="feature">
+                    <h3>📄 Professional PDF Quotes</h3>
+                    <p>Clean single-page layout with your logo and branding, line item table, subtotal, mobilization, and total. Share via email, WhatsApp, or any installed app.</p>
+                </div>
+                <div class="feature">
+                    <h3>👥 Client Address Book</h3>
+                    <p>Save client contact info and addresses. Client details pull into quotes automatically. Tap the address to open directly in Google Maps.</p>
+                </div>
+                <div class="feature">
+                    <h3>📊 Job Pipeline</h3>
+                    <p>Track every job from Draft → Quoted → Won / Lost. Search across job and client names. Auto-archive completed jobs to keep your list clean.</p>
+                </div>
+                <div class="feature">
+                    <h3>💾 Google Drive Backup</h3>
+                    <p>Opt-in backup to your own Google Drive. Restore on a new device without losing your history. No FieldQuote account required.</p>
+                </div>
+                <div class="feature">
+                    <h3>📤 Data Export</h3>
+                    <p>Export your jobs and line items as CSV, Excel, or JSON. Your data is yours — take it anywhere.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Built For</h2>
+            <div class="use-cases">
+                <div class="use-case">
+                    <h4>Excavators & Grading</h4>
+                    <p>Equipment-heavy jobs with mobilization costs. Know your machine rate, charge it every time.</p>
+                </div>
+                <div class="use-case">
+                    <h4>Landscapers</h4>
+                    <p>Mix of labor, materials, and equipment on every job. Quote mulch installs, cleanups, and installs in seconds.</p>
+                </div>
+                <div class="use-case">
+                    <h4>Pressure Washing</h4>
+                    <p>Fast time-based quotes with equipment cost baked in. Add mobilization for jobs across town.</p>
+                </div>
+                <div class="use-case">
+                    <h4>General Contractors</h4>
+                    <p>Flat fees, materials, and labor on one quote. Task library keeps your common line items ready to go.</p>
+                </div>
+                <div class="use-case">
+                    <h4>Any Independent Contractor</h4>
+                    <p>If you've ever set a price by gut feel and wondered if you were leaving money on the table — this app is for you.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>The ProDirt Difference</h2>
+            <ul class="principles-list">
+                <li><strong>No Account Required:</strong> Download and start quoting immediately. No sign-up, no email, no cloud dependency.</li>
+                <li><strong>No Subscription:</strong> Free to download and use. Your quoting tool shouldn't have a monthly bill.</li>
+                <li><strong>Privacy First:</strong> All data lives on your device. Google Drive backup is opt-in and goes to your own Drive.</li>
+                <li><strong>Works Offline:</strong> Quote jobs anywhere — job site, parking lot, client's driveway. No signal required.</li>
+                <li><strong>Built by a Contractor:</strong> ProDirt LLC runs excavating and landscaping equipment. This app was built because the problem is real.</li>
+            </ul>
+        </div>
+
+        <!-- Privacy Policy -->
+        <div class="privacy-section" id="privacy">
+            <h2>Privacy Policy</h2>
+            <p><em>Last updated: March 2026</em></p>
+            <p>FieldQuote is built on a simple principle: your business data is yours. We do not collect it, store it, or sell it.</p>
+
+            <h3>Data Storage</h3>
+            <p>All data you enter — cost profiles, jobs, quotes, client information — is stored locally on your device using an on-device database. Nothing is transmitted to ProDirt LLC servers because there are none.</p>
+
+            <h3>Google Drive Backup</h3>
+            <p>If you choose to enable backup in Settings, FieldQuote will back up your data to your personal Google Drive using the <code>drive.appdata</code> scope. This means:</p>
+            <ul>
+                <li>Backup files are stored in a hidden app folder visible only to FieldQuote</li>
+                <li>ProDirt LLC has no access to your Google Drive or backup files</li>
+                <li>Backup is entirely opt-in — the app functions fully without it</li>
+            </ul>
+
+            <h3>Location & Address Data</h3>
+            <p>FieldQuote uses your device location (with your permission) to auto-fill your current position when calculating job distances. Address autocomplete and distance calculation use the OpenRouteService API — your search queries are sent to OpenRouteService's servers to return results. No query data is retained by ProDirt LLC.</p>
+
+            <h3>Internet Permissions</h3>
+            <p>The app requires internet access for: address autocomplete, distance calculation, and Google Drive backup. All three are optional features — the core quoting functionality works entirely offline.</p>
+
+            <h3>Third-Party Services</h3>
+            <ul>
+                <li><strong>OpenRouteService:</strong> Used for address autocomplete and drive distance calculation. Subject to their privacy policy at openrouteservice.org.</li>
+                <li><strong>Google Drive API:</strong> Used for optional backup. Subject to Google's privacy policy.</li>
+            </ul>
+
+            <h3>Contact</h3>
+            <p>Questions about privacy? Email us at <a href="mailto:contact.prodirt@gmail.com">contact.prodirt@gmail.com</a></p>
+        </div>
+
+        <div style="text-align: center; margin: 3rem 0;">
+            <p style="font-size: 1.2rem; color: #666; margin-bottom: 1.5rem;">Know your costs. Quote with confidence.</p>
+            <a href="https://play.google.com/store/apps/details?id=com.prodirt.fieldquote" class="cta-button">Download FieldQuote Free</a>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>© 2026 ProDirt LLC. All rights reserved.</p>
+        <p style="margin-top: 1rem;">
+            <a href="https://prodirt-llc.github.io/">More Apps</a> |
+            <a href="mailto:contact.prodirt@gmail.com">Contact</a> |
+            <a href="https://idletools.blogspot.com">Developer Blog</a>
+        </p>
+        <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">A Virginia-based outdoor software company.</p>
+    </footer>
+
+</body>
+</html>

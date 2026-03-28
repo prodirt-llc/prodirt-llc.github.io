@@ -23,21 +23,28 @@
         .app-card.featured::before { content: "FEATURED"; position: absolute; top: -12px; left: 20px; background: #ff6b35; color: white; padding: 4px 12px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; }
         .app-card.windows-tool { border-left: 4px solid #0078d4; }
         .app-card.windows-tool .platform-badge { display: inline-block; background: #0078d4; color: white; font-size: 0.7rem; font-weight: bold; padding: 2px 8px; border-radius: 10px; margin-bottom: 0.75rem; }
+        .app-card.windows-paid { border-left: 4px solid #667eea; }
+        .app-card.windows-paid .platform-badge { display: inline-block; background: #667eea; color: white; font-size: 0.7rem; font-weight: bold; padding: 2px 8px; border-radius: 10px; margin-bottom: 0.75rem; }
         .app-icon { width: 100px; height: 100px; margin: 0 auto 1rem auto; display: block; border-radius: 16px; }
         .app-icon.placeholder { background: linear-gradient(135deg, #ff6b35, #ff8c5a); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; }
         .app-icon.placeholder-blue { background: linear-gradient(135deg, #0078d4, #00b4d8); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; width: 100px; height: 100px; margin: 0 auto 1rem auto; border-radius: 16px; }
+        .app-icon.placeholder-purple { background: linear-gradient(135deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; width: 100px; height: 100px; margin: 0 auto 1rem auto; border-radius: 16px; }
         .app-card h3 { color: #2d5a2d; font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .app-card.windows-paid h3 { color: #4a4a8a; }
         .app-card .tagline { color: #666; font-style: italic; margin-bottom: 1rem; }
         .app-card p { color: #555; margin-bottom: 1rem; }
         .app-card .features { list-style: none; margin: 1rem 0; }
         .app-card .features li { padding: 0.3rem 0; color: #666; }
         .app-card .features li::before { content: "✓ "; color: #2d5a2d; font-weight: bold; }
+        .app-card.windows-paid .features li::before { color: #667eea; }
         .btn { display: inline-block; padding: 0.75rem 1.5rem; background: #2d5a2d; color: white; text-decoration: none; border-radius: 6px; font-weight: 600; transition: background 0.3s; margin-top: 1rem; margin-right: 0.5rem; margin-bottom: 0.5rem; }
         .btn:hover { background: #1a3a1a; }
         .btn-secondary { background: #666; margin-left: 0; }
         .btn-secondary:hover { background: #444; }
         .btn-windows { background: #0078d4; }
         .btn-windows:hover { background: #005fa3; }
+        .btn-purple { background: #667eea; }
+        .btn-purple:hover { background: #5568d3; }
         @media (max-width: 400px) { .app-card .btn { display: block; width: 100%; margin-left: 0; margin-right: 0; margin-bottom: 0.5rem; } .app-card .btn-secondary { margin-left: 0; } }
         footer { background: rgba(0,0,0,0.3); color: #ddd; text-align: center; padding: 2rem 0; margin-top: 4rem; }
         footer a { color: #ff6b35; text-decoration: none; }
@@ -47,6 +54,7 @@
         .principles li { padding: 0.5rem 0; color: #555; }
         .principles li strong { color: #2d5a2d; }
         .price-tag { display: inline-block; background: #ff6b35; color: white; font-size: 0.75rem; font-weight: bold; padding: 2px 8px; border-radius: 10px; margin-left: 6px; vertical-align: middle; }
+        .price-tag-purple { display: inline-block; background: #667eea; color: white; font-size: 0.75rem; font-weight: bold; padding: 2px 8px; border-radius: 10px; margin-left: 6px; vertical-align: middle; }
         .section-divider { color: white; margin: 2rem 0 1rem 0; text-align: center; }
         .section-divider h2 { font-size: 1.5rem; }
         .section-divider p { color: #b0c9b0; font-size: 0.95rem; margin-top: 0.3rem; }
@@ -55,13 +63,13 @@
 <body>
     <header>
         <img src="logo-white.png" alt="ProDirt LLC" class="header-logo">
-        <p>Practical Apps for Hunters & Outdoorsmen</p>
+        <p>Practical Apps for Hunters, Outdoorsmen & IT Pros</p>
     </header>
 
     <div class="container">
         <div class="mission">
             <h2>Our Mission</h2>
-            <p>Quality tools shouldn't require expensive subscriptions. We build practical apps that solve real problems—whether you're in the field, in the workshop, or working on your home. No paywalls, no gimmicks, just tools that work when you need them.</p>
+            <p>Quality tools shouldn't require expensive subscriptions. We build practical apps that solve real problems—whether you're in the field, in the workshop, or working on your home network. No paywalls, no gimmicks, just tools that work when you need them.</p>
         </div>
 
         <div class="principles">
@@ -89,30 +97,30 @@
                     <li>GPS trail tracking with live map <span class="price-tag">Trail Mode</span></li>
                     <li>Shot, vehicle &amp; camera pins <span class="price-tag">Trail Mode</span></li>
                     <li>KML export to OnX &amp; Google Earth <span class="price-tag">Trail Mode</span></li>
-                    <li>No subscription — Trail Mode is $3.99 once</li>
+                    <li>No subscription — Trail Mode is $7.99 once</li>
                 </ul>
                 <a href="https://play.google.com/store/apps/details?id=bloodhound.com.bloodhound" class="btn">Download Free</a>
                 <a href="/bloodhound" class="btn btn-secondary">Learn More</a>
             </div>
-<!-- FieldQuote — paste this card into the Mobile Apps section of index.html -->
-<!-- Suggested placement: after Even Spacing Calculator, before Fraction Pro, or wherever fits best -->
 
-<div class="app-card">
-    <img src="fieldquote/logo.png" alt="FieldQuote" class="app-icon">
-    <h3>FieldQuote</h3>
-    <p class="tagline">Job Estimating for Independent Contractors</p>
-    <p>Stop guessing what to charge. Enter your real costs once — labor, equipment, overhead — and every quote is calculated from your actual numbers. Build a professional PDF quote in under two minutes, standing in a client's yard. No account, no cloud, no nonsense.</p>
-    <ul class="features">
-        <li>Live floor price so you never quote at a loss</li>
-        <li>Automatic mobilization cost by job address</li>
-        <li>Task & equipment library for fast line items</li>
-        <li>Professional PDF quotes with your logo</li>
-        <li>Client address book with Google Maps links</li>
-        <li>Google Drive backup — no account required</li>
-    </ul>
-    <a href="https://play.google.com/store/apps/details?id=com.prodirt.fieldquote" class="btn">Download Free</a>
-    <a href="/fieldquote" class="btn btn-secondary">Learn More</a>
-</div>
+            <!-- FieldQuote -->
+            <div class="app-card">
+                <img src="fieldquote/logo.png" alt="FieldQuote" class="app-icon">
+                <h3>FieldQuote</h3>
+                <p class="tagline">Job Estimating for Independent Contractors</p>
+                <p>Stop guessing what to charge. Enter your real costs once — labor, equipment, overhead — and every quote is calculated from your actual numbers. Build a professional PDF quote in under two minutes, standing in a client's yard. No account, no cloud, no nonsense.</p>
+                <ul class="features">
+                    <li>Live floor price so you never quote at a loss</li>
+                    <li>Automatic mobilization cost by job address</li>
+                    <li>Task & equipment library for fast line items</li>
+                    <li>Professional PDF quotes with your logo</li>
+                    <li>Client address book with Google Maps links</li>
+                    <li>Google Drive backup — no account required</li>
+                </ul>
+                <a href="https://play.google.com/store/apps/details?id=com.prodirt.fieldquote" class="btn">Download Free</a>
+                <a href="/fieldquote" class="btn btn-secondary">Learn More</a>
+            </div>
+
             <!-- BandPass -->
             <div class="app-card">
                 <img src="bandpass/logo.png" alt="BandPass" class="app-icon">
@@ -202,10 +210,31 @@
         <!-- Windows Tools Section -->
         <div class="section-divider">
             <h2>🖥️ Windows Tools</h2>
-            <p>Free utilities for IT professionals and power users</p>
+            <p>Utilities for IT professionals and power users</p>
         </div>
 
         <div class="apps-grid">
+
+            <!-- NTFS Permissions Reporter — PAID -->
+            <div class="app-card windows-paid">
+                <div class="platform-badge">🖥️ Windows &nbsp;|&nbsp; 💰 Paid</div>
+                <div class="app-icon placeholder-purple">🔐</div>
+                <h3>NTFS Permissions Reporter</h3>
+                <p class="tagline">Professional NTFS Permission Auditing for MSPs</p>
+                <p>Audit folder permissions across any local or UNC share with a fast, readable interface. Expand the tree, click a folder, and see exactly who has access and where it came from. Export a self-contained interactive HTML report you can send to any client. Built by a working MSP engineer.</p>
+                <ul class="features">
+                    <li>Interactive folder tree — expand, search, filter</li>
+                    <li>Broken inheritance detection with one-click filter</li>
+                    <li>Side-by-side path comparison <span class="price-tag-purple">$49</span></li>
+                    <li>Interactive HTML report export — send to anyone</li>
+                    <li>CSV export for Excel and ticketing systems</li>
+                    <li>Single EXE — no install, no .NET required</li>
+                    <li>License key for one technician — any machine</li>
+                </ul>
+                <a href="https://prodirt.gumroad.com/l/spxtty" class="btn btn-purple">Buy for $49</a>
+                <a href="/ntfs-permissions-reporter" class="btn btn-secondary">Learn More</a>
+            </div>
+
             <!-- Disk Space Analyzer -->
             <div class="app-card windows-tool">
                 <div class="platform-badge">🖥️ Windows</div>
@@ -276,7 +305,7 @@
 
     <footer>
         <p>&copy; 2026 ProDirt LLC. All rights reserved.</p>
-        <p style="margin-top: 0.5rem;">A Virginia-based outdoor software company.</p>
+        <p style="margin-top: 0.5rem;">A Virginia-based software company.</p>
         <p style="margin-top: 0.5rem;">
             <a href="mailto:contact.prodirt@gmail.com">Contact</a> |
             <a href="https://idletools.blogspot.com">Blog</a>

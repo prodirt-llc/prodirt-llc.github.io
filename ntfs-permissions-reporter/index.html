@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NTFS Permissions Reporter — Audit NTFS folder permissions across any local or network path. Built for MSPs and IT administrators. Single EXE, no install required.">
+    <title>NTFS Permissions Reporter - ProDirt</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f5f5f5; }
+
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+        .hero h1 { font-size: 2.5rem; margin-bottom: 1rem; font-weight: 700; }
+        .hero p { font-size: 1.25rem; margin-bottom: 0.5rem; opacity: 0.95; }
+        .hero .subtext { font-size: 1rem; opacity: 0.8; margin-bottom: 2rem; }
+
+        .badge { display: inline-block; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); color: white; font-size: 0.8rem; font-weight: bold; padding: 3px 10px; border-radius: 12px; margin: 0 4px 1rem 4px; }
+
+        .cta-group { margin-top: 2rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+        .cta-button { display: inline-block; background: white; color: #667eea; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 1.1rem; transition: transform 0.2s, box-shadow 0.2s; }
+        .cta-button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .cta-button.secondary { background: rgba(255,255,255,0.15); color: white; border: 2px solid rgba(255,255,255,0.6); }
+        .cta-button.secondary:hover { background: rgba(255,255,255,0.25); }
+
+        .back-link { display: inline-block; margin-bottom: 1.5rem; color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.95rem; }
+        .back-link:hover { color: white; }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem; }
+
+        .section { background: white; margin: 2rem 0; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .section h2 { color: #667eea; margin-bottom: 1.5rem; font-size: 1.8rem; }
+
+        .price-callout {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        .price-callout .price { font-size: 3rem; font-weight: 700; }
+        .price-callout .price-sub { opacity: 0.85; margin-top: 0.25rem; }
+        .price-callout .includes { margin-top: 1rem; font-size: 0.95rem; opacity: 0.9; }
+
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
+        .feature { padding: 1.5rem; background: #f0f4ff; border-radius: 8px; border-left: 4px solid #667eea; }
+        .feature h3 { color: #333; margin-bottom: 0.5rem; font-size: 1.1rem; }
+        .feature p { color: #666; font-size: 0.95rem; }
+
+        .screenshot-area {
+            background: #1a1a2e;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+        .screenshot-area img { max-width: 100%; border-radius: 6px; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+        .screenshot-area p { color: #aaa; font-size: 0.85rem; margin-top: 0.75rem; font-style: italic; }
+
+        .who-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; margin-top: 1.5rem; }
+        .who-card { background: linear-gradient(135deg, #f0f4ff, #e8ecff); border-radius: 8px; padding: 1.25rem; }
+        .who-card h4 { color: #667eea; margin-bottom: 0.4rem; }
+        .who-card p { color: #555; font-size: 0.9rem; }
+
+        .specs-list { list-style: none; margin-top: 1rem; }
+        .specs-list li { padding: 0.6rem 0; border-bottom: 1px solid #f0f0f0; color: #555; display: flex; gap: 0.75rem; }
+        .specs-list li:last-child { border-bottom: none; }
+        .specs-list li strong { color: #333; min-width: 160px; flex-shrink: 0; }
+
+        .comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem; }
+        .comparison-col h4 { margin-bottom: 1rem; font-size: 1.1rem; }
+        .comparison-col ul { list-style: none; }
+        .comparison-col li { padding: 0.4rem 0; padding-left: 1.5rem; position: relative; color: #555; }
+        .comparison-col li::before { position: absolute; left: 0; font-weight: bold; }
+        .before li::before { content: "✗"; color: #e74c3c; }
+        .after li::before { content: "✓"; color: #27ae60; }
+        .comparison-bg { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 2rem; border-radius: 12px; }
+        .comparison-bg h3 { margin-bottom: 1.5rem; font-size: 1.3rem; }
+        .comparison-bg .after li, .comparison-bg .before li { color: rgba(255,255,255,0.9); }
+        .comparison-bg .before li::before { color: #ffaaaa; }
+        .comparison-bg .after li::before { color: #aaffaa; }
+        .comparison-bg .comparison-col h4 { color: white; }
+
+        footer { background: #2d3748; color: white; padding: 2rem; text-align: center; margin-top: 4rem; }
+        footer a { color: #90cdf4; text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 1.8rem; }
+            .comparison { grid-template-columns: 1fr; }
+            .price-callout .price { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="hero">
+    <a href="https://prodirt-llc.github.io/" class="back-link">← Back to ProDirt Apps</a>
+    <div class="badge">🖥️ Windows</div>
+    <div class="badge">Single EXE</div>
+    <div class="badge">No Install Required</div>
+    <h1>NTFS Permissions Reporter</h1>
+    <p>Audit folder permissions across any local or network path</p>
+    <p class="subtext">Built by a working MSP engineer. This is the tool I wished existed.</p>
+    <div class="cta-group">
+        <a href="https://prodirt.gumroad.com/l/spxtty" class="cta-button">Buy for $49 →</a>
+        <a href="https://prodirt.gumroad.com/l/spxtty" class="cta-button secondary">View on Gumroad</a>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- Price callout -->
+    <div class="price-callout">
+        <div class="price">$49</div>
+        <div class="price-sub">One-time purchase — no subscription, ever.</div>
+        <div class="includes">✓ Single self-contained EXE &nbsp;|&nbsp; ✓ License key for one technician — runs on any machine &nbsp;|&nbsp; ✓ Free updates for life</div>
+    </div>
+
+    <!-- What it is -->
+    <div class="section">
+        <h2>Stop Wrestling with icacls and PowerShell</h2>
+        <p>NTFS Permissions Reporter gives you a fast, readable view of who has access to what — across any Windows file share. Expand the folder tree, click any folder, and see exactly who has access and where those permissions came from. Export a self-contained interactive HTML report you can send directly to a client or manager.</p>
+
+        <div class="comparison-bg" style="margin-top: 1.5rem;">
+            <h3>The Permission Audit Problem</h3>
+            <div class="comparison">
+                <div class="comparison-col before">
+                    <h4>Before</h4>
+                    <ul>
+                        <li>icacls output that's impossible to read</li>
+                        <li>PowerShell scripts that time out on large shares</li>
+                        <li>No way to quickly see inherited vs explicit</li>
+                        <li>Can't tell clients anything useful</li>
+                        <li>Hours of work for a simple audit</li>
+                    </ul>
+                </div>
+                <div class="comparison-col after">
+                    <h4>After</h4>
+                    <ul>
+                        <li>Interactive tree — click to drill down</li>
+                        <li>Scans 200K+ folders in under a minute</li>
+                        <li>Explicit vs inherited, clearly labeled</li>
+                        <li>Send clients a professional HTML report</li>
+                        <li>Full audit in minutes, not hours</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features -->
+    <div class="section">
+        <h2>🔧 Features</h2>
+        <div class="features-grid">
+            <div class="feature">
+                <h3>Interactive Folder Tree</h3>
+                <p>Expand, collapse, and search folders. Click any row to see its full permission set — explicit entries and inherited ones, with source folder shown.</p>
+            </div>
+            <div class="feature">
+                <h3>Broken Inheritance Detection</h3>
+                <p>Amber rows instantly flag folders where inheritance is disabled. One-click filter shows only the affected folders across the entire scan.</p>
+            </div>
+            <div class="feature">
+                <h3>Side-by-Side Comparison</h3>
+                <p>Compare two paths and spot permission drift immediately. Green = identical, amber = changed, purple = exists only on one side.</p>
+            </div>
+            <div class="feature">
+                <h3>Interactive HTML Reports</h3>
+                <p>Fully self-contained — one file you can email to anyone. Collapsible tree, searchable, expandable permissions panel. No internet required to view.</p>
+            </div>
+            <div class="feature">
+                <h3>CSV Export</h3>
+                <p>Raw data out for Excel, ticketing systems, or compliance documentation. Every folder, every ACE, every flag.</p>
+            </div>
+            <div class="feature">
+                <h3>UNC Path Support</h3>
+                <p>Scan local paths or network shares directly. Works on Server 2016, 2019, 2022, Windows 10 and 11, and RDS sessions.</p>
+            </div>
+            <div class="feature">
+                <h3>Multi-threaded Scanner</h3>
+                <p>Auto-detects optimal thread count. Manual override available for fine-tuned performance on network shares or slow drives.</p>
+            </div>
+            <div class="feature">
+                <h3>No Installation</h3>
+                <p>Drop the EXE and run. No .NET install required — everything is bundled. Works anywhere you can copy a file.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Who it's for -->
+    <div class="section">
+        <h2>👤 Who It's For</h2>
+        <div class="who-grid">
+            <div class="who-card">
+                <h4>MSP Technicians</h4>
+                <p>Audit client file servers fast. One key, any machine. Drop it on the server, scan, export, done.</p>
+            </div>
+            <div class="who-card">
+                <h4>IT Admins</h4>
+                <p>Document permissions before migrations. Catch broken inheritance before it becomes a support ticket.</p>
+            </div>
+            <div class="who-card">
+                <h4>Sysadmins</h4>
+                <p>Compare permissions across two servers to verify a migration landed correctly. Side-by-side, instant diff.</p>
+            </div>
+            <div class="who-card">
+                <h4>Compliance & Audit</h4>
+                <p>Produce readable permission reports for compliance reviews without writing a single line of PowerShell.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Specs -->
+    <div class="section">
+        <h2>📋 System Requirements</h2>
+        <ul class="specs-list">
+            <li><strong>Operating System</strong> Windows 10, 11, Server 2016, 2019, 2022, 2025</li>
+            <li><strong>Architecture</strong> x64</li>
+            <li><strong>Installation</strong> None — single self-contained EXE (~160MB)</li>
+            <li><strong>.NET Runtime</strong> Bundled — no separate install needed</li>
+            <li><strong>Privileges</strong> Administrator recommended for full ACL access</li>
+            <li><strong>Network</strong> Required only for initial license activation</li>
+            <li><strong>License</strong> Per technician — runs on any machine</li>
+        </ul>
+    </div>
+
+    <!-- CTA -->
+    <div style="text-align: center; margin: 3rem 0;">
+        <p style="font-size: 1.2rem; color: #666; margin-bottom: 1.5rem;">One purchase. Every machine you ever need to run it on.</p>
+        <a href="https://prodirt.gumroad.com/l/spxtty" class="cta-button" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; font-size: 1.1rem; padding: 1rem 2.5rem; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block;">Buy NTFS Permissions Reporter — $49 →</a>
+    </div>
+
+</div>
+
+<footer>
+    <p>© 2026 ProDirt LLC. All rights reserved.</p>
+    <p style="margin-top: 1rem;">
+        <a href="https://prodirt-llc.github.io/">More Apps</a> |
+        <a href="mailto:contact.prodirt@gmail.com">Contact</a> |
+        <a href="https://idletools.blogspot.com">Developer Blog</a>
+    </p>
+    <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">A Virginia-based software company.</p>
+</footer>
+
+</body>
+</html>

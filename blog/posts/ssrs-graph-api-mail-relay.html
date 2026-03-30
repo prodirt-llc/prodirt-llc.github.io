@@ -185,22 +185,9 @@ New-ApplicationAccessPolicy `
         <p>
             The service uses Serilog with two sinks: a rolling log file and the Windows Event Log.
             The Event Log integration uses a defined event ID map so ConnectWise Automate (or any
-            RMM worth using) can monitor for specific conditions without parsing log text:
-        </p>
-
-        <ul>
-            <li><strong>1000</strong> — Service started successfully</li>
-            <li><strong>1001</strong> — Service stopped</li>
-            <li><strong>2000</strong> — Email sent successfully</li>
-            <li><strong>3000</strong> — Send failed (Graph API error)</li>
-            <li><strong>3001</strong> — Authentication failure (cert issue or token problem)</li>
-            <li><strong>9000</strong> — Unhandled exception</li>
-        </ul>
-
-        <p>
-            Automate has an alert policy watching for Event IDs in the 3000 range on servers running
-            this service. If a cert expires or a permission gets yanked in Entra, we hear about it
-            before a client does.
+            RMM worth using) can monitor for specific conditions without parsing log text.
+            If a cert expires or a permission gets yanked in Entra, the monitor fires a ticket
+            before a client notices anything is broken.
         </p>
 
         <h2>SSRS Configuration</h2>
@@ -222,19 +209,58 @@ New-ApplicationAccessPolicy `
             and make sure the port isn't accessible from anything other than the SSRS host.
         </div>
 
+        <h2>Monitoring Integration</h2>
+
+        <p>
+            The service writes to the Windows Event Log under source <code>CodeBlueMailRelay</code> with
+            a defined event ID map. If you're running ConnectWise Automate or any RMM with Event Log
+            monitoring, point a remote monitor at that source and you'll get ticketed on failures without
+            any custom scripting:
+        </p>
+
+        <ul>
+            <li><strong>1001</strong> — Message send failure</li>
+            <li><strong>1002</strong> — Auth / token failure</li>
+            <li><strong>1003</strong> — Certificate expiring within 30 days</li>
+            <li><strong>1004</strong> — Service failed to start</li>
+            <li><strong>1005</strong> — Service started successfully</li>
+        </ul>
+
+        <p>
+            The cert expiry warning at 30 days is the one that matters most operationally. Token failures
+            are almost always cert-related anyway — if you catch the expiry warning and renew before it
+            expires, Event ID 1002 should never fire in production.
+        </p>
+
+        <h2>The Repo</h2>
+
+        <p>
+            CodeBlueMailRelay is open source and available on GitHub. The <code>INSTALL.md</code> covers
+            the full setup end to end — certificate generation, Entra app registration, service install
+            via <code>sc.exe</code>, and deploying from the release zip without needing to compile anything.
+            The service is licensed for internal use; if you're an MSP looking to deploy this commercially
+            or package it into a product, reach out.
+        </p>
+
+        <div class="callout">
+            🔗 <strong><a href="https://github.com/CodeBlue-Technology-LLC/CodeBlueMailRelay" target="_blank">github.com/CodeBlue-Technology-LLC/CodeBlueMailRelay</a></strong>
+            — Full source, release builds, and install documentation.
+        </div>
+
         <h2>Wrapping Up</h2>
 
         <p>
             This took a day to build and has been running without issues since. No passwords in config,
-            no Basic Auth, no on-prem SMTP infrastructure. The cert has a 2-year expiration and a reminder
-            in the calendar. When that comes up, it's a 10-minute renewal — upload new cert to Entra,
+            no Basic Auth, no on-prem SMTP infrastructure. The cert has a 2-year expiration with a
+            calendar reminder. When that comes up, it's a 10-minute renewal — upload new cert to Entra,
             update thumbprint in the service config, restart the service, done.
         </p>
 
         <p>
-            If you're still proxying SSRS through smtp.office365.com with Basic Auth — or you've got any
-            other legacy app doing the same thing — this pattern works for all of them. The service doesn't
-            care what hands it an email. Anything that can talk SMTP to localhost can use it as a relay.
+            If you're still pointing any application at smtp.office365.com with Basic Auth —
+            SSRS, a monitoring tool, a copier, a line-of-business app — this pattern works for all of them.
+            The service doesn't care what hands it an email. Anything that can talk SMTP to localhost
+            can use it as a relay.
         </p>
 
         <div class="post-footer">

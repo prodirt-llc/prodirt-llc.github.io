@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NTFS Permission Reporter — a free Windows tool that scans local and UNC paths and generates an interactive HTML permission report with side-by-side path comparison.">
+    <title>NTFS Permission Reporter: Stop Guessing Who Has Access to What | ProDirt Blog</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; color: #333; background: #f5f5f5; }
+        .hero { background: linear-gradient(135deg, #1a3a1a 0%, #2d5a2d 100%); color: white; padding: 3rem 2rem; border-bottom: 3px solid #ff6b35; }
+        .hero-inner { max-width: 760px; margin: 0 auto; }
+        .back-link { display: inline-block; margin-bottom: 1.25rem; color: white; text-decoration: none; opacity: 0.8; font-size: 0.9rem; }
+        .back-link:hover { opacity: 1; }
+        .post-meta { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; margin-bottom: 1rem; }
+        .post-date { font-size: 0.85rem; opacity: 0.75; }
+        .post-tag { background: #ff6b35; color: white; padding: 2px 10px; border-radius: 10px; font-size: 0.78rem; font-weight: 600; }
+        .hero h1 { font-size: 2rem; font-weight: 700; line-height: 1.3; margin-bottom: 0.75rem; }
+        .hero .subtitle { opacity: 0.85; font-size: 1.05rem; }
+        article { max-width: 760px; margin: 2.5rem auto; padding: 0 1.5rem; }
+        .post-body { background: white; border-radius: 10px; padding: 2.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .post-body h2 { color: #1a3a1a; font-size: 1.4rem; margin: 2rem 0 0.75rem 0; padding-bottom: 0.4rem; border-bottom: 2px solid #f0f7f0; }
+        .post-body h3 { color: #2d5a2d; font-size: 1.1rem; margin: 1.5rem 0 0.5rem 0; }
+        .post-body p { margin-bottom: 1.1rem; color: #444; }
+        .post-body ul, .post-body ol { margin: 0.5rem 0 1.1rem 1.5rem; color: #444; }
+        .post-body li { margin-bottom: 0.4rem; }
+        .post-body strong { color: #222; }
+        .post-body a { color: #ff6b35; text-decoration: none; }
+        .post-body a:hover { text-decoration: underline; }
+        .post-body pre { background: #1e1e1e; color: #d4d4d4; padding: 1.25rem 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0 1.25rem 0; font-size: 0.88rem; line-height: 1.6; border-left: 4px solid #ff6b35; }
+        .post-body code { font-family: 'Courier New', Courier, monospace; }
+        .post-body p code, .post-body li code { background: #f0f0f0; color: #c0392b; padding: 1px 6px; border-radius: 4px; font-size: 0.88em; }
+        .callout { background: #f0f7f0; border-left: 4px solid #2d5a2d; padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin: 1.25rem 0; color: #2d3a2d; }
+        .callout.warning { background: #fff8f0; border-left-color: #ff6b35; color: #4a2800; }
+        .callout.info { background: #f0f4ff; border-left-color: #667eea; color: #1a2060; }
+        .cta-box { background: linear-gradient(135deg, #1a3a1a 0%, #2d5a2d 100%); color: white; border-radius: 10px; padding: 1.75rem 2rem; margin: 2rem 0; text-align: center; }
+        .cta-box p { color: rgba(255,255,255,0.9); margin-bottom: 1rem; }
+        .cta-btn { display: inline-block; background: #ff6b35; color: white; padding: 0.65rem 1.75rem; border-radius: 6px; font-weight: 700; font-size: 1rem; text-decoration: none; }
+        .cta-btn:hover { background: #e05a28; text-decoration: none; color: white; }
+        .post-footer { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .post-footer a { color: #ff6b35; text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+        footer { background: #2d3748; color: white; padding: 2rem; text-align: center; margin-top: 4rem; }
+        footer a { color: #ff6b35; text-decoration: none; }
+        @media (max-width: 600px) { .hero h1 { font-size: 1.6rem; } .post-body { padding: 1.5rem; } }
+    </style>
+</head>
+<body>
+
+<div class="hero">
+    <div class="hero-inner">
+        <a href="../index.html" class="back-link">← Back to ProDirt Blog</a>
+        <div class="post-meta">
+            <span class="post-date">March 30, 2026</span>
+            <span class="post-tag">Dev</span>
+        </div>
+        <h1>NTFS Permission Reporter: Stop Guessing Who Has Access to What</h1>
+        <p class="subtitle">We built a free Windows tool that scans any local or UNC path and generates an interactive permission report — because "everyone has Full Control on the root share" is not an audit.</p>
+    </div>
+</div>
+
+<article>
+    <div class="post-body">
+
+        <p>
+            If you manage file servers for even a handful of clients, you know the scene. Somebody leaves the company,
+            or there's a compliance audit, or a client asks "who can access the payroll folder?" — and suddenly
+            you're pulling up ADUC, running <code>icacls</code>, and manually building a picture of something that
+            should have been documented two years ago. It's tedious, error-prone, and produces output nobody can
+            actually read.
+        </p>
+
+        <p>
+            We built NTFS Permission Reporter to fix that. It's a free Windows desktop app that scans any folder
+            path — local or UNC — and generates an interactive HTML report of every permission entry on every
+            folder in the tree. No PowerShell, no CSV you have to manually format, no piecing it together.
+            Just point it at a share, hit Scan, and get a report you can drop in a ticket or send to a client.
+        </p>
+
+        <h2>What It Actually Does</h2>
+
+        <p>
+            The app is built on .NET 8 — single EXE, no installer, no dependencies to manage. Drop it on a
+            flash drive and run it anywhere. The core scanner is multithreaded and parallelizes aggressively
+            against network shares — it auto-detects UNC paths and bumps thread count accordingly, so a scan
+            of a deep share tree that would take minutes with <code>Get-Acl</code> in a loop finishes in seconds.
+        </p>
+
+        <h3>Analyze tab</h3>
+        <p>
+            Type in a path (or browse for it), set a depth limit if you don't want to go all the way down,
+            and hit Scan. The results come back as an expandable folder tree in the left pane — each folder
+            shows a permission count badge and a warning indicator for broken inheritance. Click any folder
+            and its full ACL shows in the right pane: identity, rights decoded to human-readable strings
+            (not the raw integer flags), explicit vs. inherited status, and inheritance flags.
+        </p>
+
+        <p>
+            The broken inheritance filter is one of the most useful features in practice. One click shows
+            you every folder in the tree where inheritance has been disabled and permissions are set explicitly.
+            Those are almost always either intentional security boundaries or someone's well-meaning mistake
+            from years ago that never got cleaned up.
+        </p>
+
+        <h3>Compare tab</h3>
+        <p>
+            Enter two paths and the app scans both, then presents them side by side in synchronized tree views.
+            Folders are color-coded: same permissions, changed permissions, left path only, right path only.
+            Clicking a folder in either tree syncs the selection in the other. This was built specifically
+            for migration audits — scan the old server and the new server, and you can immediately see every
+            folder where the ACLs didn't transfer cleanly.
+        </p>
+
+        <div class="callout info">
+            ℹ️ <strong>Common migration gotcha:</strong> Robocopy and other migration tools will copy NTFS
+            permissions correctly on most folders, but can silently drop or alter ACEs on folders where
+            inheritance is broken. The Compare mode will surface these immediately — they show up as
+            "Changed" even though the folder content transferred fine.
+        </div>
+
+        <h2>The Reports</h2>
+
+        <p>
+            Both the single-path and comparison reports export to interactive HTML — one self-contained file
+            you can open in any browser, share via email, or drop in a client-facing ticket. The HTML report
+            embeds the full permission data as JSON and renders it client-side, so it works completely offline
+            with no external dependencies.
+        </p>
+
+        <p>
+            Features inside the report: expandable/collapsible tree, search by path or identity, expand-to-level
+            buttons (Level 1 / 2 / 3 for quick orientation on large trees), broken inheritance filter,
+            and an in-browser CSV export button. Everything you need to document, share, or analyze without
+            needing the app running.
+        </p>
+
+        <p>
+            There's also a direct CSV export if you need the raw data in Excel for a client report or
+            compliance documentation.
+        </p>
+
+        <h2>Why We Built It</h2>
+
+        <p>
+            The honest answer is we got tired of the alternative. For a one-off check you can do
+            <code>icacls \\server\share /t > output.txt</code> and grep through it. That works for a folder
+            or two. It doesn't work when a client asks for a documented permission audit across 40,000 folders
+            before a SOC 2 review. We needed something that could produce a deliverable, not a wall of text.
+        </p>
+
+        <p>
+            PowerShell's <code>Get-Acl</code> is the other obvious option, but even a tight script is slow
+            against large shares, and the output still needs post-processing to be presentable. The tool
+            handles all of that — the report is the deliverable.
+        </p>
+
+        <div class="cta-box">
+            <p>NTFS Permission Reporter is available now on Gumroad — free download, no account required.</p>
+            <a class="cta-btn" href="https://prodirt-llc.gumroad.com" target="_blank">Download Free on Gumroad →</a>
+        </div>
+
+        <h2>What's Next</h2>
+
+        <p>
+            A few things on the roadmap: scheduled scans that can email a report on a recurring basis
+            (useful for compliance monitoring), a diff-from-baseline feature so you can detect
+            permission changes over time, and a batch mode for scanning multiple shares in one pass.
+            If there's something specific you need, the contact link is in the footer.
+        </p>
+
+        <div class="post-footer">
+            <a href="../index.html">← All Posts</a>
+            <a href="https://prodirt-llc.github.io/">ProDirt Apps →</a>
+        </div>
+
+    </div>
+</article>
+
+<footer>
+    <p>© 2026 ProDirt LLC. All rights reserved.</p>
+    <p style="margin-top: 0.75rem;">
+        <a href="https://prodirt-llc.github.io/">Apps</a> |
+        <a href="../index.html">Blog</a> |
+        <a href="mailto:contact.prodirt@gmail.com">Contact</a>
+    </p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Server NIC died, cached domain credentials won't work, and blank password login is being blocked. Here's the exact registry fix using Hiren's BootCD PE.">
+    <title>Server Won't Boot to Domain and the NIC Is Dead — Getting Back In With Hiren's | ProDirt Blog</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; color: #333; background: #f5f5f5; }
+        .hero { background: linear-gradient(135deg, #1a3a1a 0%, #2d5a2d 100%); color: white; padding: 3rem 2rem; border-bottom: 3px solid #ff6b35; }
+        .hero-inner { max-width: 760px; margin: 0 auto; }
+        .back-link { display: inline-block; margin-bottom: 1.25rem; color: white; text-decoration: none; opacity: 0.8; font-size: 0.9rem; }
+        .back-link:hover { opacity: 1; }
+        .post-meta { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; margin-bottom: 1rem; }
+        .post-date { font-size: 0.85rem; opacity: 0.75; }
+        .post-tag { background: #ff6b35; color: white; padding: 2px 10px; border-radius: 10px; font-size: 0.78rem; font-weight: 600; }
+        .hero h1 { font-size: 2rem; font-weight: 700; line-height: 1.3; margin-bottom: 0.75rem; }
+        .hero .subtitle { opacity: 0.85; font-size: 1.05rem; }
+        article { max-width: 760px; margin: 2.5rem auto; padding: 0 1.5rem; }
+        .post-body { background: white; border-radius: 10px; padding: 2.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .post-body h2 { color: #1a3a1a; font-size: 1.4rem; margin: 2rem 0 0.75rem 0; padding-bottom: 0.4rem; border-bottom: 2px solid #f0f7f0; }
+        .post-body h3 { color: #2d5a2d; font-size: 1.1rem; margin: 1.5rem 0 0.5rem 0; }
+        .post-body p { margin-bottom: 1.1rem; color: #444; }
+        .post-body ul, .post-body ol { margin: 0.5rem 0 1.1rem 1.5rem; color: #444; }
+        .post-body li { margin-bottom: 0.4rem; }
+        .post-body strong { color: #222; }
+        .post-body a { color: #ff6b35; text-decoration: none; }
+        .post-body a:hover { text-decoration: underline; }
+        .post-body pre { background: #1e1e1e; color: #d4d4d4; padding: 1.25rem 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0 1.25rem 0; font-size: 0.88rem; line-height: 1.6; border-left: 4px solid #ff6b35; }
+        .post-body code { font-family: 'Courier New', Courier, monospace; }
+        .post-body p code, .post-body li code { background: #f0f0f0; color: #c0392b; padding: 1px 6px; border-radius: 4px; font-size: 0.88em; }
+        .callout { background: #f0f7f0; border-left: 4px solid #2d5a2d; padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin: 1.25rem 0; color: #2d3a2d; }
+        .callout.warning { background: #fff8f0; border-left-color: #ff6b35; color: #4a2800; }
+        .callout.info { background: #f0f4ff; border-left-color: #667eea; color: #1a2060; }
+        .post-footer { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .post-footer a { color: #ff6b35; text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+        footer { background: #2d3748; color: white; padding: 2rem; text-align: center; margin-top: 4rem; }
+        footer a { color: #ff6b35; text-decoration: none; }
+        @media (max-width: 600px) { .hero h1 { font-size: 1.6rem; } .post-body { padding: 1.5rem; } }
+    </style>
+</head>
+<body>
+
+<div class="hero">
+    <div class="hero-inner">
+        <a href="../index.html" class="back-link">← Back to ProDirt Blog</a>
+        <div class="post-meta">
+            <span class="post-date">March 25, 2026</span>
+            <span class="post-tag">IT</span>
+        </div>
+        <h1>Server Won't Boot to Domain and the NIC Is Dead — Getting Back In With Hiren's</h1>
+        <p class="subtitle">Lost the NIC, domain auth is gone, and Windows is refusing blank password logins. One registry key is all that's standing between you and the desktop.</p>
+    </div>
+</div>
+
+<article>
+    <div class="post-body">
+
+        <p>
+            The scenario: a server loses its NIC. Could be hardware failure, could be a driver blowup after an update —
+            doesn't matter. Point is it has no network. The domain is unreachable, cached credentials aren't working
+            for whatever reason, and you need in. So you boot Hiren's, use NTPWEdit or chntpw to clear the local
+            Administrator password, reboot — and Windows throws this at you:
+        </p>
+
+        <pre><code>The account is not authorized to log in from this station.</code></pre>
+
+        <p>
+            Or some variation of it that amounts to: <em>blank password, won't let you in.</em> Frustrating,
+            because you just cleared the password. The tool said it worked. What's happening?
+        </p>
+
+        <h2>The Real Problem: LimitBlankPasswordUse</h2>
+
+        <p>
+            Windows has a security setting called <code>LimitBlankPasswordUse</code> that prevents accounts with
+            blank passwords from being used for interactive console logins. It's on by default and it's enforced
+            at the OS level, independently of whether you have a domain or network access.
+        </p>
+
+        <p>
+            When you clear the password with NTPWEdit, you've successfully blanked the account — but this policy
+            is still in place, blocking you from using that blank account to actually get through the login screen.
+            The fix is to temporarily disable that restriction via an offline registry edit, which you can do right
+            from Hiren's without rebooting again.
+        </p>
+
+        <h2>The Fix</h2>
+
+        <p>
+            Boot into Hiren's BootCD PE. Open a Command Prompt. Run this to load the offline SYSTEM hive:
+        </p>
+
+        <pre><code>reg load HKLM\TEMPSYSTEM C:\Windows\System32\config\SYSTEM</code></pre>
+
+        <p>
+            Then flip the flag:
+        </p>
+
+        <pre><code>reg add "HKLM\TEMPSYSTEM\ControlSet001\Control\Lsa" /v LimitBlankPasswordUse /t REG_DWORD /d 0 /f</code></pre>
+
+        <p>
+            Unload the hive cleanly:
+        </p>
+
+        <pre><code>reg unload HKLM\TEMPSYSTEM</code></pre>
+
+        <p>
+            Reboot into Windows normally. The local Administrator account with a blank password will now log in.
+        </p>
+
+        <div class="callout warning">
+            ⚠️ <strong>Don't leave it like this.</strong> Once you're in, set a real password on the Administrator
+            account immediately, then flip <code>LimitBlankPasswordUse</code> back to <code>1</code>. A server with
+            a blank admin account sitting on any network is a problem waiting to happen.
+        </div>
+
+        <h2>Why the C Drive Path May Be Different</h2>
+
+        <p>
+            Hiren's PE has its own drive letter assignments. What Windows calls <code>C:\</code> might show up as
+            <code>D:\</code> or <code>E:\</code> in the PE environment. Before running the reg load command,
+            open a file browser in Hiren's and confirm which drive letter holds the Windows installation.
+            Look for the <code>Windows\System32\config</code> folder to verify.
+        </p>
+
+        <div class="callout info">
+            ℹ️ <strong>ControlSet001 vs CurrentControlSet:</strong> In the offline hive, you reference
+            <code>ControlSet001</code> directly — <code>CurrentControlSet</code> is a symlink that only
+            works when Windows is running. On most systems ControlSet001 is the right one, but if you're
+            not sure, check which ControlSet number is set as Current under
+            <code>HKLM\TEMPSYSTEM\Select</code> after loading the hive.
+        </div>
+
+        <h2>After You're In</h2>
+
+        <p>
+            Once you've logged in, the first priority is sorting out why cached credentials weren't working in
+            the first place. If this was a domain-joined machine and the cache was just stale or corrupted,
+            fixing the NIC and rejoining the domain (or just restoring network connectivity) will usually
+            restore normal operations. Set a local admin password, document it somewhere secure, and make sure
+            you have a break-glass account that isn't dependent on the domain for exactly this kind of situation.
+        </p>
+
+        <h2>Wrapping Up</h2>
+
+        <p>
+            The sequence that works: boot Hiren's → clear the password with NTPWEdit or chntpw → load the
+            offline SYSTEM hive → set <code>LimitBlankPasswordUse</code> to 0 → reboot → log in → set a
+            real password → flip it back to 1. In that order. Skipping the registry step is why most people
+            get stuck after clearing the password and wonder why Windows is still refusing them.
+        </p>
+
+        <p>
+            It's one of those things that's not obvious until you've been bitten by it, and then it's
+            permanently in your toolbox.
+        </p>
+
+        <div class="post-footer">
+            <a href="../index.html">← All Posts</a>
+            <a href="https://prodirt-llc.github.io/">ProDirt Apps →</a>
+        </div>
+
+    </div>
+</article>
+
+<footer>
+    <p>© 2026 ProDirt LLC. All rights reserved.</p>
+    <p style="margin-top: 0.75rem;">
+        <a href="https://prodirt-llc.github.io/">Apps</a> |
+        <a href="../index.html">Blog</a> |
+        <a href="mailto:contact.prodirt@gmail.com">Contact</a>
+    </p>
+</footer>
+
+</body>
+</html>

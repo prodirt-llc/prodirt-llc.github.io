@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="pfBlockerNG GeoIP appeared configured and MaxMind was downloading fine, but foreign traffic still got through. The fix was changing Deny Both to Deny Inbound.">
+    <title>pfBlockerNG GeoIP Was Running But Not Actually Blocking Anything | ProDirt Blog</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; color: #333; background: #f5f5f5; }
+        .hero { background: linear-gradient(135deg, #1a3a1a 0%, #2d5a2d 100%); color: white; padding: 3rem 2rem; border-bottom: 3px solid #ff6b35; }
+        .hero-inner { max-width: 760px; margin: 0 auto; }
+        .back-link { display: inline-block; margin-bottom: 1.25rem; color: white; text-decoration: none; opacity: 0.8; font-size: 0.9rem; }
+        .back-link:hover { opacity: 1; }
+        .post-meta { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; margin-bottom: 1rem; }
+        .post-date { font-size: 0.85rem; opacity: 0.75; }
+        .post-tag { background: #ff6b35; color: white; padding: 2px 10px; border-radius: 10px; font-size: 0.78rem; font-weight: 600; }
+        .hero h1 { font-size: 2rem; font-weight: 700; line-height: 1.3; margin-bottom: 0.75rem; }
+        .hero .subtitle { opacity: 0.85; font-size: 1.05rem; }
+        article { max-width: 760px; margin: 2.5rem auto; padding: 0 1.5rem; }
+        .post-body { background: white; border-radius: 10px; padding: 2.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .post-body h2 { color: #1a3a1a; font-size: 1.4rem; margin: 2rem 0 0.75rem 0; padding-bottom: 0.4rem; border-bottom: 2px solid #f0f7f0; }
+        .post-body h3 { color: #2d5a2d; font-size: 1.1rem; margin: 1.5rem 0 0.5rem 0; }
+        .post-body p { margin-bottom: 1.1rem; color: #444; }
+        .post-body ul, .post-body ol { margin: 0.5rem 0 1.1rem 1.5rem; color: #444; }
+        .post-body li { margin-bottom: 0.4rem; }
+        .post-body strong { color: #222; }
+        .post-body a { color: #ff6b35; text-decoration: none; }
+        .post-body a:hover { text-decoration: underline; }
+        .post-body pre { background: #1e1e1e; color: #d4d4d4; padding: 1.25rem 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0 1.25rem 0; font-size: 0.88rem; line-height: 1.6; border-left: 4px solid #ff6b35; }
+        .post-body code { font-family: 'Courier New', Courier, monospace; }
+        .post-body p code, .post-body li code { background: #f0f0f0; color: #c0392b; padding: 1px 6px; border-radius: 4px; font-size: 0.88em; }
+        .callout { background: #f0f7f0; border-left: 4px solid #2d5a2d; padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin: 1.25rem 0; color: #2d3a2d; }
+        .callout.warning { background: #fff8f0; border-left-color: #ff6b35; color: #4a2800; }
+        .callout.info { background: #f0f4ff; border-left-color: #667eea; color: #1a2060; }
+        .post-footer { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .post-footer a { color: #ff6b35; text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+        footer { background: #2d3748; color: white; padding: 2rem; text-align: center; margin-top: 4rem; }
+        footer a { color: #ff6b35; text-decoration: none; }
+        @media (max-width: 600px) { .hero h1 { font-size: 1.6rem; } .post-body { padding: 1.5rem; } }
+    </style>
+</head>
+<body>
+
+<div class="hero">
+    <div class="hero-inner">
+        <a href="../index.html" class="back-link">← Back to ProDirt Blog</a>
+        <div class="post-meta">
+            <span class="post-date">March 12, 2026</span>
+            <span class="post-tag">IT</span>
+        </div>
+        <h1>pfBlockerNG GeoIP Was Running But Not Actually Blocking Anything</h1>
+        <p class="subtitle">MaxMind key was valid, lists were downloading, GeoIP was "configured" — and overseas traffic was still reaching a publicly exposed Synology NAS. One dropdown set wrong was the entire problem.</p>
+    </div>
+</div>
+
+<article>
+    <div class="post-body">
+
+        <p>
+            The goal was straightforward: block overseas inbound connections to a Synology NAS with
+            ports exposed on WAN. pfBlockerNG was installed, GeoIP was enabled, every region outside
+            North America was configured. And yet traffic from overseas was still getting through.
+            The firewall logs were also suspiciously quiet about it.
+        </p>
+
+        <p>
+            First thing to rule out with any pfBlockerNG GeoIP issue: the MaxMind license key. Since
+            MaxMind locked down their free tier a few years back, if you don't have a valid Account ID
+            and license key entered under pfBlockerNG General, the GeoIP databases never actually download.
+            pfBlockerNG will act like everything is fine — it's just enforcing empty aliases. Verify the
+            key is populated and that the MaxMind account shows recent download activity. In this case,
+            the key was valid and downloads were happening. So that wasn't it.
+        </p>
+
+        <h2>The Real Problem: Deny Both vs. Deny Inbound</h2>
+
+        <p>
+            The GeoIP configuration had every foreign region set to <strong>Deny Both</strong>. Sounds
+            thorough. It's actually the wrong setting for this use case, and it creates a subtle problem
+            that's easy to miss.
+        </p>
+
+        <p>
+            Here's how pfSense's WAN works by default: unsolicited inbound traffic is already implicitly
+            blocked. The firewall doesn't allow new connections in from the internet unless you have an
+            explicit NAT rule or firewall pass rule that opens it. So pfBlockerNG GeoIP on WAN inbound
+            is primarily relevant for traffic destined at your <em>open ports</em> — in this case, the
+            NAT rule forwarding to the Synology.
+        </p>
+
+        <p>
+            <strong>Deny Both</strong> does two things: blocks inbound <em>and</em> blocks your LAN
+            machines from initiating outbound connections to those countries. That second half is
+            where the problem hides. Because pfBlockerNG generates firewall rules from the GeoIP
+            aliases, and <strong>Deny Both applies those rules to traffic in both directions on WAN</strong>,
+            the rule order and state table interaction can create situations where return traffic for
+            legitimate outbound sessions gets caught — or where the rules aren't being evaluated the
+            way you'd expect on actual inbound port-forwarded traffic.
+        </p>
+
+        <p>
+            <strong>Deny Inbound</strong> is what actually accomplishes the goal: block foreign source
+            IPs from reaching your forwarded ports, while leaving outbound completely untouched. Your
+            internal machines can still browse to European and Asian sites without any issue.
+        </p>
+
+        <div class="callout info">
+            ℹ️ <strong>Why the logs were quiet:</strong> pfBlockerNG's GeoIP rules don't log by default
+            unless you specifically enable logging on each region. If you configure GeoIP and wonder
+            why you never see any hits in the firewall log, that's why. Enable logging on each region
+            after you fix the direction — then you'll actually see it working.
+        </div>
+
+        <h2>The Fix</h2>
+
+        <p>
+            In pfBlockerNG, navigate to <strong>Firewall → pfBlockerNG → IP → GeoIP</strong>. For every
+            region you're blocking (ARIN is North America — leave that Disabled unless you want to block
+            Canada and Mexico too):
+        </p>
+
+        <ul>
+            <li>Change the action from <strong>Deny Both</strong> to <strong>Deny Inbound</strong></li>
+            <li>Enable logging on each region</li>
+            <li>Leave North America / ARIN set to <strong>Disabled</strong></li>
+        </ul>
+
+        <p>
+            After saving, run a Force Update under pfBlockerNG → Update to regenerate the firewall rules
+            from the updated configuration. pfBlockerNG will rebuild its aliases and rules, and you should
+            start seeing GeoIP hits in Status → System Logs → Firewall within minutes.
+        </p>
+
+        <div class="callout warning">
+            ⚠️ <strong>CDN and cloud service blocks:</strong> Legitimate US-based services increasingly
+            use globally distributed CDN infrastructure. If you're seeing blocked connections to services
+            that should be accessible, check whether the source IP is a CDN node. This isn't a pfBlockerNG
+            bug — it's a MaxMind database classification issue. You may need to whitelist specific IP
+            ranges for services that matter.
+        </div>
+
+        <h2>Verifying It's Actually Working</h2>
+
+        <p>
+            After the Force Update, check the firewall log under <strong>Status → System Logs → Firewall</strong>.
+            Filter by the pfBlockerNG GeoIP interface. You should see blocked entries from foreign source IPs
+            attempting to hit your forwarded ports. If the Synology has any public-facing services, you'll
+            typically see hits within a few minutes — the internet doesn't stop poking at exposed ports.
+        </p>
+
+        <p>
+            Also verify outbound still works: from a machine on the LAN, browse to a site hosted in Europe
+            or Asia. If Deny Inbound is set correctly, that should load fine. If it's still breaking outbound,
+            something else is wrong with your rule configuration.
+        </p>
+
+        <h2>Wrapping Up</h2>
+
+        <p>
+            The summary: pfBlockerNG GeoIP with <strong>Deny Both</strong> seems like the safer, more
+            complete option, but for a WAN-inbound protection use case it's the wrong tool. <strong>Deny
+            Inbound</strong> is the correct setting if your goal is protecting exposed ports from foreign
+            source IPs while leaving your LAN's outbound traffic unrestricted. Enable logging so you can
+            actually confirm it's doing its job, and make sure your MaxMind key is valid or none of it
+            matters anyway.
+        </p>
+
+        <div class="post-footer">
+            <a href="../index.html">← All Posts</a>
+            <a href="https://prodirt-llc.github.io/">ProDirt Apps →</a>
+        </div>
+
+    </div>
+</article>
+
+<footer>
+    <p>© 2026 ProDirt LLC. All rights reserved.</p>
+    <p style="margin-top: 0.75rem;">
+        <a href="https://prodirt-llc.github.io/">Apps</a> |
+        <a href="../index.html">Blog</a> |
+        <a href="mailto:contact.prodirt@gmail.com">Contact</a>
+    </p>
+</footer>
+
+</body>
+</html>

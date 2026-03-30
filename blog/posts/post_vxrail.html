@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Both vCenter and VxRail Manager offline, vSAN partially recovered. How to get VMs back on the network by editing VMX files directly on the ESXi host CLI.">
+    <title>VxRail in Full Meltdown: Recovering VMs When vCenter and vSAN Are Both Gone | ProDirt Blog</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; color: #333; background: #f5f5f5; }
+        .hero { background: linear-gradient(135deg, #1a3a1a 0%, #2d5a2d 100%); color: white; padding: 3rem 2rem; border-bottom: 3px solid #ff6b35; }
+        .hero-inner { max-width: 760px; margin: 0 auto; }
+        .back-link { display: inline-block; margin-bottom: 1.25rem; color: white; text-decoration: none; opacity: 0.8; font-size: 0.9rem; }
+        .back-link:hover { opacity: 1; }
+        .post-meta { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; margin-bottom: 1rem; }
+        .post-date { font-size: 0.85rem; opacity: 0.75; }
+        .post-tag { background: #ff6b35; color: white; padding: 2px 10px; border-radius: 10px; font-size: 0.78rem; font-weight: 600; }
+        .hero h1 { font-size: 2rem; font-weight: 700; line-height: 1.3; margin-bottom: 0.75rem; }
+        .hero .subtitle { opacity: 0.85; font-size: 1.05rem; }
+        article { max-width: 760px; margin: 2.5rem auto; padding: 0 1.5rem; }
+        .post-body { background: white; border-radius: 10px; padding: 2.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .post-body h2 { color: #1a3a1a; font-size: 1.4rem; margin: 2rem 0 0.75rem 0; padding-bottom: 0.4rem; border-bottom: 2px solid #f0f7f0; }
+        .post-body h3 { color: #2d5a2d; font-size: 1.1rem; margin: 1.5rem 0 0.5rem 0; }
+        .post-body p { margin-bottom: 1.1rem; color: #444; }
+        .post-body ul, .post-body ol { margin: 0.5rem 0 1.1rem 1.5rem; color: #444; }
+        .post-body li { margin-bottom: 0.4rem; }
+        .post-body strong { color: #222; }
+        .post-body a { color: #ff6b35; text-decoration: none; }
+        .post-body a:hover { text-decoration: underline; }
+        .post-body pre { background: #1e1e1e; color: #d4d4d4; padding: 1.25rem 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0 1.25rem 0; font-size: 0.88rem; line-height: 1.6; border-left: 4px solid #ff6b35; }
+        .post-body code { font-family: 'Courier New', Courier, monospace; }
+        .post-body p code, .post-body li code { background: #f0f0f0; color: #c0392b; padding: 1px 6px; border-radius: 4px; font-size: 0.88em; }
+        .callout { background: #f0f7f0; border-left: 4px solid #2d5a2d; padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin: 1.25rem 0; color: #2d3a2d; }
+        .callout.warning { background: #fff8f0; border-left-color: #ff6b35; color: #4a2800; }
+        .callout.info { background: #f0f4ff; border-left-color: #667eea; color: #1a2060; }
+        .post-footer { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .post-footer a { color: #ff6b35; text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+        footer { background: #2d3748; color: white; padding: 2rem; text-align: center; margin-top: 4rem; }
+        footer a { color: #ff6b35; text-decoration: none; }
+        @media (max-width: 600px) { .hero h1 { font-size: 1.6rem; } .post-body { padding: 1.5rem; } }
+    </style>
+</head>
+<body>
+
+<div class="hero">
+    <div class="hero-inner">
+        <a href="../index.html" class="back-link">← Back to ProDirt Blog</a>
+        <div class="post-meta">
+            <span class="post-date">March 16, 2026</span>
+            <span class="post-tag">IT</span>
+        </div>
+        <h1>VxRail in Full Meltdown: Recovering VMs When vCenter and vSAN Are Both Gone</h1>
+        <p class="subtitle">No vCenter. No VxRail Manager. vSAN partially recovered. Here's how to get VMs back on the network when the entire management plane is gone and you're working directly on the host.</p>
+    </div>
+</div>
+
+<article>
+    <div class="post-body">
+
+        <p>
+            This one was a bad day. VxRail cluster, vSAN-backed storage, and both vCenter and VxRail Manager
+            were offline. The vSAN had already been through a partial recovery — some VMs were accessible on
+            the datastores, but they weren't responding on the network. The reason turned out to be something
+            that seems simple once you understand it, but burns a lot of time if you don't: the VMX files were
+            referencing dvSwitch portgroup IDs that no longer resolved to anything, because the entire
+            management plane that knew about those portgroups was gone.
+        </p>
+
+        <h2>Why the NICs Were Dead</h2>
+
+        <p>
+            In a normal vSphere environment with a distributed vSwitch (dvSwitch), VM network adapters are
+            defined in the VMX file using references like this:
+        </p>
+
+        <pre><code>ethernet1.dvs.switchId = "50 27 c7 2e ..."
+ethernet1.dvs.portgroupId = "dvportgroup-1011"
+ethernet1.dvs.portId = "..."
+ethernet1.dvs.connectionId = "..."</code></pre>
+
+        <p>
+            Those IDs are resolved by vCenter at runtime. When vCenter is alive, it maps <code>dvportgroup-1011</code>
+            to an actual network. When vCenter is dead, those references are essentially null pointers. The ESXi host
+            has no idea what network to put that VM on, so the adapter initializes with no connectivity.
+        </p>
+
+        <p>
+            The fix is to abandon the dvSwitch references entirely and rewrite the ethernet section to use
+            <code>networkName</code> style — which is what standard vSwitch VMs use and what ESXi can resolve
+            locally without needing vCenter at all.
+        </p>
+
+        <h2>Finding the VMX File</h2>
+
+        <p>
+            With vCenter down, everything happens from the ESXi host CLI over SSH. First, find the VMX:
+        </p>
+
+        <pre><code>find /vmfs/volumes -name "*.vmx" 2>/dev/null</code></pre>
+
+        <p>
+            On a vSAN datastore the path will look something like:
+        </p>
+
+        <pre><code>/vmfs/volumes/vsan:52429c81f18c2743-cab55941a2c30dd1/f49c0860-5ce0-f710-4e2a-e4434b35be40/YourVM.vmx</code></pre>
+
+        <h2>Finding the Correct Network Name</h2>
+
+        <p>
+            Before editing the broken VM, grep a working VM that you know is on the right network. This gives
+            you the exact <code>networkName</code> value to use:
+        </p>
+
+        <pre><code>grep -i ethernet /vmfs/volumes/vsan:.../WorkingVM/WorkingVM.vmx</code></pre>
+
+        <p>
+            You're looking for a line like:
+        </p>
+
+        <pre><code>ethernet0.networkName = "VM Network"</code></pre>
+
+        <p>
+            That string — <code>"VM Network"</code> or whatever your environment calls it — is what you'll
+            use in the broken VM's VMX. Don't guess it; pull it from something that's working.
+        </p>
+
+        <h2>Rewriting the Broken Ethernet Section</h2>
+
+        <p>
+            Open the VMX in vi:
+        </p>
+
+        <pre><code>vi /vmfs/volumes/vsan:.../.../YourVM.vmx</code></pre>
+
+        <p>
+            Delete all lines that start with <code>ethernet1.dvs.</code> and the <code>uptCompatibility</code>
+            line if present. Replace the entire ethernet1 block with clean networkName-style entries:
+        </p>
+
+        <pre><code>ethernet1.virtualDev = "vmxnet3"
+ethernet1.networkName = "VM Network"
+ethernet1.shares = "normal"
+ethernet1.addressType = "static"
+ethernet1.address = "00:50:56:ab:ac:7a"
+ethernet1.present = "TRUE"
+ethernet1.pciSlotNumber = "224"</code></pre>
+
+        <div class="callout warning">
+            ⚠️ <strong>Keep the original MAC address.</strong> Use <code>addressType = "static"</code> and
+            copy the MAC from the original VMX. If this VM has a DHCP reservation or anything else tied to
+            its MAC, changing it will cause more problems than it solves.
+        </div>
+
+        <h2>Registering and Starting the VM Without vCenter</h2>
+
+        <p>
+            With vCenter gone, you manage VMs directly through the host using <code>vim-cmd</code>.
+            If the VM isn't registered on the host yet:
+        </p>
+
+        <pre><code>vim-cmd solo/registervm /vmfs/volumes/vsan:.../.../YourVM.vmx</code></pre>
+
+        <p>
+            Get the VM ID and reload the config:
+        </p>
+
+        <pre><code>vim-cmd vmsvc/getallvms
+vim-cmd vmsvc/reload &lt;vmid&gt;
+vim-cmd vmsvc/power.on &lt;vmid&gt;</code></pre>
+
+        <div class="callout info">
+            ℹ️ <strong>Power state check:</strong> If the VM shows as already powered on in <code>getallvms</code>
+            but isn't responding, do a hard power off first (<code>vim-cmd vmsvc/power.off &lt;vmid&gt;</code>)
+            before the reload. Otherwise the reload may not pick up the VMX changes.
+        </div>
+
+        <h2>The vSAN Disk Extension Side Quest</h2>
+
+        <p>
+            While we were in here, there was also an attempt to extend a VM disk through the vCenter UI — which
+            was failing with "Invalid operation for device" even from CLI <code>vmkfstools -X</code>. This turned
+            out to be vSAN holding locks on the object differently than a standard VMFS datastore. The UI was
+            also holding the entire Edit Settings dialog hostage over a disk validation error, blocking an
+            unrelated NIC change from being saved.
+        </p>
+
+        <p>
+            Lesson: when the UI is broken and blocking you from making an unrelated change, go directly to
+            the VMX. Don't fight the GUI for an hour when vi and vim-cmd will get you there in five minutes.
+        </p>
+
+        <h2>Wrapping Up</h2>
+
+        <p>
+            The core takeaway from this incident: dvSwitch portgroup references in VMX files are vCenter-dependent.
+            No vCenter means no portgroup resolution, which means the NIC initializes with no connectivity even
+            though the VM boots and appears healthy. Switching from dvSwitch style to <code>networkName</code>
+            style lets ESXi resolve the network locally and completely bypasses the dead management plane.
+        </p>
+
+        <p>
+            It's the kind of thing you'd never know to look for until you're standing in the wreckage of a
+            cluster at 11pm wondering why a VM that's clearly running has no network. Now you know.
+        </p>
+
+        <div class="post-footer">
+            <a href="../index.html">← All Posts</a>
+            <a href="https://prodirt-llc.github.io/">ProDirt Apps →</a>
+        </div>
+
+    </div>
+</article>
+
+<footer>
+    <p>© 2026 ProDirt LLC. All rights reserved.</p>
+    <p style="margin-top: 0.75rem;">
+        <a href="https://prodirt-llc.github.io/">Apps</a> |
+        <a href="../index.html">Blog</a> |
+        <a href="mailto:contact.prodirt@gmail.com">Contact</a>
+    </p>
+</footer>
+
+</body>
+</html>

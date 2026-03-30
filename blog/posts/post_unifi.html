@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A school with wall-to-wall UniFi APs was getting 4 Mbps complaints. Every student laptop was glued to one access point. Here's the sticky client fix that solved it.">
+    <title>UniFi Sticky Client Hell: 240 Laptops Glued to One AP at a School | ProDirt Blog</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; color: #333; background: #f5f5f5; }
+        .hero { background: linear-gradient(135deg, #1a3a1a 0%, #2d5a2d 100%); color: white; padding: 3rem 2rem; border-bottom: 3px solid #ff6b35; }
+        .hero-inner { max-width: 760px; margin: 0 auto; }
+        .back-link { display: inline-block; margin-bottom: 1.25rem; color: white; text-decoration: none; opacity: 0.8; font-size: 0.9rem; }
+        .back-link:hover { opacity: 1; }
+        .post-meta { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; margin-bottom: 1rem; }
+        .post-date { font-size: 0.85rem; opacity: 0.75; }
+        .post-tag { background: #ff6b35; color: white; padding: 2px 10px; border-radius: 10px; font-size: 0.78rem; font-weight: 600; }
+        .hero h1 { font-size: 2rem; font-weight: 700; line-height: 1.3; margin-bottom: 0.75rem; }
+        .hero .subtitle { opacity: 0.85; font-size: 1.05rem; }
+        article { max-width: 760px; margin: 2.5rem auto; padding: 0 1.5rem; }
+        .post-body { background: white; border-radius: 10px; padding: 2.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .post-body h2 { color: #1a3a1a; font-size: 1.4rem; margin: 2rem 0 0.75rem 0; padding-bottom: 0.4rem; border-bottom: 2px solid #f0f7f0; }
+        .post-body h3 { color: #2d5a2d; font-size: 1.1rem; margin: 1.5rem 0 0.5rem 0; }
+        .post-body p { margin-bottom: 1.1rem; color: #444; }
+        .post-body ul, .post-body ol { margin: 0.5rem 0 1.1rem 1.5rem; color: #444; }
+        .post-body li { margin-bottom: 0.4rem; }
+        .post-body strong { color: #222; }
+        .post-body a { color: #ff6b35; text-decoration: none; }
+        .post-body a:hover { text-decoration: underline; }
+        .post-body pre { background: #1e1e1e; color: #d4d4d4; padding: 1.25rem 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0 1.25rem 0; font-size: 0.88rem; line-height: 1.6; border-left: 4px solid #ff6b35; }
+        .post-body code { font-family: 'Courier New', Courier, monospace; }
+        .post-body p code, .post-body li code { background: #f0f0f0; color: #c0392b; padding: 1px 6px; border-radius: 4px; font-size: 0.88em; }
+        .callout { background: #f0f7f0; border-left: 4px solid #2d5a2d; padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin: 1.25rem 0; color: #2d3a2d; }
+        .callout.warning { background: #fff8f0; border-left-color: #ff6b35; color: #4a2800; }
+        .callout.info { background: #f0f4ff; border-left-color: #667eea; color: #1a2060; }
+        .post-footer { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .post-footer a { color: #ff6b35; text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+        footer { background: #2d3748; color: white; padding: 2rem; text-align: center; margin-top: 4rem; }
+        footer a { color: #ff6b35; text-decoration: none; }
+        @media (max-width: 600px) { .hero h1 { font-size: 1.6rem; } .post-body { padding: 1.5rem; } }
+    </style>
+</head>
+<body>
+
+<div class="hero">
+    <div class="hero-inner">
+        <a href="../index.html" class="back-link">← Back to ProDirt Blog</a>
+        <div class="post-meta">
+            <span class="post-date">February 13, 2026</span>
+            <span class="post-tag">IT</span>
+        </div>
+        <h1>UniFi Sticky Client Hell: 240 Laptops Glued to One AP at a School</h1>
+        <p class="subtitle">A building full of APs, students everywhere, and everyone was getting 4 Mbps. The problem wasn't the internet — it was that every device in the building was connected to a single access point in the Media Room.</p>
+    </div>
+</div>
+
+<article>
+    <div class="post-body">
+
+        <p>
+            Got a call from a school: Wi-Fi is slow, teachers are complaining, Google Classroom is lagging.
+            They've got UniFi APs throughout the building, a decent internet pipe, and nothing obvious in
+            the dashboard screaming at you. Speeds are 4.3 down, 1.6 up. On paper the APs look fine.
+        </p>
+
+        <p>
+            Pulled up the client list and there it was. The Media Room AP — where students store their
+            Chromebooks and laptops overnight — had <strong>240+ active clients</strong>. Every other AP
+            in the building had somewhere between 3 and 12. The devices were connecting to the Media Room
+            AP at the start of the day and never leaving. Didn't matter that they were sitting in a
+            classroom on the other side of the building with a better AP five feet away. 802.11 clients
+            are stubborn like that.
+        </p>
+
+        <h2>Why Clients Get Sticky</h2>
+
+        <p>
+            The 802.11 spec puts roaming decisions entirely on the client, not the access point. An AP
+            can suggest that a client move on, but it can't force it. So unless you configure the AP to
+            actively kick clients off when their signal drops below a threshold, a device that connected
+            in the Media Room at 7am will happily drag that association across the building all day —
+            getting progressively worse signal and slower speeds — because dropping and reconnecting
+            costs it a tiny bit of time and battery, and clients are optimized to avoid that.
+        </p>
+
+        <p>
+            The result in a school environment is textbook: storage room becomes the overnight charging
+            station, becomes the association anchor point for half the building every morning.
+        </p>
+
+        <h2>The Fix: Roaming Assistant + Power Reduction</h2>
+
+        <p>
+            Two changes, both in the UniFi controller under the specific AP settings for the Media Room.
+        </p>
+
+        <h3>1. Enable Roaming Assistant</h3>
+
+        <p>
+            In UniFi, navigate to <strong>Devices → Media Room AP → Config → Radios</strong>.
+            Enable <strong>Roaming Assistant</strong> and set the threshold. We used <strong>-75 dBm</strong>
+            on the AP level, with a global minimum RSSI of <strong>-65 dBm</strong> set across the site.
+        </p>
+
+        <p>
+            Here's the part that trips people up with dBm values — bigger negative number means <em>weaker</em>
+            signal. So <strong>-65 dBm is more aggressive</strong> (kicks clients sooner, requires stronger signal)
+            than -75 dBm. When a client's signal to this AP drops below -65 dBm, the AP actively pushes
+            the client to reassociate. Most devices will find a closer AP within a second or two.
+        </p>
+
+        <div class="callout info">
+            ℹ️ <strong>The dBm mental model:</strong> Think of it as a negative score. -50 is excellent,
+            -70 is okay, -85 is garbage. A threshold of -65 means "if you drop below okay, go find something
+            better." A threshold of -80 means "stay connected until things are genuinely bad."
+        </div>
+
+        <h3>2. Reduce Transmit Power on the Media Room AP</h3>
+
+        <p>
+            Roaming Assistant handles clients that are already connected and degraded. But it doesn't stop
+            a device in a classroom from <em>initially</em> associating with the Media Room AP because it
+            can still see it at -68 dBm from across the building. The solution is to shrink the Media Room
+            AP's coverage bubble by dropping its transmit power.
+        </p>
+
+        <p>
+            Changed it from <strong>Auto</strong> to <strong>Medium</strong>. This reduces how far the AP
+            reaches, so devices in distant rooms simply don't see it as a strong enough candidate at boot.
+            The nearby AP wins the initial association and Roaming Assistant keeps it there.
+        </p>
+
+        <h3>3. Increase Channel Width on 5 GHz</h3>
+
+        <p>
+            While we were in there, the 5 GHz radios were configured at 40 MHz channel width. Pushed those
+            to 80 MHz and enabled additional DFS channels. This doubled the theoretical throughput ceiling
+            for clients that do have a clean 5 GHz path to an AP — which, after fixing the distribution
+            problem, was now most of them.
+        </p>
+
+        <div class="callout warning">
+            ⚠️ <strong>DFS channels and radar:</strong> DFS channels require the AP to do a channel
+            availability check on startup and will briefly go offline if they detect radar. In a school
+            setting this is usually fine. Near an airport or military installation, stick to non-DFS.
+        </div>
+
+        <h2>Settings Summary</h2>
+        <ul>
+            <li>Global minimum RSSI: <strong>-65 dBm</strong></li>
+            <li>Media Room AP Roaming Assistant: <strong>-75 dBm</strong></li>
+            <li>Media Room AP transmit power: <strong>Medium</strong> (was Auto)</li>
+            <li>5 GHz channel width: <strong>80 MHz</strong> (was 40 MHz)</li>
+            <li>DFS channels: <strong>Enabled</strong></li>
+        </ul>
+
+        <h2>Result</h2>
+
+        <p>
+            Client distribution across the APs normalized almost immediately. The Media Room AP dropped
+            from 240+ clients to a handful. Speeds across the building came back up. A few days later
+            the school staff reported that classroom assignments were loading without issues and nobody
+            was complaining about lag anymore.
+        </p>
+
+        <p>
+            The whole thing took maybe 45 minutes to diagnose and configure once I was actually in the
+            controller. The hardest part was explaining to the client why a room full of access points
+            on a good internet connection was producing 4 Mbps — the answer being "because 240 devices
+            were sharing one of them."
+        </p>
+
+        <h2>Wrapping Up</h2>
+
+        <p>
+            Sticky client issues are one of the most common Wi-Fi complaints in environments where
+            devices are stored in one location overnight and used throughout a larger space — schools,
+            warehouses, clinics. The UniFi Roaming Assistant + transmit power combination handles it
+            cleanly without requiring any changes on the client side. If you're seeing one AP in your
+            list with 10x the clients of every other AP, that's your diagnosis right there.
+        </p>
+
+        <div class="post-footer">
+            <a href="../index.html">← All Posts</a>
+            <a href="https://prodirt-llc.github.io/">ProDirt Apps →</a>
+        </div>
+
+    </div>
+</article>
+
+<footer>
+    <p>© 2026 ProDirt LLC. All rights reserved.</p>
+    <p style="margin-top: 0.75rem;">
+        <a href="https://prodirt-llc.github.io/">Apps</a> |
+        <a href="../index.html">Blog</a> |
+        <a href="mailto:contact.prodirt@gmail.com">Contact</a>
+    </p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Microsoft deprecated Basic Auth SMTP. Here's how we replaced SSRS email delivery with a .NET 8 Windows Service using Microsoft Graph API and certificate authentication.">
+    <title>Microsoft Killed Basic Auth SMTP — So I Replaced SSRS Email with Microsoft Graph | ProDirt Blog</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; color: #333; background: #f5f5f5; }
+        .hero { background: linear-gradient(135deg, #1a3a1a 0%, #2d5a2d 100%); color: white; padding: 3rem 2rem; border-bottom: 3px solid #ff6b35; }
+        .hero-inner { max-width: 760px; margin: 0 auto; }
+        .back-link { display: inline-block; margin-bottom: 1.25rem; color: white; text-decoration: none; opacity: 0.8; font-size: 0.9rem; }
+        .back-link:hover { opacity: 1; }
+        .post-meta { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; margin-bottom: 1rem; }
+        .post-date { font-size: 0.85rem; opacity: 0.75; }
+        .post-tag { background: #ff6b35; color: white; padding: 2px 10px; border-radius: 10px; font-size: 0.78rem; font-weight: 600; }
+        .hero h1 { font-size: 2rem; font-weight: 700; line-height: 1.3; margin-bottom: 0.75rem; }
+        .hero .subtitle { opacity: 0.85; font-size: 1.05rem; }
+        article { max-width: 760px; margin: 2.5rem auto; padding: 0 1.5rem; }
+        .post-body { background: white; border-radius: 10px; padding: 2.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .post-body h2 { color: #1a3a1a; font-size: 1.4rem; margin: 2rem 0 0.75rem 0; padding-bottom: 0.4rem; border-bottom: 2px solid #f0f7f0; }
+        .post-body h3 { color: #2d5a2d; font-size: 1.1rem; margin: 1.5rem 0 0.5rem 0; }
+        .post-body p { margin-bottom: 1.1rem; color: #444; }
+        .post-body ul, .post-body ol { margin: 0.5rem 0 1.1rem 1.5rem; color: #444; }
+        .post-body li { margin-bottom: 0.4rem; }
+        .post-body strong { color: #222; }
+        .post-body a { color: #ff6b35; text-decoration: none; }
+        .post-body a:hover { text-decoration: underline; }
+        .post-body pre { background: #1e1e1e; color: #d4d4d4; padding: 1.25rem 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0 1.25rem 0; font-size: 0.88rem; line-height: 1.6; border-left: 4px solid #ff6b35; }
+        .post-body code { font-family: 'Courier New', Courier, monospace; }
+        .post-body p code, .post-body li code { background: #f0f0f0; color: #c0392b; padding: 1px 6px; border-radius: 4px; font-size: 0.88em; }
+        .callout { background: #f0f7f0; border-left: 4px solid #2d5a2d; padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin: 1.25rem 0; color: #2d3a2d; }
+        .callout.warning { background: #fff8f0; border-left-color: #ff6b35; color: #4a2800; }
+        .callout.info { background: #f0f4ff; border-left-color: #667eea; color: #1a2060; }
+        .post-footer { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .post-footer a { color: #ff6b35; text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+        footer { background: #2d3748; color: white; padding: 2rem; text-align: center; margin-top: 4rem; }
+        footer a { color: #ff6b35; text-decoration: none; }
+        @media (max-width: 600px) { .hero h1 { font-size: 1.6rem; } .post-body { padding: 1.5rem; } }
+    </style>
+</head>
+<body>
+
+<div class="hero">
+    <div class="hero-inner">
+        <a href="../index.html" class="back-link">← Back to ProDirt Blog</a>
+        <div class="post-meta">
+            <span class="post-date">March 20, 2026</span>
+            <span class="post-tag">Dev</span>
+        </div>
+        <h1>Microsoft Killed Basic Auth SMTP — So I Replaced SSRS Email with Microsoft Graph</h1>
+        <p class="subtitle">When Microsoft deprecated Basic Auth for SMTP relay, every SSRS subscription in the environment went silent. Here's how we built a replacement that actually works long-term.</p>
+    </div>
+</div>
+
+<article>
+    <div class="post-body">
+
+        <p>
+            If you're running SQL Server Reporting Services and sending subscriptions through Microsoft 365,
+            you've either already hit this wall or you're going to. Microsoft deprecated Basic Authentication
+            for SMTP connections to Exchange Online. SSRS uses Basic Auth for its email delivery. The result:
+            scheduled reports stop going out, nobody says anything for a while, and then someone important
+            notices they haven't gotten their Monday morning report in three weeks.
+        </p>
+
+        <p>
+            The official Microsoft answer is "use SMTP AUTH with modern auth" — but SSRS doesn't support that.
+            The other suggestion floating around is to stand up an on-prem SMTP relay. That works, but it's
+            another thing to maintain, another TLS cert to manage, another thing that can break at 2am.
+        </p>
+
+        <p>
+            We went a different direction: a lightweight .NET 8 Windows Service that accepts SMTP locally
+            (from SSRS), then forwards the email via Microsoft Graph API using certificate-based authentication.
+            No passwords in config files, no Basic Auth anywhere, nothing deprecated. We called it
+            <strong>CodeBlueMailRelay</strong>.
+        </p>
+
+        <h2>Architecture Overview</h2>
+
+        <p>
+            The service does three things:
+        </p>
+
+        <ol>
+            <li>Listens on localhost SMTP (port 25 or 587, your choice) using the SmtpServer NuGet library</li>
+            <li>Receives the email that SSRS hands off exactly like it would to any SMTP server</li>
+            <li>Forwards it via Microsoft Graph API using MSAL with a certificate credential — no passwords</li>
+        </ol>
+
+        <p>
+            SSRS gets configured to point at <code>127.0.0.1</code> as its SMTP server. As far as SSRS is
+            concerned, it's talking to a normal SMTP relay. The service handles all the modern auth complexity
+            behind the scenes.
+        </p>
+
+        <h2>Azure App Registration Setup</h2>
+
+        <p>
+            Before writing any code, you need an App Registration in Entra ID with the right permissions
+            and a certificate credential. No client secrets — certificates only, so there's no password
+            to rotate or accidentally commit to source control.
+        </p>
+
+        <ol>
+            <li>Create an App Registration in Entra ID</li>
+            <li>Add API permission: <code>Mail.Send</code> (Application permission, not Delegated)</li>
+            <li>Grant admin consent for the permission</li>
+            <li>Generate a self-signed cert (or use your PKI if you have one) and upload the public key to the app registration under Certificates &amp; Secrets</li>
+            <li>Install the cert with private key on the server running the relay service</li>
+        </ol>
+
+        <div class="callout warning">
+            ⚠️ <strong>Scope your Mail.Send permission.</strong> By default, an app with <code>Mail.Send</code>
+            can send as any mailbox in the tenant. Use application access policies in Exchange Online to restrict
+            it to only the service account mailbox you're sending from. This is not optional if you care about
+            security posture.
+        </div>
+
+        <h3>Restricting the App to One Mailbox (Exchange Online PowerShell)</h3>
+
+        <pre><code># Create a mail-enabled security group with just the sender account
+New-DistributionGroup -Name "MailRelayServiceAccounts" -Type Security
+
+Add-DistributionGroupMember -Identity "MailRelayServiceAccounts" -Member "ssrs-relay@yourdomain.com"
+
+# Apply the access policy
+New-ApplicationAccessPolicy `
+    -AppId "YOUR-APP-CLIENT-ID" `
+    -PolicyScopeGroupId "MailRelayServiceAccounts" `
+    -AccessRight RestrictAccess `
+    -Description "Limit mail relay app to SSRS sender account only"</code></pre>
+
+        <h2>The Service Core</h2>
+
+        <p>
+            The SMTP listener uses the <code>SmtpServer</code> library. The Graph send uses
+            <code>Microsoft.Graph</code> and <code>Microsoft.Identity.Client</code> (MSAL). Here's
+            the core send method — stripped down for readability:
+        </p>
+
+        <pre><code>private async Task SendViaGraphAsync(MimeMessage message)
+{
+    // Certificate-based credential — no passwords
+    var cert = GetCertificateFromStore(_config.CertThumbprint);
+
+    var confidentialClient = ConfidentialClientApplicationBuilder
+        .Create(_config.ClientId)
+        .WithTenantId(_config.TenantId)
+        .WithCertificate(cert)
+        .Build();
+
+    var graphClient = new GraphServiceClient(
+        new ClientCredentialProvider(confidentialClient));
+
+    var graphMessage = new Message
+    {
+        Subject = message.Subject,
+        Body = new ItemBody
+        {
+            ContentType = message.HtmlBody != null
+                ? BodyType.Html
+                : BodyType.Text,
+            Content = message.HtmlBody ?? message.TextBody
+        },
+        ToRecipients = message.To.Mailboxes.Select(m => new Recipient
+        {
+            EmailAddress = new EmailAddress { Address = m.Address }
+        }).ToList()
+    };
+
+    await graphClient.Users[_config.SenderAddress]
+        .SendMail
+        .PostAsync(new SendMailPostRequestBody
+        {
+            Message = graphMessage,
+            SaveToSentItems = false
+        });
+}</code></pre>
+
+        <h2>Logging and Monitoring</h2>
+
+        <p>
+            The service uses Serilog with two sinks: a rolling log file and the Windows Event Log.
+            The Event Log integration uses a defined event ID map so ConnectWise Automate (or any
+            RMM worth using) can monitor for specific conditions without parsing log text:
+        </p>
+
+        <ul>
+            <li><strong>1000</strong> — Service started successfully</li>
+            <li><strong>1001</strong> — Service stopped</li>
+            <li><strong>2000</strong> — Email sent successfully</li>
+            <li><strong>3000</strong> — Send failed (Graph API error)</li>
+            <li><strong>3001</strong> — Authentication failure (cert issue or token problem)</li>
+            <li><strong>9000</strong> — Unhandled exception</li>
+        </ul>
+
+        <p>
+            Automate has an alert policy watching for Event IDs in the 3000 range on servers running
+            this service. If a cert expires or a permission gets yanked in Entra, we hear about it
+            before a client does.
+        </p>
+
+        <h2>SSRS Configuration</h2>
+
+        <p>
+            In Report Server Configuration Manager, under Email Settings:
+        </p>
+
+        <ul>
+            <li><strong>SMTP Server:</strong> <code>127.0.0.1</code></li>
+            <li><strong>From Address:</strong> your sender mailbox</li>
+            <li><strong>Authentication:</strong> No authentication (the relay handles auth)</li>
+            <li><strong>Port:</strong> whatever you configured the service to listen on (default 25)</li>
+        </ul>
+
+        <div class="callout">
+            💡 <strong>Tip:</strong> If SSRS is on the same server as the relay service, localhost works fine.
+            If they're on different servers, bind the listener to the SSRS server's IP instead of localhost,
+            and make sure the port isn't accessible from anything other than the SSRS host.
+        </div>
+
+        <h2>Wrapping Up</h2>
+
+        <p>
+            This took a day to build and has been running without issues since. No passwords in config,
+            no Basic Auth, no on-prem SMTP infrastructure. The cert has a 2-year expiration and a reminder
+            in the calendar. When that comes up, it's a 10-minute renewal — upload new cert to Entra,
+            update thumbprint in the service config, restart the service, done.
+        </p>
+
+        <p>
+            If you're still proxying SSRS through smtp.office365.com with Basic Auth — or you've got any
+            other legacy app doing the same thing — this pattern works for all of them. The service doesn't
+            care what hands it an email. Anything that can talk SMTP to localhost can use it as a relay.
+        </p>
+
+        <div class="post-footer">
+            <a href="../index.html">← All Posts</a>
+            <a href="https://prodirt-llc.github.io/">ProDirt Apps →</a>
+        </div>
+
+    </div>
+</article>
+
+<footer>
+    <p>© 2026 ProDirt LLC. All rights reserved.</p>
+    <p style="margin-top: 0.75rem;">
+        <a href="https://prodirt-llc.github.io/">Apps</a> |
+        <a href="../index.html">Blog</a> |
+        <a href="mailto:contact.prodirt@gmail.com">Contact</a>
+    </p>
+</footer>
+
+</body>
+</html>

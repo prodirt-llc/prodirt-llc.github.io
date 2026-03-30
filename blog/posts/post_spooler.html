@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="KB5078752 caused print spooler crashes on Server 2019 RDS hosts due to a mismatched PS5UI.DLL. Here's how to fix it without nuking your entire print environment.">
+    <title>The Print Spooler That Lied: Killing a Phantom DLL After a Bad CU | ProDirt Blog</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; color: #333; background: #f5f5f5; }
+        .hero { background: linear-gradient(135deg, #1a3a1a 0%, #2d5a2d 100%); color: white; padding: 3rem 2rem; border-bottom: 3px solid #ff6b35; }
+        .hero-inner { max-width: 760px; margin: 0 auto; }
+        .back-link { display: inline-block; margin-bottom: 1.25rem; color: white; text-decoration: none; opacity: 0.8; font-size: 0.9rem; }
+        .back-link:hover { opacity: 1; }
+        .post-meta { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; margin-bottom: 1rem; }
+        .post-date { font-size: 0.85rem; opacity: 0.75; }
+        .post-tag { background: #ff6b35; color: white; padding: 2px 10px; border-radius: 10px; font-size: 0.78rem; font-weight: 600; }
+        .hero h1 { font-size: 2rem; font-weight: 700; line-height: 1.3; margin-bottom: 0.75rem; }
+        .hero .subtitle { opacity: 0.85; font-size: 1.05rem; }
+        article { max-width: 760px; margin: 2.5rem auto; padding: 0 1.5rem; }
+        .post-body { background: white; border-radius: 10px; padding: 2.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .post-body h2 { color: #1a3a1a; font-size: 1.4rem; margin: 2rem 0 0.75rem 0; padding-bottom: 0.4rem; border-bottom: 2px solid #f0f7f0; }
+        .post-body h3 { color: #2d5a2d; font-size: 1.1rem; margin: 1.5rem 0 0.5rem 0; }
+        .post-body p { margin-bottom: 1.1rem; color: #444; }
+        .post-body ul, .post-body ol { margin: 0.5rem 0 1.1rem 1.5rem; color: #444; }
+        .post-body li { margin-bottom: 0.4rem; }
+        .post-body strong { color: #222; }
+        .post-body a { color: #ff6b35; text-decoration: none; }
+        .post-body a:hover { text-decoration: underline; }
+        .post-body pre { background: #1e1e1e; color: #d4d4d4; padding: 1.25rem 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0 1.25rem 0; font-size: 0.88rem; line-height: 1.6; border-left: 4px solid #ff6b35; }
+        .post-body code { font-family: 'Courier New', Courier, monospace; }
+        .post-body p code, .post-body li code { background: #f0f0f0; color: #c0392b; padding: 1px 6px; border-radius: 4px; font-size: 0.88em; }
+        .callout { background: #f0f7f0; border-left: 4px solid #2d5a2d; padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin: 1.25rem 0; color: #2d3a2d; }
+        .callout.warning { background: #fff8f0; border-left-color: #ff6b35; color: #4a2800; }
+        .callout.info { background: #f0f4ff; border-left-color: #667eea; color: #1a2060; }
+        .post-footer { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .post-footer a { color: #ff6b35; text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+        footer { background: #2d3748; color: white; padding: 2rem; text-align: center; margin-top: 4rem; }
+        footer a { color: #ff6b35; text-decoration: none; }
+        @media (max-width: 600px) { .hero h1 { font-size: 1.6rem; } .post-body { padding: 1.5rem; } }
+    </style>
+</head>
+<body>
+
+<div class="hero">
+    <div class="hero-inner">
+        <a href="../index.html" class="back-link">← Back to ProDirt Blog</a>
+        <div class="post-meta">
+            <span class="post-date">March 30, 2026</span>
+            <span class="post-tag">IT</span>
+        </div>
+        <h1>The Print Spooler That Lied: Killing a Phantom DLL After a Bad CU</h1>
+        <p class="subtitle">KB5078752 dropped, the spooler started crashing on startup, and the error pointed at a DLL that technically existed — it was just lying about what it contained.</p>
+    </div>
+</div>
+
+<article>
+    <div class="post-body">
+
+        <p>
+            Monday morning. Print spooler is dead on a Server 2019 RDS host. About three dozen network printers
+            mapped via GPO, and not a single one is working. Event log is throwing this:
+        </p>
+
+        <pre><code>The print spooler failed to load a plug-in module
+C:\Windows\system32\spool\DRIVERS\x64\3\PS5UI.DLL, error code 0x7F.</code></pre>
+
+        <p>
+            <strong>0x7F is ERROR_PROC_NOT_FOUND.</strong> The DLL loaded fine — the spooler just couldn't find an exported
+            function it expected to be there. That's not a missing file problem. That's a mismatched or corrupted driver problem.
+        </p>
+
+        <h2>What Was Actually Going On</h2>
+
+        <p>
+            <code>PS5UI.DLL</code> is a PostScript driver UI component. It lives in the driver store and gets referenced
+            by any printer using a PostScript driver — which, on most environments, means your Ricoh, Xerox, Konica,
+            or any other fleet copier running a PS3 driver.
+        </p>
+
+        <p>
+            In this case, KB5078752 (a Server 2019 cumulative update) had introduced a version mismatch. The update
+            touched spooler components but left an old PS5UI.DLL sitting in the x64\3\ driver staging folder.
+            The spooler tried to load it, expected certain functions, didn't find them, and crashed. Every time.
+            Before it could even start.
+        </p>
+
+        <div class="callout warning">
+            ⚠️ <strong>Don't just nuke all your drivers.</strong> If printers are GPO-mapped on an RDS host,
+            you can safely remove the driver environment and let them repopulate. On a standalone workstation
+            where users installed printers manually, you'll have a different cleanup job afterward.
+        </div>
+
+        <h2>The Fix: Reset the Driver Environment</h2>
+
+        <p>
+            The safest approach here is to stop the spooler, strip out all third-party drivers from the store,
+            and let GPO repopulate everything cleanly. Here's the script we used:
+        </p>
+
+        <pre><code>$logFile = "C:\Temp\SpoolerReset_$(Get-Date -Format 'yyyyMMdd_HHmmss').log"
+New-Item -ItemType Directory -Force -Path "C:\Temp" | Out-Null
+
+function Log($msg) {
+    $ts = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    "$ts  $msg" | Tee-Object -FilePath $logFile -Append
+}
+
+Log "Starting spooler reset"
+
+# Stop spooler
+Stop-Service -Name Spooler -Force -ErrorAction SilentlyContinue
+Log "Spooler stopped"
+
+# Clear the print queue
+Get-ChildItem "C:\Windows\System32\spool\PRINTERS" -ErrorAction SilentlyContinue |
+    Remove-Item -Force -Recurse -ErrorAction SilentlyContinue
+Log "Print queue cleared"
+
+# Remove all non-Microsoft printer drivers
+$drivers = Get-PrinterDriver -ErrorAction SilentlyContinue |
+    Where-Object { $_.Manufacturer -notmatch "Microsoft" }
+
+foreach ($d in $drivers) {
+    try {
+        Remove-PrinterDriver -Name $d.Name -ErrorAction Stop
+        Log "Removed driver: $($d.Name)"
+    } catch {
+        Log "Could not remove $($d.Name): $_"
+    }
+}
+
+# Start spooler
+Start-Service -Name Spooler -ErrorAction SilentlyContinue
+Start-Sleep -Seconds 5
+
+$status = (Get-Service -Name Spooler).Status
+Log "Spooler status after restart: $status"
+
+if ($status -ne "Running") {
+    Log "FAILED - spooler did not start. Check PrintService event log."
+} else {
+    Log "SUCCESS - spooler running. GPO will repopulate drivers as users connect."
+}</code></pre>
+
+        <h3>What This Keeps</h3>
+        <p>
+            The script only removes non-Microsoft drivers. The Microsoft-supplied components — Enhanced Point and Print,
+            Remote Desktop Easy Print, WSD drivers — stay in place. The spooler comes back up clean, and on the next
+            GP refresh (or when users log in), their printers repopulate automatically from the print server.
+        </p>
+
+        <div class="callout">
+            💡 <strong>Tip:</strong> Run <code>gpupdate /force</code> after the spooler comes back up to kick off
+            driver redistribution without waiting for the next GP cycle.
+        </div>
+
+        <h2>Requirements and Notes</h2>
+        <ul>
+            <li>Must be run as Administrator</li>
+            <li>Spooler does not need to be running beforehand — the script handles a dead spooler</li>
+            <li>Intended for <strong>print servers and RDS hosts</strong> where printers are GPO-managed</li>
+            <li>Not ideal for standalone workstations where users installed drivers manually</li>
+            <li>Log file drops to <code>C:\Temp\SpoolerReset_&lt;timestamp&gt;.log</code></li>
+        </ul>
+
+        <h2>If the Spooler Still Dies After Running</h2>
+        <p>
+            If you run this and the spooler still won't start, the problem isn't in the driver store anymore.
+            Check <strong>Microsoft-Windows-PrintService/Admin</strong> in Event Viewer immediately after attempting
+            to start it — you'll usually see a second DLL being called out. Also worth checking whether a recent
+            Windows Update is the culprit:
+        </p>
+
+        <pre><code>Get-HotFix | Sort-Object InstalledOn -Descending | Select-Object -First 10</code></pre>
+
+        <p>
+            If a specific KB lines up with when the problem started, test uninstalling it in a maintenance window
+            before spending more time chasing the driver store.
+        </p>
+
+        <h2>Wrapping Up</h2>
+        <p>
+            This whole incident came down to a 2016-vintage Lexmark Universal PS3 driver with a mismatched
+            <code>PS5UI.DLL</code> that survived years of updates without issue — until KB5078752 changed what
+            the spooler expected to find in that file. Two minutes to run the script, five minutes for GPO to
+            redistribute drivers, done. Nobody lost their printers for more than a morning.
+        </p>
+
+        <p>
+            The real lesson: if the spooler dies right after a CU and the error is 0x7F pointing at a PostScript
+            DLL, don't spend time hunting the file. The file is there. It's the version that's wrong. Clear the
+            driver environment and let it rebuild clean.
+        </p>
+
+        <div class="post-footer">
+            <a href="../index.html">← All Posts</a>
+            <a href="https://prodirt-llc.github.io/">ProDirt Apps →</a>
+        </div>
+
+    </div>
+</article>
+
+<footer>
+    <p>© 2026 ProDirt LLC. All rights reserved.</p>
+    <p style="margin-top: 0.75rem;">
+        <a href="https://prodirt-llc.github.io/">Apps</a> |
+        <a href="../index.html">Blog</a> |
+        <a href="mailto:contact.prodirt@gmail.com">Contact</a>
+    </p>
+</footer>
+
+</body>
+</html>

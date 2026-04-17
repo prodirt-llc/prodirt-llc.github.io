@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="TrailMapper - GPS trail recording and mapping for property owners and trail builders. Export KML and GPX. No subscriptions.">
+    <title>TrailMapper - GPS Trail Recording for Property Owners</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f5f5f5; }
+        .hero { background: linear-gradient(135deg, #0f1a0f 0%, #1a3a1a 100%); color: white; padding: 4rem 2rem; text-align: center; border-bottom: 3px solid #ff6b35; }
+        .hero h1 { font-size: 2.5rem; margin-bottom: 1rem; font-weight: 700; }
+        .hero p { font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.95; }
+        .back-link { display: inline-block; margin-bottom: 1.5rem; color: white; text-decoration: none; opacity: 0.75; font-size: 0.9rem; }
+        .back-link:hover { opacity: 1; }
+        .app-icon { width: 110px; height: 110px; margin: 0 auto 1.5rem; display: block; border-radius: 22px; box-shadow: 0 4px 16px rgba(0,0,0,0.5); }
+        .cta-button { display: inline-block; background: #ff6b35; color: white; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 1.1rem; transition: transform 0.2s, box-shadow 0.2s; }
+        .cta-button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.3); background: #e55a25; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem; }
+        .section { background: white; margin: 2rem 0; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .section h2 { color: #1a3a1a; margin-bottom: 1.5rem; font-size: 1.9rem; }
+        .highlight-box { background: linear-gradient(135deg, #0f1a0f 0%, #1a3a1a 100%); color: white; padding: 2rem; border-radius: 12px; margin: 2rem 0; border-left: 4px solid #ff6b35; }
+        .highlight-box h3 { color: white; margin-top: 0; margin-bottom: 1rem; font-size: 1.4rem; }
+        .highlight-box p { opacity: 0.95; margin-bottom: 0.5rem; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1.75rem; margin-top: 1.5rem; }
+        .feature { padding: 1.5rem; background: #f0f4f0; border-radius: 8px; border-left: 4px solid #ff6b35; }
+        .feature h3 { color: #1a3a1a; margin-top: 0; margin-bottom: 0.6rem; font-size: 1.1rem; }
+        .feature p { color: #666; }
+        .use-cases { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
+        .use-case { padding: 1.5rem; background: #f0f4f0; border-radius: 8px; border-top: 3px solid #ff6b35; }
+        .use-case h4 { color: #1a3a1a; margin-bottom: 0.5rem; }
+        .use-case p { color: #666; font-size: 0.95rem; }
+        .principles-list { list-style: none; margin-top: 1rem; }
+        .principles-list li { padding: 0.6rem 0; color: #555; border-bottom: 1px solid #eee; }
+        .principles-list li:last-child { border-bottom: none; }
+        .principles-list li strong { color: #1a3a1a; }
+        .privacy-section { background: white; margin: 2rem 0; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .privacy-section h2 { color: #1a3a1a; margin-bottom: 1rem; font-size: 1.7rem; }
+        .privacy-section h3 { color: #1a3a1a; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+        .privacy-section p { color: #555; margin-bottom: 1rem; }
+        .privacy-section ul { margin-left: 1.5rem; color: #555; line-height: 1.8; }
+        .privacy-section a { color: #ff6b35; text-decoration: none; }
+        .privacy-section a:hover { text-decoration: underline; }
+        footer { background: #0f1a0f; color: #ddd; padding: 2rem; text-align: center; margin-top: 4rem; border-top: 3px solid #ff6b35; }
+        footer a { color: #ff6b35; text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+        @media (max-width: 768px) { .hero h1 { font-size: 2rem; } .hero p { font-size: 1rem; } }
+    </style>
+</head>
+<body>
+
+    <div class="hero">
+        <a href="https://prodirt-llc.github.io/" class="back-link">← Back to ProDirt Apps</a>
+        <img src="logo.png" alt="TrailMapper Logo" class="app-icon">
+        <h1>TrailMapper</h1>
+        <p>GPS trail recording and mapping for property owners and trail builders</p>
+        <a href="https://play.google.com/store/apps/details?id=com.prodirt.trailmapper" class="cta-button">Download Free on Google Play</a>
+    </div>
+
+    <div class="container">
+
+        <div class="highlight-box">
+            <h3>Built for the People Building the Trails</h3>
+            <p>Whether you're laying out a hunting property, building a mountain bike trail system, or mapping an ATV network — TrailMapper gives you the tools to record it, connect it, and hand it off to the property owner in a format they can actually use.</p>
+            <p style="margin-top: 1rem;">GPS-accurate trail segments. Exportable KML and GPX. No subscriptions, no cloud account required.</p>
+        </div>
+
+        <div class="section">
+            <h2>How It Works</h2>
+            <p>Walk, ride, or drive your trail lines while TrailMapper records the GPS path in the background. Connect segments into a full network, add points of interest, then export the whole thing as a KML or GPX file the property owner can drop straight into Google Earth or OnX.</p>
+            <p style="margin-top: 1rem;">Trail builders can also tie excavator work quotes directly to trail segments — keeping job scope and pricing in one place instead of scattered across notes and spreadsheets.</p>
+        </div>
+
+        <div class="section">
+            <h2>Features</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <h3>GPS Trail Recording</h3>
+                    <p>Records trail segments via a background foreground service using fused location. Keep your phone in your pocket while the line gets laid down.</p>
+                </div>
+                <div class="feature">
+                    <h3>Trail Network Builder</h3>
+                    <p>Connect segments into a full trail network. Endpoint snapping, trail splitting, and edit mode let you clean up the map after the fact.</p>
+                </div>
+                <div class="feature">
+                    <h3>KML and GPX Export</h3>
+                    <p>Export your full trail network as KML or GPX. Works directly with Google Earth, Google My Maps, OnX, and most other mapping tools.</p>
+                </div>
+                <div class="feature">
+                    <h3>Points of Interest</h3>
+                    <p>9 preset POI types with canvas-drawn icons — gates, water crossings, parking areas, hazards, and more. Pinned to coordinates on the map.</p>
+                </div>
+                <div class="feature">
+                    <h3>Excavator Quoting</h3>
+                    <p>Generate line-item excavator quotes tied to trail segments. Share quotes as a formatted summary for the property owner or client.</p>
+                </div>
+                <div class="feature">
+                    <h3>Offline Maps</h3>
+                    <p>OSMDroid-powered offline tile caching so the map works in the field without cell service. No Google Maps billing.</p>
+                </div>
+                <div class="feature">
+                    <h3>Elevation Profile</h3>
+                    <p>Sparkline elevation profile per trail segment so you know what the grade looks like before you start cutting.</p>
+                </div>
+                <div class="feature">
+                    <h3>Backup and Restore</h3>
+                    <p>Back up your property data to Google Drive or any local location via Android's Storage Access Framework. No account required.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Built For</h2>
+            <div class="use-cases">
+                <div class="use-case">
+                    <h4>Trail Contractors</h4>
+                    <p>Record, map, and quote trail work for clients. Hand off a KML when the job is done.</p>
+                </div>
+                <div class="use-case">
+                    <h4>Property Owners</h4>
+                    <p>Map your hunting property, ATV trails, or horse paths. Import the KML into Google Earth and share with guests.</p>
+                </div>
+                <div class="use-case">
+                    <h4>Mountain Bike Builders</h4>
+                    <p>Plan flow and layout before you start digging. Export to OnX or Trailforks for the riders.</p>
+                </div>
+                <div class="use-case">
+                    <h4>Land Managers</h4>
+                    <p>Document trail systems on managed land. Maintain records of segment locations and trail network structure.</p>
+                </div>
+                <div class="use-case">
+                    <h4>Outdoor Guides</h4>
+                    <p>Record guest routes, waypoints, and hazard markers. Export route data for trip planning and documentation.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>The ProDirt Difference</h2>
+            <ul class="principles-list">
+                <li><strong>No Account Required:</strong> Download and start recording. No sign-up, no email, no cloud login.</li>
+                <li><strong>No Subscription:</strong> Free to download and use. Your trail mapping tool shouldn't have a monthly bill.</li>
+                <li><strong>Privacy First:</strong> All GPS data lives on your device. Backup is opt-in and goes to your own storage.</li>
+                <li><strong>Works Offline:</strong> Record trails anywhere — no cell service needed. Map tiles cache for field use.</li>
+                <li><strong>Built by a Trail Contractor:</strong> ProDirt LLC builds recreational trail systems. This app was built to solve a real problem in the field.</li>
+            </ul>
+        </div>
+
+        <!-- Privacy Policy inline -->
+        <div class="privacy-section" id="privacy">
+            <h2>Privacy Policy</h2>
+            <p><em>Effective Date: April 2026</em></p>
+            <p>TrailMapper is built on a simple principle: your trail data is yours. We don't collect it, store it, or sell it.</p>
+
+            <h3>Data Storage</h3>
+            <p>All data you enter — properties, trail segments, GPS coordinates, POIs, and quotes — is stored locally on your device using an on-device database. Nothing is transmitted to ProDirt LLC servers because there are none.</p>
+
+            <h3>Location Data</h3>
+            <p>TrailMapper uses your device's GPS to record trail paths while recording is active. A persistent foreground notification is displayed whenever location recording is in progress. Location data stays on your device.</p>
+
+            <h3>Map Tiles</h3>
+            <p>Background map tiles are loaded from OpenStreetMap servers via OSMDroid. No personal data or GPS coordinates are included in tile requests.</p>
+
+            <h3>Backup</h3>
+            <p>If you choose to back up your data, TrailMapper uses Android's Storage Access Framework. You pick where the backup goes — local storage, Google Drive, or elsewhere. ProDirt LLC has no access to your backup files.</p>
+
+            <h3>Third-Party Services</h3>
+            <ul>
+                <li><strong>OpenStreetMap:</strong> Map tile data, subject to OSM's usage policy at openstreetmap.org.</li>
+                <li><strong>Google Drive (optional):</strong> Used only if you choose it as your backup location. Subject to Google's privacy policy.</li>
+            </ul>
+
+            <h3>Contact</h3>
+            <p>Questions about privacy? Email us at <a href="mailto:contact.prodirt@gmail.com">contact.prodirt@gmail.com</a></p>
+            <p><a href="https://prodirt-llc.github.io/trailmapper/privacy.html">View full Privacy Policy →</a></p>
+        </div>
+
+        <div style="text-align: center; margin: 3rem 0;">
+            <p style="font-size: 1.2rem; color: #666; margin-bottom: 1.5rem;">Record it. Connect it. Hand it off.</p>
+            <a href="https://play.google.com/store/apps/details?id=com.prodirt.trailmapper" class="cta-button">Download TrailMapper Free</a>
+        </div>
+
+        <div style="text-align: center; margin: 2rem 0; padding: 1.5rem; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <p style="color: #1a3a1a; font-weight: 600; margin-bottom: 0.75rem;">Legal</p>
+            <p style="font-size: 0.95rem;">
+                <a href="/trailmapper/privacy.html" style="color: #ff6b35; text-decoration: none; margin: 0 0.75rem;">Privacy Policy</a>
+                ·
+                <a href="/trailmapper/terms.html" style="color: #ff6b35; text-decoration: none; margin: 0 0.75rem;">Terms of Service</a>
+            </p>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>© 2026 ProDirt LLC. All rights reserved.</p>
+        <p style="margin-top: 1rem;">
+            <a href="https://prodirt-llc.github.io/">More Apps</a> |
+            <a href="/trailmapper/privacy.html">Privacy Policy</a> |
+            <a href="/trailmapper/terms.html">Terms of Service</a> |
+            <a href="mailto:contact.prodirt@gmail.com">Contact</a> |
+            <a href="https://idletools.blogspot.com">Developer Blog</a>
+        </p>
+        <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">A Virginia-based outdoor software company.</p>
+    </footer>
+
+</body>
+</html>

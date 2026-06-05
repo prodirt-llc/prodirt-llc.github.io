@@ -3,9 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Practical hunting and outdoor apps - No subscriptions, built by hunters for hunters">
-    <title>ProDirt LLC - Outdoor Apps</title>
+    <meta name="description" content="Practical hunting, outdoor, and IT apps - No subscriptions, built by people who actually use the tools. Free Android apps and Windows utilities for MSPs.">
+    <link rel="canonical" href="https://prodirt-llc.github.io/">
+    <title>ProDirt LLC - Outdoor & IT Apps | No Subscriptions</title>
     <link rel="icon" type="image/png" href="favicon.png">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ProDirt LLC">
+    <meta property="og:title" content="ProDirt LLC - Outdoor & IT Apps">
+    <meta property="og:description" content="Practical apps for hunters, outdoorsmen, and IT pros. No subscriptions, privacy-first, works offline.">
+    <meta property="og:url" content="https://prodirt-llc.github.io/">
+    <meta property="og:image" content="https://prodirt-llc.github.io/logo.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ProDirt LLC - Outdoor & IT Apps">
+    <meta name="twitter:description" content="Practical apps for hunters, outdoorsmen, and IT pros. No subscriptions, privacy-first, works offline.">
+    <meta name="twitter:image" content="https://prodirt-llc.github.io/logo.png">
+
+    <!-- Structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "ProDirt LLC",
+      "url": "https://prodirt-llc.github.io/",
+      "logo": "https://prodirt-llc.github.io/logo.png",
+      "description": "Virginia-based software company building practical apps for hunters, outdoorsmen, and IT professionals.",
+      "email": "contact.prodirt@gmail.com",
+      "areaServed": "US"
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "ProDirt LLC",
+      "url": "https://prodirt-llc.github.io/"
+    }
+    </script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; line-height: 1.6; color: #333; background: linear-gradient(135deg, #1a3a1a 0%, #2d5a2d 100%); }
@@ -13,6 +50,7 @@
         .header-logo { max-width: 400px; width: 100%; height: auto; margin: 0 auto 1rem auto; display: block; padding: 0 1rem; }
         @media (max-width: 600px) { .header-logo { max-width: 280px; } }
         header p { color: #ddd; font-size: 1.1rem; margin-top: 0.5rem; }
+        header h1 { color: #fff; font-size: 1.3rem; font-weight: 600; margin-top: 0.5rem; }
         .container { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
         .mission { background: white; padding: 2rem; border-radius: 8px; margin: 2rem 0; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .mission h2 { color: #2d5a2d; margin-bottom: 1rem; }
@@ -63,7 +101,7 @@
 <body>
     <header>
         <img src="logo-white.png" alt="ProDirt LLC" class="header-logo">
-        <p>Practical Apps for Hunters, Outdoorsmen & IT Pros</p>
+        <h1>Practical Apps for Hunters, Outdoorsmen & IT Pros</h1>
     </header>
 
     <div class="container">
@@ -82,7 +120,7 @@
             </ul>
         </div>
 
-        <h2 style="color: white; margin: 2rem 0 1rem 0; text-align: center;">Mobile Apps</h2>
+        <h2 id="apps" style="color: white; margin: 2rem 0 1rem 0; text-align: center;">Mobile Apps</h2>
 
         <div class="apps-grid">
             <!-- BloodHound -->
@@ -314,7 +352,7 @@
                 <h3>Your Next App</h3>
                 <p class="tagline">Coming Soon</p>
                 <p>We're always working on new tools to make your time in the field more successful. Have an idea? Let us know.</p>
-                <a href="mailto:contact.prodirt@gmail.com" class="btn">Suggest an App</a>
+                <a href="mailto:prodirt.co@gmail.com" class="btn">Suggest an App</a>
             </div>
         </div>
     </div>
@@ -323,9 +361,10 @@
         <p>&copy; 2026 ProDirt LLC. All rights reserved.</p>
         <p style="margin-top: 0.5rem;">A Virginia-based software company.</p>
         <p style="margin-top: 0.5rem;">
-            <a href="mailto:contact.prodirt@gmail.com">Contact</a> |
-            <a href="https://idletools.blogspot.com">Blog</a>
+            <a href="mailto:prodirt.co@gmail.com">Contact</a> |
+            <a href="/blog/">Blog</a>
         </p>
     </footer>
+    <script src="/nav.js" defer></script>
 </body>
 </html>

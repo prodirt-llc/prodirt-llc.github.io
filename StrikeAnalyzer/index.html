@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Strike Analyzer measures the distance to a lightning strike using flash-to-bang timing. Manual tap mode or automatic camera + microphone detection, strike log, storm trend, bolt photos. All detection on-device.">
+    <link rel="canonical" href="https://prodirt-llc.github.io/StrikeAnalyzer/">
+    <title>Strike Analyzer – Lightning Distance Calculator | ProDirt LLC</title>
+    <link rel="icon" type="image/png" href="logo.png">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ProDirt LLC">
+    <meta property="og:title" content="Strike Analyzer – Lightning Distance Calculator">
+    <meta property="og:description" content="Tap the flash, tap the thunder — or let the camera and mic do it for you. Strike log, storm trend, bolt photos. All detection on-device.">
+    <meta property="og:url" content="https://prodirt-llc.github.io/StrikeAnalyzer/">
+    <meta property="og:image" content="https://prodirt-llc.github.io/StrikeAnalyzer/logo.png">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; line-height: 1.6; color: #333; background: linear-gradient(160deg, #0d1526 0%, #1c2c4a 100%); }
+        header { background: rgba(0,0,0,0.35); padding: 3rem 1rem 2.5rem; text-align: center; border-bottom: 3px solid #f5c518; }
+        header img.app-logo { width: 120px; height: 120px; border-radius: 24px; margin-bottom: 1rem; box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
+        header h1 { color: #fff; font-size: 2.2rem; }
+        header .tagline { color: #f5c518; font-size: 1.2rem; font-weight: 600; margin-top: 0.3rem; }
+        header .sub { color: #b8c4d8; margin-top: 0.6rem; max-width: 620px; margin-left: auto; margin-right: auto; }
+        .coming-soon { display: inline-block; background: #f5c518; color: #1c2c4a; font-weight: bold; padding: 0.6rem 1.4rem; border-radius: 6px; margin-top: 1.2rem; }
+        .container { max-width: 960px; margin: 0 auto; padding: 2rem 1rem; }
+        .card { background: white; border-radius: 12px; padding: 2rem; margin: 1.5rem 0; box-shadow: 0 4px 12px rgba(0,0,0,0.25); }
+        .card h2 { color: #1c2c4a; margin-bottom: 0.8rem; border-bottom: 2px solid #f5c518; display: inline-block; padding-bottom: 0.2rem; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-top: 1rem; }
+        .feature h3 { color: #1c2c4a; font-size: 1.05rem; margin-bottom: 0.3rem; }
+        .feature p { color: #555; font-size: 0.95rem; }
+        .tier-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        .tier-table th, .tier-table td { padding: 0.6rem 0.8rem; text-align: left; border-bottom: 1px solid #eee; }
+        .tier-table th { color: #1c2c4a; }
+        .tier-table td.yes::before { content: "✓ "; color: #2d7a2d; font-weight: bold; }
+        .tier-table td.no { color: #999; }
+        .safety { background: #fff8e6; border-left: 5px solid #e6a700; }
+        .safety h2 { border-bottom-color: #e6a700; }
+        .safety p { color: #5a4a1a; }
+        .safety strong { color: #7a5c00; }
+        footer { background: rgba(0,0,0,0.35); color: #b8c4d8; text-align: center; padding: 2rem 1rem; margin-top: 3rem; }
+        footer a { color: #f5c518; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="Strike Analyzer" class="app-logo">
+        <h1>Strike Analyzer</h1>
+        <p class="tagline">How far away was that lightning strike?</p>
+        <p class="sub">Flash-to-bang, done right. Tap when you see the flash and tap when you hear the thunder — or point the camera at the storm and let it measure hands-free. Temperature-adjusted speed of sound, strike log, and storm trend included.</p>
+        <span class="coming-soon">⚡ Coming soon to Google Play</span>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <h2>Features</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <h3>👆 Manual Mode</h3>
+                    <p>One big glove-friendly button. Tap at the flash, tap at the thunder, get the distance. Works anywhere, day or night, no permissions needed.</p>
+                </div>
+                <div class="feature">
+                    <h3>📷 Auto Mode</h3>
+                    <p>The camera watches for the flash while the microphone listens for the thunder onset, then pairs them automatically. Best after dark — set the phone down and watch the storm.</p>
+                </div>
+                <div class="feature">
+                    <h3>📸 Bolt Photos</h3>
+                    <p>Auto mode saves the exact camera frame that triggered detection — your lightning photo, plus a copy tagged with distance, time, and GPS location.</p>
+                </div>
+                <div class="feature">
+                    <h3>📈 Storm Trend</h3>
+                    <p>Consecutive strikes reveal whether the storm is approaching or moving away, how fast, and roughly when it will be overhead.</p>
+                </div>
+                <div class="feature">
+                    <h3>📒 Strike Log</h3>
+                    <p>Every measurement is kept — distance, time, flash-to-bang, GPS pin — and exports as CSV whenever you want it.</p>
+                </div>
+                <div class="feature">
+                    <h3>🔒 Private by Design</h3>
+                    <p>All flash and thunder detection runs entirely on your phone. No account, no cloud, nothing uploaded — your camera and mic data never leave the device.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Free vs Pro</h2>
+            <p>Strike Analyzer is free with ads. A one-time Pro purchase — no subscription — removes ads and unlocks your full strike history (everything you logged while free unlocks retroactively).</p>
+            <table class="tier-table">
+                <tr><th></th><th>Free</th><th>Pro (one-time)</th></tr>
+                <tr><td>Manual &amp; auto measurement</td><td class="yes">Full</td><td class="yes">Full</td></tr>
+                <tr><td>Bolt photos &amp; storm trend</td><td class="yes">Full</td><td class="yes">Full</td></tr>
+                <tr><td>Strike log</td><td>Last 5 strikes</td><td class="yes">Complete history</td></tr>
+                <tr><td>Ads</td><td class="no">Small banner</td><td class="yes">None</td></tr>
+            </table>
+        </div>
+
+        <div class="card safety">
+            <h2>⚠️ Lightning Safety First</h2>
+            <p><strong>Strike Analyzer is not a safety device.</strong> Flash-to-bang distances are estimates and can be wrong. Never use this app to decide whether it is safe to stay outdoors.</p>
+            <p style="margin-top: 0.6rem;">If you can hear thunder, you are close enough to be struck. Follow the National Weather Service guidance: <strong>When Thunder Roars, Go Indoors</strong> — and stay there until 30 minutes after the last thunder.</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ProDirt LLC. All rights reserved.</p>
+        <p style="margin-top: 0.5rem;">
+            <a href="/StrikeAnalyzer/privacy.html">Privacy Policy</a> |
+            <a href="/StrikeAnalyzer/terms.html">Terms of Use</a> |
+            <a href="/">More Apps</a> |
+            <a href="mailto:prodirt.co@gmail.com">Contact</a>
+        </p>
+    </footer>
+    <script src="/nav.js" defer></script>
+</body>
+</html>

@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Even Spacing Calculator - Precision layout tool for builders and makers. Exact on-center spacing for fence posts, balusters, shelving, and more. 100% free Android app.">
-    <title>Even Spacing Calculator - Precision Layout Tool | Free Android App</title>
+    <meta name="description" content="Even spacing calculator for balusters, fence pickets, shelves and timber screws. Work out equal spacing and exact on-center positions in imperial fractions to 1/64in or metric millimetres. Includes the formula and a worked example. Free Android app.">
+    <title>Even Spacing Calculator - Equal Spacing Formula & Layout Tool | Free Android App</title>
     <link rel="canonical" href="https://prodirt-llc.github.io/evenspacing/">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="ProDirt LLC">
@@ -286,6 +286,36 @@
         </div>
 
         <div class="section">
+            <h2>How to Calculate Even Spacing (The Formula)</h2>
+            <p>If you want to do it by hand, here's the whole thing. To space <strong>n</strong> pieces evenly across a length <strong>L</strong>, where each piece is <strong>w</strong> wide and a piece sits at each end of the run:</p>
+
+            <div class="problem-solution">
+                <h3>On-center spacing = (L − w) ÷ (n − 1)</h3>
+                <p>That gives you the distance from the center of one piece to the center of the next. The clear gap between pieces is simply:</p>
+                <h3>Gap = on-center − w</h3>
+                <p>The reason you measure on-center rather than gap-to-gap: mark every center from one end with a tape, and a rounding error can't accumulate. Measure each gap in turn and the errors stack — by the seventh picket you're visibly out.</p>
+            </div>
+
+            <h3>Worked example — imperial</h3>
+            <p>A deck rail with <strong>96"</strong> between posts, <strong>8 balusters</strong>, each <strong>1.5"</strong> wide:</p>
+            <ul>
+                <li>On-center = (96 − 1.5) ÷ (8 − 1) = 94.5 ÷ 7 = <strong>13.5"</strong></li>
+                <li>Gap between balusters = 13.5 − 1.5 = <strong>12"</strong></li>
+                <li>Check: 8 balusters × 1.5" = 12", plus 7 gaps × 12" = 84". 12 + 84 = 96" ✓</li>
+            </ul>
+
+            <h3>Worked example — metric</h3>
+            <p>A fence panel <strong>2000 mm</strong> wide, <strong>6 pickets</strong>, each <strong>50 mm</strong> wide:</p>
+            <ul>
+                <li>On-center = (2000 − 50) ÷ (6 − 1) = 1950 ÷ 5 = <strong>390 mm</strong></li>
+                <li>Gap between pickets = 390 − 50 = <strong>340 mm</strong></li>
+                <li>Check: 6 pickets × 50 mm = 300 mm, plus 5 gaps × 340 mm = 1700 mm. 300 + 1700 = 2000 mm ✓</li>
+            </ul>
+
+            <p>Real numbers rarely land that clean. Divide 2400 mm by 7 and you get 342.857… — and that's the point where the scrap paper starts. The app does this division for you, rounds every position to something you can actually mark (a whole millimetre, or a fraction down to 1/64"), and lists every center from one end so nothing drifts. It also handles edge offsets when the run doesn't start flush, and shows the layout as a diagram before you cut.</p>
+        </div>
+
+        <div class="section">
             <h2>🔧 Key Features</h2>
             <div class="features-grid">
                 <div class="feature">
@@ -324,8 +354,18 @@
                 </div>
 
                 <div class="feature">
-                    <h3>100% Free</h3>
-                    <p>No subscriptions, no ads blocking your view, no paywalls. Professional tools shouldn't cost a fortune.</p>
+                    <h3>Live Layout Diagram</h3>
+                    <p>A diagram draws your spacing as you type, so you can see the run before you cut anything. Catch the mistake on the screen instead of on the lumber.</p>
+                </div>
+
+                <div class="feature">
+                    <h3>Calculation History</h3>
+                    <p>Every calculation is saved. Come back to the job tomorrow, or hit the next identical run, and pull the numbers straight back up — no re-entering.</p>
+                </div>
+
+                <div class="feature">
+                    <h3>Every Feature Free</h3>
+                    <p>No subscriptions, no paywalls, no unlocks — the whole app, no limits. It's supported by a single banner ad at the bottom of the screen. That's the deal.</p>
                 </div>
             </div>
         </div>
@@ -335,12 +375,17 @@
             <div class="use-cases">
                 <div class="use-case">
                     <h4>Carpentry & Woodworking</h4>
-                    <p>Balusters, spindles, shelving, cabinet hardware, and trim work. Get professional results every time.</p>
+                    <p>Balusters, spindles, shelving, shelf brackets, cabinet hardware, and trim work. Get professional results every time.</p>
+                </div>
+
+                <div class="use-case">
+                    <h4>Decking & Framing</h4>
+                    <p>Timber screws, fasteners and joists at equal centers. Work out your fixing pattern in millimetres or inches before the first screw goes in.</p>
                 </div>
 
                 <div class="use-case">
                     <h4>Construction Projects</h4>
-                    <p>Fence posts, deck boards, siding, framing studs, and structural layouts. Build with confidence.</p>
+                    <p>Fence posts, fence pickets, deck boards, siding, framing studs, and structural layouts. Build with confidence.</p>
                 </div>
 
                 <div class="use-case">

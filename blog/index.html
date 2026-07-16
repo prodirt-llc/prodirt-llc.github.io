@@ -75,9 +75,89 @@
 </div>
 
 <div class="container">
-    <div id="loading">Loading posts...</div>
-    <div id="error" style="display:none;">Could not load posts. <a href="posts.json">Check posts.json</a></div>
-    <div id="posts"></div>
+    <div id="posts">
+        <a class="post-card" href="posts/ntfs-permission-reporter.html">
+            <div class="post-meta">
+                <span>March 30, 2026</span>
+                <span class="post-tag">Dev</span>
+            </div>
+            <h2>NTFS Permission Reporter: Stop Guessing Who Has Access to What</h2>
+            <p>A free Windows tool that scans any local or UNC path and generates an interactive HTML permission audit report — with side-by-side path comparison for migration audits.</p>
+            <span class="read-more">Read more →</span>
+        </a>
+        <a class="post-card" href="posts/spooler-ps5ui-dll-fix.html">
+            <div class="post-meta">
+                <span>March 30, 2026</span>
+                <span class="post-tag">IT</span>
+            </div>
+            <h2>KB5078752 Print Spooler Crash on Server 2019: The PS5UI.DLL Fix</h2>
+            <p>KB5078752 dropped and the print spooler on our RDS host started dying on startup. The error pointed at PS5UI.DLL — a file that existed but was lying about it.</p>
+            <span class="read-more">Read more →</span>
+        </a>
+        <a class="post-card" href="posts/fieldquote-android-app.html">
+            <div class="post-meta">
+                <span>March 30, 2026</span>
+                <span class="post-tag">Android</span>
+            </div>
+            <h2>FieldQuote: Job Estimating for Contractors Who Work in the Field, Not Behind a Desk</h2>
+            <p>An Android estimating app built on your real labor and equipment costs — build a quote in under two minutes on-site, generate a professional PDF, and track jobs from quoted to invoiced.</p>
+            <span class="read-more">Read more →</span>
+        </a>
+        <a class="post-card" href="posts/fortigate-autoban-ssl-vpn.html">
+            <div class="post-meta">
+                <span>March 28, 2026</span>
+                <span class="post-tag">IT</span>
+            </div>
+            <h2>FortiGate Auto-Ban: Automatically Block SSL VPN Brute Force Attackers</h2>
+            <p>Built a FortiGate automation stitch from scratch to instantly ban IPs hammering the SSL VPN — no SIEM, no third-party tools, just FortiOS doing the work.</p>
+            <span class="read-more">Read more →</span>
+        </a>
+        <a class="post-card" href="posts/hirens-limitblankpassworduse-fix.html">
+            <div class="post-meta">
+                <span>March 25, 2026</span>
+                <span class="post-tag">IT</span>
+            </div>
+            <h2>LimitBlankPasswordUse: Getting Back Into a Server With a Dead NIC Using Hiren's</h2>
+            <p>Lost the NIC, cached credentials won't work, blank password is being rejected. Here's the exact registry trick that got us back in without reinstalling anything.</p>
+            <span class="read-more">Read more →</span>
+        </a>
+        <a class="post-card" href="posts/ssrs-graph-api-mail-relay.html">
+            <div class="post-meta">
+                <span>March 20, 2026</span>
+                <span class="post-tag">Dev</span>
+            </div>
+            <h2>SSRS Email After Basic Auth SMTP Deprecation: A Microsoft Graph Relay Service</h2>
+            <p>When Microsoft deprecated Basic Auth for SMTP, our SSRS reports stopped emailing. Built a .NET 8 Windows Service to replace it using Graph API and certificate auth.</p>
+            <span class="read-more">Read more →</span>
+        </a>
+        <a class="post-card" href="posts/vxrail-recovery-vmx-no-vcenter.html">
+            <div class="post-meta">
+                <span>March 16, 2026</span>
+                <span class="post-tag">IT</span>
+            </div>
+            <h2>VxRail Recovery Without vCenter: Registering VMs From VMX Files on the Host</h2>
+            <p>Both vCenter and VxRail Manager were offline. vSAN was partially recovered. Here's how we got VMs back on the network by rewriting VMX files directly on the host.</p>
+            <span class="read-more">Read more →</span>
+        </a>
+        <a class="post-card" href="posts/pfblocker-geoip-deny-inbound-fix.html">
+            <div class="post-meta">
+                <span>March 12, 2026</span>
+                <span class="post-tag">IT</span>
+            </div>
+            <h2>pfBlockerNG GeoIP Not Blocking: Use Deny Inbound, Not Deny Both</h2>
+            <p>pfBlockerNG looked configured and the MaxMind key was valid, but overseas traffic was still getting through. The culprit was a single dropdown set to Deny Both instead of Deny Inbound.</p>
+            <span class="read-more">Read more →</span>
+        </a>
+        <a class="post-card" href="posts/unifi-sticky-client-school-fix.html">
+            <div class="post-meta">
+                <span>February 13, 2026</span>
+                <span class="post-tag">IT</span>
+            </div>
+            <h2>UniFi Sticky Clients: 240 Laptops Stuck on One AP at a School</h2>
+            <p>Students were getting 4 Mbps in a building full of APs. Every laptop was stuck to the Media Room access point regardless of where in the building they were sitting.</p>
+            <span class="read-more">Read more →</span>
+        </a>
+    </div>
 </div>
 
 <footer>
@@ -88,46 +168,9 @@
     </p>
 </footer>
 
-<script>
-    fetch('posts.json')
-        .then(r => {
-            if (!r.ok) throw new Error('fetch failed');
-            return r.json();
-        })
-        .then(posts => {
-            document.getElementById('loading').style.display = 'none';
-            const container = document.getElementById('posts');
-
-            if (!posts.length) {
-                container.innerHTML = '<p class="empty">No posts yet — check back soon.</p>';
-                return;
-            }
-
-            // Newest first
-            posts.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-            container.innerHTML = posts.map(p => `
-                <a class="post-card" href="posts/${p.file}">
-                    <div class="post-meta">
-                        <span>${formatDate(p.date)}</span>
-                        ${p.tag ? `<span class="post-tag">${p.tag}</span>` : ''}
-                    </div>
-                    <h2>${p.title}</h2>
-                    <p>${p.description}</p>
-                    <span class="read-more">Read more →</span>
-                </a>
-            `).join('');
-        })
-        .catch(() => {
-            document.getElementById('loading').style.display = 'none';
-            document.getElementById('error').style.display = 'block';
-        });
-
-    function formatDate(str) {
-        const d = new Date(str + 'T12:00:00');
-        return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-    }
-</script>
+<!-- Post cards are static HTML above so crawlers see them without executing JS.
+     posts.json is retained as the canonical post index for other consumers;
+     when adding a post, update both. -->
 <script src="/nav.js" defer></script>
 
 </body>

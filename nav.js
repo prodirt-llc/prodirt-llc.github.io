@@ -21,7 +21,7 @@
     "h1,h2,h3,h4,h5,h6{font-family:'Barlow',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;}",
     '.pd-nav{position:sticky;top:0;z-index:1000;background:#1a3a1a;',
     'border-bottom:2px solid #ff6b35;box-shadow:0 2px 8px rgba(0,0,0,0.25);}',
-    '.pd-nav-inner{max-width:1200px;margin:0 auto;padding:0 1rem;height:56px;',
+    '.pd-nav-inner{max-width:1280px;margin:0 auto;padding:0 1rem;height:56px;',
     'display:flex;align-items:center;justify-content:space-between;}',
     '.pd-nav-logo{display:flex;align-items:center;}',
     '.pd-nav-logo img{height:30px;width:auto;display:block;}',

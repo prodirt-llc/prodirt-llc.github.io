@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The RD Licensing 'Migrate licenses' wizard isn't a migration — it demands your original purchase paperwork. The real move is copying %windir%\System32\lserver to the new server, plus the icacls fix when TermServLicensing won't start.">
+    <title>Migrate RD Licensing to a New Server: Copy the lserver Database | ProDirt Blog</title>
+    <link rel="canonical" href="https://prodirt-llc.github.io/blog/posts/rds-licensing-server-recovery.html">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; color: #333; background: #f5f5f5; }
+        .hero { background: linear-gradient(135deg, #1a3a1a 0%, #2d5a2d 100%); color: white; padding: 3rem 2rem; border-bottom: 3px solid #ff6b35; }
+        .hero-inner { max-width: 760px; margin: 0 auto; }
+        .back-link { display: inline-block; margin-bottom: 1.25rem; color: white; text-decoration: none; opacity: 0.8; font-size: 0.9rem; }
+        .back-link:hover { opacity: 1; }
+        .post-meta { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; margin-bottom: 1rem; }
+        .post-date { font-size: 0.85rem; opacity: 0.75; }
+        .post-tag { background: #ff6b35; color: white; padding: 2px 10px; border-radius: 10px; font-size: 0.78rem; font-weight: 600; }
+        .hero h1 { font-size: 2rem; font-weight: 700; line-height: 1.3; margin-bottom: 0.75rem; }
+        .hero .subtitle { opacity: 0.85; font-size: 1.05rem; }
+        article { max-width: 760px; margin: 2.5rem auto; padding: 0 1.5rem; }
+        .post-body { background: white; border-radius: 10px; padding: 2.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .post-body h2 { color: #1a3a1a; font-size: 1.4rem; margin: 2rem 0 0.75rem 0; padding-bottom: 0.4rem; border-bottom: 2px solid #f0f7f0; }
+        .post-body h3 { color: #2d5a2d; font-size: 1.1rem; margin: 1.5rem 0 0.5rem 0; }
+        .post-body p { margin-bottom: 1.1rem; color: #444; }
+        .post-body ul, .post-body ol { margin: 0.5rem 0 1.1rem 1.5rem; color: #444; }
+        .post-body li { margin-bottom: 0.4rem; }
+        .post-body strong { color: #222; }
+        .post-body a { color: #ff6b35; text-decoration: none; }
+        .post-body a:hover { text-decoration: underline; }
+        .post-body pre { background: #1e1e1e; color: #d4d4d4; padding: 1.25rem 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0 1.25rem 0; font-size: 0.88rem; line-height: 1.6; border-left: 4px solid #ff6b35; }
+        .post-body code { font-family: 'Courier New', Courier, monospace; }
+        .post-body p code, .post-body li code { background: #f0f0f0; color: #c0392b; padding: 1px 6px; border-radius: 4px; font-size: 0.88em; }
+        .callout { background: #f0f7f0; border-left: 4px solid #2d5a2d; padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin: 1.25rem 0; color: #2d3a2d; }
+        .callout.warning { background: #fff8f0; border-left-color: #ff6b35; color: #4a2800; }
+        .callout.info { background: #f0f4ff; border-left-color: #667eea; color: #1a2060; }
+        .post-footer { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .post-footer a { color: #ff6b35; text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+        footer { background: #2d3748; color: white; padding: 2rem; text-align: center; margin-top: 4rem; }
+        footer a { color: #ff6b35; text-decoration: none; }
+        @media (max-width: 600px) { .hero h1 { font-size: 1.6rem; } .post-body { padding: 1.5rem; } }
+    </style>
+</head>
+<body>
+
+<div class="hero">
+    <div class="hero-inner">
+        <a href="../index.html" class="back-link">← Back to ProDirt Blog</a>
+        <div class="post-meta">
+            <span class="post-date">July 17, 2026</span>
+            <span class="post-tag">IT</span>
+        </div>
+        <h1>Recovering an RD Licensing Server to Different Hardware (Without Calling Microsoft)</h1>
+        <p class="subtitle">The "Migrate licenses" wizard wants purchase paperwork from years ago. The actual migration is copying one folder — here's the copy, the ACL fix that makes it work, and the dead ends along the way.</p>
+    </div>
+</div>
+
+<article>
+    <div class="post-body">
+
+        <p>
+            I recently had to move an RDS License Server role off a box that was stuck in a recovery environment,
+            onto an existing server with a completely different name. Here's what I learned, including the dead ends,
+            because the "official" way Microsoft documents this is not actually a migration.
+        </p>
+
+        <h2>The Problem</h2>
+
+        <p>
+            Server had RD Licensing installed with several CAL key packs (2012, 2016, 2019, 2022 — a mix of
+            Volume License and Built-in OverUse packs). The source box was only reachable in a backup/recovery
+            environment — not production, and not coming back online long-term. I needed those CALs working on a
+            different, already-existing server.
+        </p>
+
+        <h2>Dead End #1: "Migrate licenses from another server to this one"</h2>
+
+        <p>
+            RD Licensing Manager has a wizard for this. It sounds like it should just move the database over.
+            It doesn't.
+        </p>
+
+        <p>
+            You point it at the old server name, then it asks for the license/keypack numbers, which kicks you
+            into the same "Manage Licenses Wizard" used for installing brand new CALs. That wizard wants:
+        </p>
+
+        <ul>
+            <li>The License Program the CALs were originally purchased under (Open License, Select License, Enterprise Agreement, Select Plus, etc.)</li>
+            <li>An Authorization number and License number (for Open License) or the equivalent agreement number for whatever program applies</li>
+        </ul>
+
+        <p>
+            In other words: "migrate" here means <em>revoke the old activation and re-activate from scratch through
+            the Microsoft Clearinghouse</em>, using the exact same purchase info the original admin used years ago.
+            If you don't have that paperwork sitting around (we didn't), you're stuck either digging through old
+            invoices or calling Microsoft's Licensing Activation Center and giving them your old server's License
+            Server ID (visible under server Properties in RD Licensing Manager) so they can look up the agreement
+            on their end.
+        </p>
+
+        <p>
+            This is a legitimate path if you have no other option, but it's not fast and it's not really a "migration."
+        </p>
+
+        <h2>Dead End #2 (Partial): Registry Certificate Copy</h2>
+
+        <p>
+            I went looking for a registry-based trick to fix a server-name mismatch, based on the assumption that
+            the license server's identity lives partly in the registry (like the RDSH role's
+            <code>Terminal Server\RCM\Licensing Core</code> key does). That key doesn't exist for the licensing
+            service — I was thinking of the wrong role. Lesson: RD Licensing's state appears to live entirely in
+            its own database, not scattered registry keys shared with RDSH.
+        </p>
+
+        <h2>What Actually Worked</h2>
+
+        <p>
+            The RD Licensing database is an ESE (Extensible Storage Engine) database that lives at:
+        </p>
+
+        <pre><code>%systemroot%\System32\lserver</code></pre>
+
+        <p>
+            Since I had the old server's files available (via the backup environment), the fix was:
+        </p>
+
+        <ol>
+            <li>Stop the "Remote Desktop Licensing" (<code>TermServLicensing</code>) service on the destination server.</li>
+            <li>Copy the entire <code>lserver</code> folder from the old server over the destination server's <code>lserver</code> folder.</li>
+            <li>Start the service back up.</li>
+        </ol>
+
+        <p>
+            That's it. No Clearinghouse call, no re-entering License Program or Authorization numbers, despite
+            the destination server having a completely different name than the original. RD Licensing Manager
+            came up showing every key pack from the old server — same Keypack IDs, same issued counts — now
+            sitting under the new server name.
+        </p>
+
+        <div class="callout warning">
+            <strong>Not documented, not supported.</strong> This worked in this case, in an isolated test/recovery
+            environment. Your mileage may vary depending on OS build and whether Microsoft's Clearinghouse ever
+            needs to re-validate that server down the line — support calls, adding more CALs, etc. may surface
+            the hostname mismatch.
+        </div>
+
+        <h2>The Gotcha: Permissions</h2>
+
+        <p>
+            After the copy, the service failed to start. No useful error in the GUI — it just looked like it
+            silently kept trying and failing, which reads exactly like a permissions problem. It was: the copied
+            folder kept the old server's ACLs, and the <code>NETWORK SERVICE</code> account the licensing service
+            runs as couldn't touch the files on the new box.
+        </p>
+
+        <p>Fix:</p>
+
+        <pre><code>icacls "C:\Windows\System32\lserver" /reset /T
+icacls "C:\Windows\System32\lserver" /grant "NT AUTHORITY\NETWORK SERVICE:(OI)(CI)F" /T
+icacls "C:\Windows\System32\lserver" /grant "SYSTEM:(OI)(CI)F" /T
+icacls "C:\Windows\System32\lserver" /grant "Administrators:(OI)(CI)F" /T</code></pre>
+
+        <p>
+            Then <code>net start TermServLicensing</code> again. It came up clean.
+        </p>
+
+        <p>
+            One more note if the service ever gets stuck in a "stopping" state instead of failing outright:
+            <code>TermServLicensing</code> runs inside a shared <code>svchost.exe</code> process, so don't kill
+            <code>svchost.exe</code> blind — you'll take out whatever else shares that process. Check what's
+            riding along first:
+        </p>
+
+        <pre><code>tasklist /svc | findstr /i termserv</code></pre>
+
+        <p>
+            If it's alone (or only sharing with stuff you don't care about) in that PID,
+            <code>taskkill /PID &lt;pid&gt; /F</code> is safe. Otherwise, a reboot is the cleaner fix.
+        </p>
+
+        <h2>Takeaways</h2>
+
+        <ul>
+            <li>The "Migrate licenses" wizard in RD Licensing Manager is <strong>not a database migration</strong>. It's a guided reactivation that still needs your original purchase info.</li>
+            <li>The real migration path is a file copy: back up <code>%windir%\System32\lserver</code> as part of your normal server backups. If you'd had that, this whole exercise is a five-minute copy instead of an afternoon of registry archaeology and Microsoft phone calls.</li>
+            <li>Server name mismatch didn't block the restore in my case, but treat that as a bonus, not a guarantee. Where possible, keep the destination server name matching if you're doing this on purpose.</li>
+            <li>If the service won't start after a restore, <strong>check permissions before you assume the database is corrupt</strong>. ACLs don't survive a file copy across servers.</li>
+            <li>Decommission the old license server for real once the new one is confirmed working — two live license servers claiming the same key packs is asking for trouble.</li>
+        </ul>
+
+        <div class="callout">
+            <strong>Do this today:</strong> Windows already auto-backs the licensing database up nightly to a
+            <code>Backup</code> subfolder inside <code>lserver</code>. Make sure that folder is inside your
+            backup coverage <em>now</em>, while nothing is on fire.
+        </div>
+
+        <div class="post-footer">
+            <a href="../index.html">← All Posts</a>
+            <a href="https://prodirt-llc.github.io/">ProDirt Apps →</a>
+        </div>
+
+    </div>
+</article>
+
+<footer>
+    <p>© 2026 ProDirt LLC. All rights reserved.</p>
+    <p style="margin-top: 0.75rem;">
+        <a href="https://prodirt-llc.github.io/">Apps</a> |
+        <a href="../index.html">Blog</a> |
+        <a href="mailto:prodirt.co@gmail.com">Contact</a>
+    </p>
+</footer>
+<script src="/nav.js" defer></script>
+
+</body>
+</html>

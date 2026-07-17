@@ -76,6 +76,15 @@
 
 <div class="container">
     <div id="posts">
+        <a class="post-card" href="posts/rds-licensing-server-recovery.html">
+            <div class="post-meta">
+                <span>July 17, 2026</span>
+                <span class="post-tag">IT</span>
+            </div>
+            <h2>Migrate RD Licensing to a New Server: Copy the lserver Database</h2>
+            <p>The "Migrate licenses" wizard wants purchase paperwork from years ago. The actual migration is copying %windir%\System32\lserver — plus the icacls fix when the service won't start, and the dead ends along the way.</p>
+            <span class="read-more">Read more →</span>
+        </a>
         <a class="post-card" href="posts/ntfs-permission-reporter.html">
             <div class="post-meta">
                 <span>March 30, 2026</span>
@@ -168,9 +177,8 @@
     </p>
 </footer>
 
-<!-- Post cards are static HTML above so crawlers see them without executing JS.
-     posts.json is retained as the canonical post index for other consumers;
-     when adding a post, update both. -->
+<!-- Post cards are static HTML so crawlers see them without executing JS.
+     Add new posts by hand here, newest first. -->
 <script src="/nav.js" defer></script>
 
 </body>

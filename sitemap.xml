@@ -91,6 +91,11 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://prodirt-llc.github.io/blog/posts/rds-licensing-server-recovery.html</loc>
+    <lastmod>2026-07-17</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://prodirt-llc.github.io/blog/posts/ssrs-graph-api-mail-relay.html</loc>
     <lastmod>2026-06-05</lastmod>
     <priority>0.6</priority>

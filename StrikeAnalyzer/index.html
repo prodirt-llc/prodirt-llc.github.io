@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Strike Analyzer measures the distance to a lightning strike using flash-to-bang timing. Manual tap mode or automatic camera + microphone detection, strike log, storm trend, bolt photos. All detection on-device.">
+    <meta name="description" content="How far away is the lightning? Strike Analyzer measures strike distance by flash-to-bang timing — manual tap or automatic camera + mic detection, live radar map, strike log, bolt photos. Free Android app.">
     <link rel="canonical" href="https://prodirt-llc.github.io/StrikeAnalyzer/">
-    <title>Strike Analyzer – Lightning Distance Calculator | ProDirt LLC</title>
+    <title>Strike Analyzer — Lightning Distance Calculator App | Free for Android</title>
     <link rel="icon" type="image/png" href="logo.png">
 
     <!-- Open Graph -->
@@ -15,6 +15,49 @@
     <meta property="og:description" content="Tap the flash, tap the thunder — or let the camera and mic do it for you. Strike log, storm trend, bolt photos. All detection on-device.">
     <meta property="og:url" content="https://prodirt-llc.github.io/StrikeAnalyzer/">
     <meta property="og:image" content="https://prodirt-llc.github.io/StrikeAnalyzer/logo.png">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Strike Analyzer",
+      "operatingSystem": "Android",
+      "applicationCategory": "UtilitiesApplication",
+      "description": "Measures the distance to a lightning strike using flash-to-bang timing, with manual tap mode or automatic camera and microphone detection, a live radar and lightning map, strike log, storm trend, and bolt photos.",
+      "url": "https://prodirt-llc.github.io/StrikeAnalyzer/",
+      "downloadUrl": "https://play.google.com/store/apps/details?id=com.prodirt.strikeanalyzer",
+      "publisher": { "@type": "Organization", "name": "ProDirt LLC" },
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How far away is the lightning?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Count the seconds between the flash and the thunder: roughly every 5 seconds is one mile (3 seconds per kilometer). Strike Analyzer does this for you, adjusting for the current temperature's effect on the speed of sound, so the distance is more accurate than counting in your head." }
+        },
+        {
+          "@type": "Question",
+          "name": "How does flash-to-bang timing work?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Light reaches you almost instantly, but sound travels about 343 meters per second. The delay between seeing the flash and hearing the thunder tells you how far the strike was. Tap at the flash and the thunder, or let the camera and microphone detect them automatically." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can Strike Analyzer tell me whether it is safe to be outside?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No. Strike Analyzer is not a safety device and its distances are estimates that can be wrong. If you can hear thunder, you are close enough to be struck. Follow National Weather Service guidance: when thunder roars, go indoors." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Strike Analyzer free?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Strike Analyzer is free with a small banner ad. A one-time Pro purchase (no subscription) removes ads and unlocks your complete strike history." }
+        }
+      ]
+    }
+    </script>
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -50,7 +93,7 @@
         <h1>Strike Analyzer</h1>
         <p class="tagline">How far away was that lightning strike?</p>
         <p class="sub">Flash-to-bang, done right. Tap when you see the flash and tap when you hear the thunder — or point the camera at the storm and let it measure hands-free. Temperature-adjusted speed of sound, storm trend, and a live radar &amp; lightning map included.</p>
-        <span class="coming-soon">⚡ Coming soon to Google Play</span>
+        <a href="https://play.google.com/store/apps/details?id=com.prodirt.strikeanalyzer" class="coming-soon" style="text-decoration:none;">⚡ Download free on Google Play</a>
     </header>
 
     <div class="container">
@@ -105,6 +148,30 @@
             <h2>⚠️ Lightning Safety First</h2>
             <p><strong>Strike Analyzer is not a safety device.</strong> Flash-to-bang distances are estimates and can be wrong. Never use this app to decide whether it is safe to stay outdoors.</p>
             <p style="margin-top: 0.6rem;">If you can hear thunder, you are close enough to be struck. Follow the National Weather Service guidance: <strong>When Thunder Roars, Go Indoors</strong> — and stay there until 30 minutes after the last thunder.</p>
+        </div>
+
+        <div class="card">
+            <h2>FAQ</h2>
+            <div class="feature" style="margin-bottom:1rem;">
+                <h3>How far away is the lightning?</h3>
+                <p>Count the seconds between the flash and the thunder — roughly every 5 seconds is a mile (3 seconds per kilometer). Strike Analyzer does the math for you and adjusts for how temperature changes the speed of sound, so it's more accurate than counting in your head.</p>
+            </div>
+            <div class="feature" style="margin-bottom:1rem;">
+                <h3>How does flash-to-bang timing work?</h3>
+                <p>Light reaches you almost instantly; thunder travels about 343 m/s. The delay between seeing the flash and hearing the bang tells you the distance. Tap at each, or let the camera and mic detect them automatically.</p>
+            </div>
+            <div class="feature" style="margin-bottom:1rem;">
+                <h3>Can it tell me if it's safe to be outside?</h3>
+                <p>No — Strike Analyzer is not a safety device and its distances are estimates. If you can hear thunder, you're close enough to be struck. When thunder roars, go indoors.</p>
+            </div>
+            <div class="feature">
+                <h3>Is Strike Analyzer free?</h3>
+                <p>Yes, free with a small banner ad. A one-time Pro purchase (no subscription) removes ads and unlocks your complete strike history.</p>
+            </div>
+        </div>
+
+        <div style="text-align:center; margin: 2.5rem 0 1rem;">
+            <a href="https://play.google.com/store/apps/details?id=com.prodirt.strikeanalyzer" class="coming-soon" style="text-decoration:none; font-size:1.05rem;">⚡ Download Strike Analyzer free on Google Play</a>
         </div>
     </div>
 

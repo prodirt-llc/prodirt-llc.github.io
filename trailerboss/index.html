@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Trailer Boss is a trailer-backing game and practice trainer for Android. Reverse a boat, camper or cargo trailer down the ramp, into the driveway or parallel park — working mirrors, real hitch physics, and a crowd that heckles.">
+    <title>Trailer Boss — Trailer Backing Simulator & Boat Ramp Practice Game | Android</title>
+    <link rel="canonical" href="https://prodirt-llc.github.io/trailerboss/">
+    <link rel="icon" type="image/png" href="logo.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ProDirt LLC">
+    <meta property="og:title" content="Trailer Boss — Trailer Backing Game & Boat Ramp Practice">
+    <meta property="og:description" content="Everyone's watching. Don't jackknife. Back a boat, camper or cargo trailer with working mirrors, real hitch physics, and a heckling crowd. Free on Android.">
+    <meta property="og:url" content="https://prodirt-llc.github.io/trailerboss/">
+    <meta property="og:image" content="https://prodirt-llc.github.io/trailerboss/logo.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Trailer Boss — Trailer Backing Game">
+    <meta name="twitter:description" content="Back a trailer down the boat ramp with working mirrors, real hitch physics, and a crowd that heckles. Free Android game.">
+    <meta name="twitter:image" content="https://prodirt-llc.github.io/trailerboss/logo.png">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Trailer Boss",
+      "operatingSystem": "Android",
+      "applicationCategory": "GameApplication",
+      "description": "A trailer-backing game and practice trainer. Reverse a boat, camper, cargo, fifth-wheel or tandem trailer through six jobs — boat ramp, driveway, parallel park, work site and RV spot — using a cockpit view with working mirrors and real articulated hitch physics.",
+      "url": "https://prodirt-llc.github.io/trailerboss/",
+      "publisher": { "@type": "Organization", "name": "ProDirt LLC" },
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Can Trailer Boss help me learn to back up a trailer?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. The hitch physics are a real articulated model, so the muscle memory transfers: small corrections early, steer with your hand at the bottom of the wheel, and watch the mirror the trailer is drifting toward. Assist mode shows where to steer while you learn, and you get to make every mistake where it costs nothing." }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the trick to backing a boat trailer down a ramp?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Put your hand at the bottom of the steering wheel and move it the way you want the trailer to go, make small corrections early rather than big ones late, and watch the mirror on the side the trailer is drifting toward. Trailer Boss drills exactly this on its boat-ramp jobs, with and without a crowd watching." }
+        },
+        {
+          "@type": "Question",
+          "name": "Does Trailer Boss have real trailer physics?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. It uses a deterministic articulated truck-and-trailer model, and five trailer types that each behave differently — short trailers dart and jackknife quickly, long fifth-wheels lag and track wide, just like real life." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Trailer Boss free?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Trailer Boss is free with a single banner ad at the bottom of the screen. A one-time purchase removes it — no subscription, no coins, no timers, and no pay-to-win." }
+        }
+      ]
+    }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; line-height: 1.6; color: #333; background: #eef3f6; }
+        .hero { background: linear-gradient(135deg, #0b3d5c 0%, #14708f 100%); color: white; padding: 2.5rem 2rem 3rem; text-align: center; }
+        .hero-logo { width: 104px; height: 104px; border-radius: 22px; margin: 0 auto 1.25rem auto; display: block; box-shadow: 0 6px 18px rgba(0,0,0,0.35); }
+        .hero h1 { font-size: 3rem; margin-bottom: 0.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .hero .tagline { font-size: 1.5rem; font-weight: 700; color: #f5a623; margin-bottom: 0.75rem; }
+        .hero .sub { max-width: 640px; margin: 0 auto 1.75rem; opacity: 0.95; font-size: 1.1rem; }
+        .badge-soon { display: inline-block; background: #f5a623; color: #0b3d5c; font-weight: bold; padding: 0.7rem 1.5rem; border-radius: 8px; font-size: 1.1rem; }
+        .cta { display: inline-block; padding: 1rem 2rem; background: #ff6b35; color: white; text-decoration: none; border-radius: 8px; font-size: 1.15rem; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: transform 0.2s, box-shadow 0.2s; }
+        .cta:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+        .back-link { display: inline-block; margin-bottom: 1rem; color: white; text-decoration: none; font-size: 0.9rem; opacity: 0.85; }
+        .back-link:hover { opacity: 1; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 2rem 1rem; }
+        section { background: white; margin: 2rem 0; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        h2 { color: #0b3d5c; font-size: 1.9rem; margin-bottom: 1.25rem; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-top: 1rem; }
+        .feature { padding: 1.5rem; background: #f4f8fa; border-radius: 8px; border-left: 4px solid #14708f; }
+        .feature h3 { color: #0b3d5c; margin-bottom: 0.4rem; font-size: 1.15rem; }
+        .feature p { color: #555; font-size: 0.97rem; }
+        .jobs { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-top: 1rem; }
+        .job { background: linear-gradient(135deg, #0b3d5c 0%, #14708f 100%); color: #fff; border-radius: 8px; padding: 1.1rem 1rem; text-align: center; }
+        .job .ico { font-size: 1.8rem; }
+        .job h4 { margin: 0.35rem 0 0.2rem; font-size: 1.02rem; }
+        .job p { font-size: 0.82rem; color: #cfe4ee; }
+        .crowd-box { background: linear-gradient(135deg, #7a1f1f 0%, #b23a2e 100%); color: #fff; padding: 2rem; border-radius: 12px; margin: 2rem 0; border: 2px solid #f5a623; }
+        .crowd-box h3 { color: #f5a623; font-size: 1.4rem; margin-bottom: 0.75rem; }
+        .no-nonsense { list-style: none; margin-top: 1rem; }
+        .no-nonsense li { padding: 0.35rem 0; color: #444; }
+        .no-nonsense li::before { content: "✓ "; color: #14708f; font-weight: bold; }
+        footer { background: #0b3d5c; color: #cfe4ee; text-align: center; padding: 2rem 1rem; margin-top: 3rem; }
+        footer a { color: #f5a623; text-decoration: none; }
+        @media (max-width: 768px) { .hero h1 { font-size: 2.2rem; } .hero .tagline { font-size: 1.2rem; } h2 { font-size: 1.5rem; } }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <a href="/" class="back-link">← Back to ProDirt Apps</a>
+        <img src="logo.png" alt="Trailer Boss trailer backing game" class="hero-logo">
+        <h1>Trailer Boss</h1>
+        <p class="tagline">Everyone's watching. Don't jackknife.</p>
+        <p class="sub">Back a boat, camper or cargo trailer down the ramp, into the driveway, or between the cones — with working mirrors, real hitch physics, and a crowd that is not on your side.</p>
+        <span class="badge-soon">🚤 Coming soon to Google Play</span>
+        <!-- When Trailer Boss goes live, replace the span above with:
+        <a href="https://play.google.com/store/apps/details?id=com.prodirt.trailerboss" class="cta">🚤 Download free on Google Play</a> -->
+    </div>
+
+    <div class="container">
+        <section>
+            <h2>The dread, simulated</h2>
+            <p>Backing a trailer is the one driving skill nobody practices until they're doing it live — at the boat ramp, on a Saturday, with a line of trucks waiting behind them. <strong>Trailer Boss lets you get it wrong where it's safe.</strong> Real articulated hitch physics, a cockpit view with working side mirrors, and six jobs that ramp from an empty driveway to a packed launch. Miss the zone and the trailer jackknifes. Cut it too far and you'll clip a spectator who was, unfortunately, <em>right there</em>.</p>
+        </section>
+
+        <section>
+            <h2>Six jobs, five trailers</h2>
+            <div class="jobs">
+                <div class="job"><div class="ico">🚤</div><h4>Boat Ramp</h4><p>Straight down or angled back-in — square it in the zone and launch.</p></div>
+                <div class="job"><div class="ico">🏡</div><h4>Driveway</h4><p>Back between the cars into the yard without a scratch.</p></div>
+                <div class="job"><div class="ico">🅿️</div><h4>Parallel Park</h4><p>Swing the trailer in along the kerb, level with the truck ahead.</p></div>
+                <div class="job"><div class="ico">🏗️</div><h4>Work Site</h4><p>Turn the rig around, then thread the fifth-wheel into the bay.</p></div>
+                <div class="job"><div class="ico">🏕️</div><h4>RV Spot</h4><p>Back the camper into a tight campground slot between the posts.</p></div>
+                <div class="job"><div class="ico">🎯</div><h4>Beat Par</h4><p>Every job has a par time and a personal best to chase.</p></div>
+            </div>
+            <p style="margin-top:1.25rem;">Swap between a <strong>boat, camper, cargo box, fifth-wheel and tandem</strong> trailer — and they don't drive the same. Short trailers dart and jackknife in a blink; long ones lag and track wide. The physics are the whole point.</p>
+        </section>
+
+        <section>
+            <h2>What's in the cab</h2>
+            <div class="features-grid">
+                <div class="feature"><h3>🪞 Working Mirrors</h3><p>A cockpit view with real, live side mirrors. Learn to read the mirror instead of the screen — the skill that actually transfers.</p></div>
+                <div class="feature"><h3>🚤 Real Hitch Physics</h3><p>A deterministic articulated truck-and-trailer model. No arcade fudging — it behaves like the real rig on the real ramp.</p></div>
+                <div class="feature"><h3>👀 Crowd Mode</h3><p>Turn on the gallery and the ramp fills with spectators who watch, honk, and judge. Nerves are part of the skill now.</p></div>
+                <div class="feature"><h3>🎚️ Assist to Expert</h3><p>A steering guide and a no-rush Grandpa pace for first-timers. Expert turns the help off and lets you work it out.</p></div>
+                <div class="feature"><h3>⏱️ Par Times &amp; Records</h3><p>Beat par on every job, then chase your own best time. Clean, fast, no touches — that's the run to beat.</p></div>
+                <div class="feature"><h3>🏆 Achievements</h3><p>Earn them the hard way. DOOR BASHER, PRETZEL, SUBMARINE, ICE WATER, RIG AGNOSTIC — some are compliments, some really aren't.</p></div>
+            </div>
+        </section>
+
+        <div class="crowd-box">
+            <h3>👀 Crowd Mode — the real test</h3>
+            <p>Anyone can back a trailer in an empty lot. Flip on Crowd Mode and the ramp fills with spectators, a honking line of trucks, and at least one crying baby. Clip one of them and you'll hear about it. It's the closest thing to real Saturday-morning boat-ramp pressure — without anyone remembering your name afterward.</p>
+        </div>
+
+        <section>
+            <h2>No coins. No timers. Just the game.</h2>
+            <ul class="no-nonsense">
+                <li><strong>Free to play</strong> with a single banner at the bottom of the screen.</li>
+                <li><strong>One-time "Remove ads"</strong> if you want it gone — that's the only purchase.</li>
+                <li><strong>No subscription, no coins, no energy timers, no pay-to-win.</strong></li>
+                <li><strong>Plays offline.</strong> Practice on the couch, in the driveway, wherever.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>FAQ</h2>
+            <div class="feature" style="margin-bottom:1rem;">
+                <h3>Can Trailer Boss help me learn to back up a trailer?</h3>
+                <p>Yes. The hitch physics are a real articulated model, so the muscle memory transfers — small corrections early, hand at the bottom of the wheel, watch the mirror the trailer drifts toward. Assist mode shows where to steer while you learn, and every mistake is free.</p>
+            </div>
+            <div class="feature" style="margin-bottom:1rem;">
+                <h3>What's the trick to backing a boat trailer down a ramp?</h3>
+                <p>Put your hand at the bottom of the wheel and move it the way you want the trailer to go, correct small and early, and watch the mirror on the side it's drifting toward. Trailer Boss drills exactly this — with and without a crowd watching.</p>
+            </div>
+            <div class="feature" style="margin-bottom:1rem;">
+                <h3>Does it have real trailer physics?</h3>
+                <p>Yes — a deterministic articulated model with five trailer types that each behave differently. Short trailers dart and jackknife; long fifth-wheels lag and track wide, just like real life.</p>
+            </div>
+            <div class="feature">
+                <h3>Is Trailer Boss free?</h3>
+                <p>Free with a single bottom banner ad. A one-time purchase removes it — no subscription, no coins, no timers.</p>
+            </div>
+        </section>
+
+        <div style="text-align:center; margin: 2.5rem 0 1rem;">
+            <span class="badge-soon">🚤 Coming soon to Google Play</span>
+            <!-- When live, swap for:
+            <a href="https://play.google.com/store/apps/details?id=com.prodirt.trailerboss" class="cta">🚤 Download Trailer Boss free</a> -->
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Trailer Boss by <a href="/">ProDirt LLC</a></p>
+        <p style="margin-top: 1rem;">
+            <a href="/trailerboss/privacy.html">Privacy</a> |
+            <a href="/trailerboss/terms.html">Terms</a> |
+            <a href="mailto:prodirt.co@gmail.com">Support</a> |
+            <a href="/">More Apps</a>
+        </p>
+    </footer>
+    <script src="/nav.js" defer></script>
+</body>
+</html>

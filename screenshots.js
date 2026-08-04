@@ -55,9 +55,16 @@
     }
 
     // Sequential probe using detached Image objects (not subject to lazy-load
-    // or the section's hidden state); stops at the first missing index.
+    // or the section's hidden state). For each index it tries the extensions in
+    // order (harvested shots are .jpg; manual drops may be .png); when every
+    // extension for an index is missing, that's the gap and we stop.
+    var EXTS = ["jpg", "png"];
     function probe(n) {
       if (n > max) return;
+      tryExt(n, 0);
+    }
+    function tryExt(n, ei) {
+      if (ei >= EXTS.length) return; // all extensions missing for n — stop
       var test = new Image();
       test.onload = function () {
         reveal();
@@ -71,8 +78,8 @@
         strip.appendChild(fig);
         probe(n + 1);
       };
-      test.onerror = function () { /* gap reached — stop */ };
-      test.src = dir + "/" + n + ".png";
+      test.onerror = function () { tryExt(n, ei + 1); };
+      test.src = dir + "/" + n + "." + EXTS[ei];
     }
     probe(1);
   }

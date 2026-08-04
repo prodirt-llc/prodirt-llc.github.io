@@ -17,6 +17,8 @@ set -euo pipefail
 UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 WEBSIZE="w540"   # play-lh resize suffix used for the downloaded images
+FMT="rj"         # force JPEG (much smaller than PNG for screenshots)
+EXT="jpg"
 
 # site-folder <TAB> package-id
 APPS='
@@ -51,11 +53,11 @@ harvest() {
   if [ -z "$urls" ]; then echo "   ! no screenshots found (listing public?)"; return; fi
 
   mkdir -p "$out"
-  rm -f "$out"/*.png 2>/dev/null || true
+  rm -f "$out"/*.png "$out"/*.jpg "$out"/*.webp 2>/dev/null || true
   local i=1
   while IFS= read -r u; do
     [ -z "$u" ] && continue
-    curl -sL "${u}=${WEBSIZE}" -o "$out/$i.png" && echo "   -> shots/$i.png" || echo "   ! $i failed"
+    curl -sL "${u}=${WEBSIZE}-${FMT}" -o "$out/$i.$EXT" && echo "   -> shots/$i.$EXT" || echo "   ! $i failed"
     i=$((i+1))
   done <<< "$urls"
   echo "   done: $((i-1)) screenshot(s)"

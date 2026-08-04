@@ -19,7 +19,9 @@ $ErrorActionPreference = "Stop"
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 $UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
 $Root = Split-Path -Parent $PSScriptRoot   # tools\ -> repo root
-$WebSize = "w540"                           # play-lh resize suffix for downloads
+$WebSize = "w540"                           # play-lh resize suffix
+$Fmt = "rj"                                 # force JPEG (much smaller than PNG for screenshots)
+$Ext = "jpg"
 
 # site-folder -> package-id
 $Apps = @(
@@ -52,13 +54,13 @@ function Harvest($dir, $pkg) {
   if ($seen.Count -eq 0) { Write-Host "   ! no screenshots found (listing public?)"; return }
 
   New-Item -ItemType Directory -Force -Path $out | Out-Null
-  Get-ChildItem -Path $out -Filter *.png -ErrorAction SilentlyContinue | Remove-Item -Force
+  Get-ChildItem -Path (Join-Path $out '*') -Include *.png, *.jpg, *.webp -File -ErrorAction SilentlyContinue | Remove-Item -Force
   $i = 1
   foreach ($base in $seen) {
-    $dest = Join-Path $out "$i.png"
+    $dest = Join-Path $out "$i.$Ext"
     try {
-      Invoke-WebRequest -Uri "$base=$WebSize" -OutFile $dest -UserAgent $UA -UseBasicParsing
-      Write-Host "   -> shots\$i.png"
+      Invoke-WebRequest -Uri "$base=$WebSize-$Fmt" -OutFile $dest -UserAgent $UA -UseBasicParsing
+      Write-Host "   -> shots\$i.$Ext"
     } catch { Write-Host "   ! $i failed" }
     $i++
   }

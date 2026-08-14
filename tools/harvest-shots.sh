@@ -11,7 +11,7 @@
 #   ./tools/harvest-shots.sh                 # harvest every published app below
 #   ./tools/harvest-shots.sh colorseeker     # just one (by site folder name)
 #
-# Trailer Boss is in testing (no public listing) — supply its shots by hand.
+# Trailer Boss's screenshots are landscape (the game runs wide).
 
 set -euo pipefail
 UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
@@ -31,6 +31,7 @@ kiteforcepro	com.kiteforcepro
 evenspacing	even.spacingcalculator
 FractionPro	com.prodirt.fractionpro
 StrikeAnalyzer	com.prodirt.strikeanalyzer
+trailerboss	com.prodirt.trailerboss
 '
 
 harvest() {

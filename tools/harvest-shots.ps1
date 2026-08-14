@@ -11,7 +11,8 @@
     powershell -ExecutionPolicy Bypass -File tools\harvest-shots.ps1            # all apps
     powershell -ExecutionPolicy Bypass -File tools\harvest-shots.ps1 colorseeker # one app
 
-  Trailer Boss is in testing (no public listing) — add its shots by hand.
+  Trailer Boss's screenshots are landscape (the game runs wide); its gallery
+  page already sets data-orientation="landscape" for them.
 #>
 param([string]$Only = "")
 
@@ -33,7 +34,8 @@ $Apps = @(
   @{ dir = "kiteforcepro";   pkg = "com.kiteforcepro" },
   @{ dir = "evenspacing";    pkg = "even.spacingcalculator" },
   @{ dir = "FractionPro";    pkg = "com.prodirt.fractionpro" },
-  @{ dir = "StrikeAnalyzer"; pkg = "com.prodirt.strikeanalyzer" }
+  @{ dir = "StrikeAnalyzer"; pkg = "com.prodirt.strikeanalyzer" },
+  @{ dir = "trailerboss";    pkg = "com.prodirt.trailerboss" }
 )
 
 function Harvest($dir, $pkg) {

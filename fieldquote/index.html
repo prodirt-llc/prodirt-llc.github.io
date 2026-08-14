@@ -102,14 +102,17 @@
 <span class="label">True Cost/hr</span>  = Labor Rate + Equipment Cost/hr + Overhead/hr
 <span class="comment">// What it actually costs you to run for an hour</span>
 
-<span class="label">Floor Price</span>   = Σ(line item costs) + Mobilization
-<span class="comment">// Never quote below this — it's what the job costs you</span>
+<span class="label">Job Cost</span>      = Σ(line item costs) + Mobilization
+<span class="comment">// What the job costs you before a cent of profit</span>
 
-<span class="label">Suggested Price</span> = Floor Price × (1 + your margin%)
-<span class="comment">// Slide the margin, watch the quote update live</span>
+<span class="label">Floor Price</span>   = Job Cost × (1 + your margin%)
+<span class="comment">// Your pre-tax price — or your minimum job fee, whichever is higher</span>
+
+<span class="label">Suggested Price</span> = Floor Price + tax
+<span class="comment">// Slide the margin, watch both numbers move live</span>
             </div>
 
-            <p>The margin slider lets you adjust in real time — push it up for a difficult site, pull it back for a repeat client. The floor price stays locked so you can't accidentally quote yourself into a loss.</p>
+            <p>The margin slider lets you adjust in real time — push it up for a difficult site, pull it back for a repeat client. Your job cost is shown separately and never moves, so you can always see exactly how much of the quote is profit and how close you are to working for free.</p>
         </div>
 
         <div class="section">
@@ -129,7 +132,11 @@
                 </div>
                 <div class="feature">
                     <h3>📄 Professional PDF Quotes</h3>
-                    <p>Clean single-page layout with your logo and branding, line item table, subtotal, mobilization, and total. Share via email, WhatsApp, or any installed app.</p>
+                    <p>Clean layout with your logo and branding, line item table, subtotal, mobilization, and total. Your insurance certificate and warranty attach as extra pages in the same file. Share via email, WhatsApp, or any installed app.</p>
+                </div>
+                <div class="feature">
+                    <h3>📜 Warranty Clauses</h3>
+                    <p>Write your warranty once, then attach it to any job. Type it in the app or import a PDF from your insurer or manufacturer — it prints on its own page after the quote, so the client gets the whole package in one file. Keep as many clauses as you need and pick the right one per job.</p>
                 </div>
                 <div class="feature">
                     <h3>👥 Client Address Book</h3>
@@ -190,30 +197,39 @@
         <!-- Privacy Policy -->
         <div class="privacy-section" id="privacy">
             <h2>Privacy Policy</h2>
-            <p><em>Last updated: March 2026</em></p>
+            <p><em>Last updated: August 2026</em></p>
             <p>FieldQuote is built on a simple principle: your business data is yours. We do not collect it, store it, or sell it.</p>
 
             <h3>Data Storage</h3>
             <p>All data you enter — cost profiles, jobs, quotes, client information — is stored locally on your device using an on-device database. Nothing is transmitted to ProDirt LLC servers because there are none.</p>
 
             <h3>Google Drive Backup</h3>
-            <p>If you choose to enable backup in Settings, FieldQuote will back up your data to your personal Google Drive using the <code>drive.appdata</code> scope. This means:</p>
+            <p>If you choose to enable backup in Settings, FieldQuote will back up your data to your personal Google Drive using the <code>drive.file</code> scope. This means:</p>
             <ul>
-                <li>Backup files are stored in a hidden app folder visible only to FieldQuote</li>
+                <li>Backups go into a "FieldQuote Backups" folder in your own My Drive, where you can open, download, or delete them yourself — deliberately visible rather than hidden, so your data stays reachable even if you ever remove the app</li>
+                <li>The <code>drive.file</code> scope restricts FieldQuote to files it created — it cannot read anything else in your Drive</li>
                 <li>ProDirt LLC has no access to your Google Drive or backup files</li>
                 <li>Backup is entirely opt-in — the app functions fully without it</li>
             </ul>
+
+            <h3>Google Calendar</h3>
+            <p>Scheduling a won job creates an all-day event on your primary Google Calendar using the <code>calendar.events</code> scope. If the job has a client email saved, that client is added to the event and Google sends them the invitation. Scheduling only happens when you tap Schedule Job, and unscheduling removes the event. ProDirt LLC never sees your calendar.</p>
+
+            <h3>Documents You Attach</h3>
+            <p>Insurance certificates and warranty PDFs you import are copied into FieldQuote's private storage on your device. They are embedded into the quote PDFs you generate and share — that is the point of attaching them — but they are never uploaded anywhere by the app. Google Drive backups carry your typed records, not your imported files.</p>
 
             <h3>Location & Address Data</h3>
             <p>FieldQuote uses your device location (with your permission) to auto-fill your current position when calculating job distances. Address autocomplete and distance calculation use the OpenRouteService API — your search queries are sent to OpenRouteService's servers to return results. No query data is retained by ProDirt LLC.</p>
 
             <h3>Internet Permissions</h3>
-            <p>The app requires internet access for: address autocomplete, distance calculation, and Google Drive backup. All three are optional features — the core quoting functionality works entirely offline.</p>
+            <p>The app requires internet access for: address autocomplete, distance calculation, Google Drive backup, Google Calendar scheduling, and the community template library. All of these are optional — the core quoting functionality, including generating and sharing PDFs, works entirely offline.</p>
 
             <h3>Third-Party Services</h3>
             <ul>
                 <li><strong>OpenRouteService:</strong> Used for address autocomplete and drive distance calculation. Subject to their privacy policy at openrouteservice.org.</li>
                 <li><strong>Google Drive API:</strong> Used for optional backup. Subject to Google's privacy policy.</li>
+                <li><strong>Google Calendar API:</strong> Used for optional job scheduling. Subject to Google's privacy policy.</li>
+                <li><strong>Google Play Billing:</strong> Used for the optional FieldQuote Pro subscription. ProDirt LLC never sees your payment details.</li>
             </ul>
 
             <h3>Contact</h3>

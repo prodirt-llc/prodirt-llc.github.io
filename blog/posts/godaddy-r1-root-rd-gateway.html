@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="GoDaddy's new self-signed TLS Root CA - R1 breaks RD Gateway for older clients. Fix: install the R1-to-G2 cross-cert and remove the self-signed root so Schannel rebuilds the chain.">
+    <title>GoDaddy R1 Root Breaks RD Gateway: Fixing the Untrusted Certificate Chain | ProDirt Blog</title>
+    <link rel="canonical" href="https://prodirt-llc.github.io/blog/posts/godaddy-r1-root-rd-gateway.html">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; color: #333; background: #f5f5f5; }
+        .hero { background: linear-gradient(135deg, #1a3a1a 0%, #2d5a2d 100%); color: white; padding: 3rem 2rem; border-bottom: 3px solid #ff6b35; }
+        .hero-inner { max-width: 760px; margin: 0 auto; }
+        .back-link { display: inline-block; margin-bottom: 1.25rem; color: white; text-decoration: none; opacity: 0.8; font-size: 0.9rem; }
+        .back-link:hover { opacity: 1; }
+        .post-meta { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; margin-bottom: 1rem; }
+        .post-date { font-size: 0.85rem; opacity: 0.75; }
+        .post-tag { background: #ff6b35; color: white; padding: 2px 10px; border-radius: 10px; font-size: 0.78rem; font-weight: 600; }
+        .hero h1 { font-size: 2rem; font-weight: 700; line-height: 1.3; margin-bottom: 0.75rem; }
+        .hero .subtitle { opacity: 0.85; font-size: 1.05rem; }
+        article { max-width: 760px; margin: 2.5rem auto; padding: 0 1.5rem; }
+        .post-body { background: white; border-radius: 10px; padding: 2.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .post-body h2 { color: #1a3a1a; font-size: 1.4rem; margin: 2rem 0 0.75rem 0; padding-bottom: 0.4rem; border-bottom: 2px solid #f0f7f0; }
+        .post-body h3 { color: #2d5a2d; font-size: 1.1rem; margin: 1.5rem 0 0.5rem 0; }
+        .post-body p { margin-bottom: 1.1rem; color: #444; }
+        .post-body ul, .post-body ol { margin: 0.5rem 0 1.1rem 1.5rem; color: #444; }
+        .post-body li { margin-bottom: 0.4rem; }
+        .post-body strong { color: #222; }
+        .post-body a { color: #ff6b35; text-decoration: none; }
+        .post-body a:hover { text-decoration: underline; }
+        .post-body pre { background: #1e1e1e; color: #d4d4d4; padding: 1.25rem 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0 1.25rem 0; font-size: 0.88rem; line-height: 1.6; border-left: 4px solid #ff6b35; }
+        .post-body code { font-family: 'Courier New', Courier, monospace; }
+        .post-body p code, .post-body li code { background: #f0f0f0; color: #c0392b; padding: 1px 6px; border-radius: 4px; font-size: 0.88em; }
+        .callout { background: #f0f7f0; border-left: 4px solid #2d5a2d; padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin: 1.25rem 0; color: #2d3a2d; }
+        .callout.warning { background: #fff8f0; border-left-color: #ff6b35; color: #4a2800; }
+        .callout.info { background: #f0f4ff; border-left-color: #667eea; color: #1a2060; }
+        .post-footer { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .post-footer a { color: #ff6b35; text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+        .post-footer a:hover { text-decoration: underline; }
+        footer { background: #2d3748; color: white; padding: 2rem; text-align: center; margin-top: 4rem; }
+        footer a { color: #ff6b35; text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+        @media (max-width: 600px) { .hero h1 { font-size: 1.6rem; } .post-body { padding: 1.5rem; } }
+    </style>
+</head>
+<body>
+
+<div class="hero">
+    <div class="hero-inner">
+        <a href="../index.html" class="back-link">← Back to ProDirt Blog</a>
+        <div class="post-meta">
+            <span class="post-date">August 19, 2026</span>
+            <span class="post-tag">IT</span>
+        </div>
+        <h1>GoDaddy R1 Root Breaks RD Gateway: Fixing the Untrusted Certificate Chain</h1>
+        <p class="subtitle">A renewed GoDaddy wildcard cert took down Remote Desktop Gateway for a chunk of users — and the certificate itself was completely valid. Here's the Schannel trap and how to fix it on the server.</p>
+    </div>
+</div>
+
+<article>
+    <div class="post-body">
+
+        <p>
+            We renewed a GoDaddy wildcard cert on an RD Gateway, rebound it, and everything looked fine — the cert was valid, not expired, the right name. Then the tickets started: <strong>some</strong> users couldn't connect. Remote Desktop threw a certificate-not-trusted error, RDWeb wouldn't load cleanly, and it was maddeningly inconsistent — my patched Windows 11 box connected fine, but a coworker on an older thin client got a hard wall.
+        </p>
+        <p>
+            Same server, same cert, different clients. That's the tell that it's not the certificate — it's the <em>chain</em>.
+        </p>
+
+        <h2>What Was Actually Happening</h2>
+        <p>
+            GoDaddy has been transitioning its DV TLS certificates to a new root hierarchy: <strong>GoDaddy TLS Root CA - R1</strong>, a root that was only issued in August 2025. When I dumped the chain the gateway was serving, the top of it was the <strong>self-signed R1 root</strong> — subject and issuer both <code>GoDaddy TLS Root CA - R1</code>.
+        </p>
+        <p>
+            That root is barely a year old, so it isn't in older trust stores yet. Anything that hasn't received a recent root-store update has nothing to anchor the chain to and dies at the TLS handshake:
+        </p>
+        <ul>
+            <li>Windows 7 / 8.1 and un-patched Server 2012 R2</li>
+            <li>Thin clients — Wyse, IGEL, and similar</li>
+            <li>Older Android / iOS Remote Desktop clients</li>
+            <li>Anything with <strong>Automatic Root Update disabled</strong> (common on locked-down or air-gapped boxes)</li>
+        </ul>
+        <p>
+            Updated machines already trust R1, so they connect fine — which is exactly why the failure looks random until you line up who's breaking.
+        </p>
+
+        <div class="callout info">
+            ℹ️ <strong>Why the server was even offering the self-signed root:</strong> Windows Schannel builds the <em>shortest</em> valid chain it can. The self-signed R1 root was sitting in the gateway's own Trusted Root store, so Schannel took the one-hop, self-anchored path to it — a root your old clients don't have — instead of building up to a root they do.
+        </div>
+
+        <h2>The Fix — On the Gateway, Not the Clients</h2>
+        <p>
+            The fix is the <strong>R1-to-G2 cross-signed certificate</strong>. It has the subject <code>GoDaddy TLS Root CA - R1</code> but is <em>issued by</em> <code>Go Daddy Root Certificate Authority - G2</code> — a root that's been in every trust store since around 2014. Drop that cross-cert into <strong>Intermediate Certification Authorities</strong> and remove the self-signed R1 root, and Schannel is forced to rebuild the chain so it anchors at G2 instead. It all happens on the server; you touch nothing on the clients.
+        </p>
+        <p>Run these as administrator on the gateway — all PowerShell.</p>
+
+        <h3>1. Confirm what the server is chaining to</h3>
+        <pre><code>$b = Get-ChildItem Cert:\LocalMachine\My | ? { $_.Subject -like "*yourdomain.com*" }
+$c = New-Object Security.Cryptography.X509Certificates.X509Chain
+$c.Build($b) | Out-Null
+$c.ChainElements | % { "{0}`n   -> {1}" -f $_.Certificate.Subject, $_.Certificate.Issuer }</code></pre>
+        <p>If the last element's subject <em>and</em> issuer are both <code>GoDaddy TLS Root CA - R1</code>, that's your broken chain.</p>
+
+        <h3>2. Pull GoDaddy's intermediate bundle and import it</h3>
+        <pre><code>[Net.ServicePointManager]::SecurityProtocol = 'Tls12'
+$p = "$env:TEMP\gd_all_intermediates.p7b"
+Invoke-WebRequest "https://certs.godaddy.com/repository/all_intermediate_ca_certificates.p7b" -OutFile $p -UseBasicParsing
+certutil -addstore CA $p</code></pre>
+
+        <h3>3. Verify the R1→G2 cross-cert actually landed</h3>
+        <pre><code>Get-ChildItem Cert:\LocalMachine\CA |
+  ? { $_.Subject -like "*GoDaddy TLS Root CA - R1*" } |
+  Select Subject, Issuer, Thumbprint, NotAfter | fl</code></pre>
+        <p>You want one whose <strong>Issuer</strong> is <code>Go Daddy Root Certificate Authority - G2</code>. If nothing comes back with a G2 issuer, stop — the bundle didn't include it and you'll need the cross-cert directly from the <a href="https://certs.godaddy.com/repository" target="_blank" rel="noopener">GoDaddy repository</a>.</p>
+
+        <h3>4. Remove the self-signed R1 root so Schannel stops taking the short path</h3>
+        <pre><code>$s = New-Object Security.Cryptography.X509Certificates.X509Store("Root","LocalMachine")
+$s.Open("ReadWrite")
+$r = $s.Certificates | ? { $_.Thumbprint -eq "C6FC6A49610C09CB640E250CCB05CDE834660517" }
+if ($r) { $s.Remove($r); "Removed R1 root" } else { "Not present" }
+$s.Close()</code></pre>
+
+        <h3>5. Confirm the G2 root is present, then reboot</h3>
+        <pre><code>Get-ChildItem Cert:\LocalMachine\Root |
+  ? { $_.Subject -like "*Go Daddy Root Certificate Authority - G2*" } |
+  Select Subject, NotAfter</code></pre>
+        <p>
+            Then <strong>reboot</strong>. Schannel caches chains aggressively and a <code>TSGateway</code> service restart often isn't enough — mid-outage, the reboot is the reliable move. Re-run step 1 afterward: the chain should now terminate at <code>Go Daddy Root Certificate Authority - G2</code>.
+        </p>
+
+        <div class="callout warning">
+            ⚠️ <strong>It comes back every renewal.</strong> Installing a GoDaddy bundle — including on your <em>next</em> cert swap — often re-adds the self-signed R1 root to Trusted Root, which re-breaks the chain even with the cross-cert sitting right there. The removal in step 4 has to run <strong>after</strong> the cert is bound, followed by a reboot. Fold it into your certificate-deployment checklist as a mandatory step, not a one-time break-fix, until the R1 root is broadly trusted.
+        </div>
+
+        <div class="callout info">
+            ℹ️ <strong>One more caveat:</strong> GoDaddy also dropped the <strong>ClientAuth EKU</strong> from these DV certs — the leaf now carries Server Authentication only. That's fine for RD Gateway and RDWeb, but if the same wildcard is bound to anything doing client authentication (mutual TLS, some VPN or RADIUS setups), that will break separately and the cross-cert won't help it.
+        </div>
+
+        <h2>Why Fix It on the Server Instead of the Clients</h2>
+        <p>
+            You <em>can</em> push the R1 root to clients via GPO or Intune, and it works — but it's the slow path, and it's useless for exactly the devices that break first: thin clients you don't manage that way, and personal phones. Fixing the chain on the gateway repairs every client at once, including the ones you can't touch. One server, done.
+        </p>
+
+        <h2>Wrapping Up</h2>
+        <p>
+            A "valid" certificate that only some clients trust is almost always a chain problem, not a cert problem. GoDaddy's R1 transition is a textbook case: the server happily serves a brand-new self-signed root that half your fleet has never heard of. Install the R1→G2 cross-cert, evict the self-signed root, reboot, and Schannel anchors where it should — and then remember to do the root eviction again on every renewal until R1 ages into the trust stores.
+        </p>
+        <p>
+            References: <a href="https://www.godaddy.com/help/why-is-godaddy-removing-clientauth-eku-and-transitioning-to-the-r1-root-hierarchy-for-dv-tls-issuance-42783" target="_blank" rel="noopener">GoDaddy — R1 root hierarchy transition</a> · <a href="https://www.godaddy.com/help/fix-an-untrusted-root-or-certificate-chain-error-42951" target="_blank" rel="noopener">GoDaddy — Fix an untrusted root or chain error</a> · <a href="https://certs.godaddy.com/repository" target="_blank" rel="noopener">GoDaddy certificate repository</a>.
+        </p>
+
+        <div class="post-footer">
+            <a href="../index.html">← All Posts</a>
+            <a href="https://prodirt-llc.github.io/">ProDirt Apps →</a>
+        </div>
+
+    </div>
+</article>
+
+<footer>
+    <p>© 2026 ProDirt LLC. All rights reserved.</p>
+    <p style="margin-top: 0.75rem;">
+        <a href="https://prodirt-llc.github.io/">Apps</a> |
+        <a href="../index.html">Blog</a> |
+        <a href="mailto:prodirt.co@gmail.com">Contact</a>
+    </p>
+</footer>
+<script src="/nav.js" defer></script>
+
+</body>
+</html>

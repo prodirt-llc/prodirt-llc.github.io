@@ -1,0 +1,7 @@
+# Google Search Console exports — never publish these on the public site
+GoogleSearchPerf/
+*Performance-on-Search*/
+
+# OS cruft
+.DS_Store
+Thumbs.db

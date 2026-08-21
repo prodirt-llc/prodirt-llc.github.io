@@ -250,9 +250,9 @@
             
             <div class="tech-highlight">
                 <h3>🔬 Real Aerodynamic Science</h3>
-                <p>Unlike simple estimators, Kite Force uses the fundamental aerodynamic lift equation:</p>
-                <code>F = CL × A × ρ × 0.5 × V²</code>
-                <p>Air density is calculated from real-time temperature and pressure for maximum accuracy. Different kite shapes have different lift coefficients—Delta kites (1.2), Parafoils (1.5), Box kites (0.9), etc.</p>
+                <p>Unlike simple estimators, Kite Force uses the standard aerodynamic equation:</p>
+                <code>F = ½ × ρ × V² × Cd × A</code>
+                <p>Air density (ρ) is derived from real-time temperature and pressure via the ideal gas law — not a sea-level assumption. Drag coefficients (Cd) are tuned per kite type — Quad-Line (1.6), Parafoil (1.5), Delta (1.2), Box (0.9) — and adjusted for angle of attack.</p>
             </div>
         </div>
 
@@ -261,12 +261,12 @@
             <div class="features-grid">
                 <div class="feature">
                     <h3>Smart Force Calculation</h3>
-                    <p>Real-time pull force in Newtons, Pounds, and Kilograms. Automatic line strength recommendations with 3x safety factor. Wind analysis warns you when conditions are marginal for your kite size.</p>
+                    <p>Real-time pull force in Newtons, Pounds and Kilograms, with a force table across 10–30 mph so you see what's coming as wind builds. Automatic line strength recommendations at a 3× safety factor, plus worst-case analysis against your kite's rated wind ceiling.</p>
                 </div>
 
                 <div class="feature">
                     <h3>Comprehensive Kite Library</h3>
-                    <p>Save your kites with photos — 5 for free, unlimited with a one-time Pro unlock. 13 kite types supported: Delta, Box, Parafoil, Diamond, Sled, Rokkaku, Dual-Line, Quad-Line, Bols, Bouncing Buddy, Banner, Line Laundry and a generic Other, each with a tuned drag coefficient and the right measurement fields for its geometry. Track manufacturer, product line, wind rating, cost, and last flown dates.</p>
+                    <p>Save your kites with photos — 5 for free, or unlimited with the one-time Unlimited upgrade. 13 kite types supported: Delta, Box, Parafoil, Diamond, Sled, Rokkaku, Dual-Line, Quad-Line, Bols, Bouncing Buddy, Banner, Line Laundry and a generic Other, each with a tuned drag coefficient and the right measurement fields for its geometry. Track manufacturer, product line, wind rating, cost, and last flown dates.</p>
                 </div>
 
                 <div class="feature">
@@ -295,8 +295,18 @@
                 </div>
 
                 <div class="feature">
+                    <h3>Session Logging</h3>
+                    <p>Start a session and the app records condition snapshots over time with location, so you can compare what a flight actually felt like against what the numbers predicted.</p>
+                </div>
+
+                <div class="feature">
+                    <h3>Kite Events</h3>
+                    <p>A curated list of upcoming kite festivals and events, sorted by distance from you — so you never miss one nearby.</p>
+                </div>
+
+                <div class="feature">
                     <h3>Works Offline</h3>
-                    <p>All calculations run locally on your device. No internet required once weather is fetched. Your kite data stays private on your device.</p>
+                    <p>All calculations run locally on your device — the core calculator works anywhere. Live weather, maps and events need a connection. Your kite data stays private on your device.</p>
                 </div>
             </div>
         </div>

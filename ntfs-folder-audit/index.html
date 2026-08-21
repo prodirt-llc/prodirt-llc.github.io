@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free NTFS folder permissions audit tool for Windows. Scan any local path or UNC share, find broken inheritance, compare permissions, and export an interactive HTML report. Single EXE, no install, no telemetry.">
+    <title>NTFS Folder Audit — Free NTFS Permissions Audit Tool for Windows | ProDirt</title>
+    <link rel="canonical" href="https://prodirt-llc.github.io/ntfs-folder-audit/">
+    <link rel="icon" type="image/png" href="logo.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ProDirt LLC">
+    <meta property="og:title" content="NTFS Folder Audit — Free NTFS Permissions Audit Tool">
+    <meta property="og:description" content="Audit NTFS folder permissions on Windows — broken inheritance, ownership, side-by-side compare, interactive HTML reports. Free, single EXE, no install, no telemetry.">
+    <meta property="og:url" content="https://prodirt-llc.github.io/ntfs-folder-audit/">
+    <meta property="og:image" content="https://prodirt-llc.github.io/ntfs-folder-audit/logo.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="NTFS Folder Audit — Free NTFS Permissions Audit Tool">
+    <meta name="twitter:description" content="Audit NTFS folder permissions on Windows. Broken inheritance, compare, HTML reports. Free, single EXE, no install, no telemetry.">
+    <meta name="twitter:image" content="https://prodirt-llc.github.io/ntfs-folder-audit/logo.png">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "NTFS Folder Audit",
+      "operatingSystem": "Windows 10, Windows 11, Windows Server 2016+",
+      "applicationCategory": "SecurityApplication",
+      "description": "Free NTFS folder permission auditing for Windows. Scan a local path or UNC share, find broken inheritance, see ownership, compare two paths side by side, and export a self-contained interactive HTML report or CSV. Single self-contained EXE, no install, no telemetry.",
+      "url": "https://prodirt-llc.github.io/ntfs-folder-audit/",
+      "downloadUrl": "https://github.com/prodirt-llc/ntfs-folder-audit/releases",
+      "publisher": { "@type": "Organization", "name": "ProDirt LLC" },
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f5f5f5; }
+        .hero { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2.5rem 2rem 3rem; text-align: center; }
+        .hero-logo { width: 88px; height: 88px; border-radius: 18px; margin: 0 auto 1rem auto; display: block; box-shadow: 0 6px 18px rgba(0,0,0,0.3); }
+        .hero h1 { font-size: 2.4rem; margin-bottom: 0.75rem; font-weight: 700; }
+        .hero p { font-size: 1.2rem; margin-bottom: 0.5rem; opacity: 0.95; }
+        .hero .subtext { font-size: 1rem; opacity: 0.8; margin-bottom: 1.5rem; }
+        .badge { display: inline-block; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); color: white; font-size: 0.8rem; font-weight: bold; padding: 3px 10px; border-radius: 12px; margin: 0 4px 1rem 4px; }
+        .cta-group { margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+        .cta-button { display: inline-block; background: white; color: #667eea; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 1.1rem; transition: transform 0.2s, box-shadow 0.2s; }
+        .cta-button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .cta-button.secondary { background: rgba(255,255,255,0.15); color: white; border: 2px solid rgba(255,255,255,0.6); }
+        .cta-button.secondary:hover { background: rgba(255,255,255,0.25); }
+        .back-link { display: inline-block; margin-bottom: 1.25rem; color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.95rem; }
+        .back-link:hover { color: white; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem; }
+        .section { background: white; margin: 2rem 0; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .section h2 { color: #667eea; margin-bottom: 1.25rem; font-size: 1.8rem; }
+        .free-callout { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem; border-radius: 12px; margin: 2rem 0; text-align: center; }
+        .free-callout .price { font-size: 3rem; font-weight: 700; line-height: 1; }
+        .free-callout .price-sub { opacity: 0.9; margin-top: 0.5rem; font-size: 1.05rem; }
+        .free-callout .includes { margin-top: 1rem; font-size: 0.95rem; opacity: 0.9; }
+        .free-callout a { color: #fff; font-weight: 700; text-decoration: underline; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
+        .feature { padding: 1.5rem; background: #f0f4ff; border-radius: 8px; border-left: 4px solid #667eea; }
+        .feature h3 { color: #333; margin-bottom: 0.5rem; font-size: 1.1rem; }
+        .feature p { color: #666; font-size: 0.95rem; }
+        .screenshot-area { background: #1a1a2e; border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; text-align: center; }
+        .screenshot-area img { max-width: 100%; border-radius: 6px; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+        .screenshot-area p { color: #aaa; font-size: 0.85rem; margin-top: 0.75rem; font-style: italic; }
+        .privacy-box { background: #eef7ee; border-left: 4px solid #27ae60; border-radius: 0 8px 8px 0; padding: 1.5rem; margin: 1.5rem 0; }
+        .privacy-box h3 { color: #1e7a3a; margin-bottom: 0.5rem; }
+        .privacy-box p { color: #2d5a3a; }
+        .who-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; margin-top: 1.5rem; }
+        .who-card { background: linear-gradient(135deg, #f0f4ff, #e8ecff); border-radius: 8px; padding: 1.25rem; }
+        .who-card h4 { color: #667eea; margin-bottom: 0.4rem; }
+        .who-card p { color: #555; font-size: 0.9rem; }
+        .specs-list { list-style: none; margin-top: 1rem; }
+        .specs-list li { padding: 0.6rem 0; border-bottom: 1px solid #f0f0f0; color: #555; display: flex; gap: 0.75rem; }
+        .specs-list li:last-child { border-bottom: none; }
+        .specs-list li strong { color: #333; min-width: 170px; flex-shrink: 0; }
+        .lic-grid { list-style: none; margin-top: 1rem; }
+        .lic-grid li { padding: 0.5rem 0; border-bottom: 1px solid #f0f0f0; color: #555; }
+        .lic-grid li:last-child { border-bottom: none; }
+        .lic-grid .yes { color: #27ae60; font-weight: 700; }
+        .lic-grid .no { color: #e74c3c; font-weight: 700; }
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 1rem 1.25rem; border-radius: 8px; overflow-x: auto; margin: 0.75rem 0; font-size: 0.85rem; border-left: 4px solid #667eea; }
+        footer { background: #2d3748; color: white; padding: 2rem; text-align: center; margin-top: 4rem; }
+        footer a { color: #90cdf4; text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+        @media (max-width: 768px) { .hero h1 { font-size: 1.8rem; } }
+    </style>
+</head>
+<body>
+
+<div class="hero">
+    <a href="https://prodirt-llc.github.io/" class="back-link">← Back to ProDirt Apps</a>
+    <img src="logo.png" alt="NTFS Folder Audit" class="hero-logo">
+    <div>
+        <span class="badge">🖥️ Windows</span>
+        <span class="badge">Single EXE</span>
+        <span class="badge">Free &amp; Open Source</span>
+    </div>
+    <h1>NTFS Folder Audit</h1>
+    <p>Audit NTFS folder permissions across any local path or UNC share</p>
+    <p class="subtext">Built by a working MSP engineer — the tool I wished existed. Free, forever.</p>
+    <div class="cta-group">
+        <a href="https://github.com/prodirt-llc/ntfs-folder-audit/releases" class="cta-button">Download Free →</a>
+        <a href="https://github.com/prodirt-llc/ntfs-folder-audit" class="cta-button secondary">View on GitHub</a>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- Free callout -->
+    <div class="free-callout">
+        <div class="price">Free</div>
+        <div class="price-sub">No licence key. No trial timer. No feature gating. No account.</div>
+        <div class="includes">
+            Every feature works the moment you download it. If it saves you an afternoon of clicking through Security tabs, you're welcome to <a href="https://paypal.me/ProDirtLLC" target="_blank" rel="noopener">buy me a coffee ☕</a> — that's the whole business model, and nothing in the app changes whether you do or not.
+        </div>
+    </div>
+
+    <!-- What it is -->
+    <div class="section">
+        <h2>Stop Wrestling with icacls and PowerShell</h2>
+        <p>NTFS Folder Audit gives you a fast, readable view of who has access to what across any Windows file share. Scan a local path or a UNC share, expand the folder tree, click any folder to see exactly who has access and where it came from, and hand your client a self-contained interactive HTML report — no PowerShell required.</p>
+        <div class="screenshot-area">
+            <img src="screenshot.png" alt="NTFS Folder Audit scanning a folder tree with the permissions grid">
+            <p>The permissions grid — identity, access type, decoded rights, and inheritance state at a glance.</p>
+        </div>
+    </div>
+
+    <!-- Privacy -->
+    <div class="section">
+        <h2>🔒 It Never Phones Home</h2>
+        <p>No telemetry. No analytics. No HTTP client anywhere in the source. It reads the filesystem and writes the report you asked for — that's all. Drop it on an isolated or air-gapped network and it behaves identically. The only URLs in the whole app are three links in the About dialog that open in <em>your</em> browser when <em>you</em> click them.</p>
+        <div class="privacy-box">
+            <h3>✓ Safe to run on a client's file server</h3>
+            <p>No network connections, no data leaves the machine, no account, no watermarks on reports. What you scan stays with you.</p>
+        </div>
+    </div>
+
+    <!-- Features -->
+    <div class="section">
+        <h2>🔧 What It Does</h2>
+        <div class="features-grid">
+            <div class="feature">
+                <h3>Permissions Grid</h3>
+                <p>Scan any local path or UNC share to a depth you choose. Every folder shows identity, access type, decoded rights, inheritance state and flags.</p>
+            </div>
+            <div class="feature">
+                <h3>Broken Inheritance Detection</h3>
+                <p>Instantly flag folders whose ACLs are set explicitly instead of inherited — the first thing worth reviewing in any audit. One click filters the tree to only those folders.</p>
+            </div>
+            <div class="feature">
+                <h3>Ownership &amp; Orphaned SIDs</h3>
+                <p>See the owner account per folder — including unresolvable SIDs left behind by deleted accounts, so nothing hides.</p>
+            </div>
+            <div class="feature">
+                <h3>Side-by-Side Comparison</h3>
+                <p>Point it at a share and its backup, or two folders that should match, and it highlights every folder whose permissions differ — plus anything present on only one side.</p>
+            </div>
+            <div class="feature">
+                <h3>Interactive HTML &amp; CSV Export</h3>
+                <p>A self-contained HTML report — searchable, expandable, no external dependencies — you can email to anyone. Or a flat CSV for a spreadsheet or ticketing system.</p>
+            </div>
+            <div class="feature">
+                <h3>Access-Denied Event Log</h3>
+                <p>Folders your account can't read are surfaced in an event log rather than silently reported as empty — so you always know what you missed.</p>
+            </div>
+            <div class="feature">
+                <h3>Command-Line / Headless</h3>
+                <p>The same engine runs from the CLI for scheduled audits: <code>--path</code>, <code>--output</code>, <code>--csv</code>, <code>--depth</code>, <code>--exclude-system</code>, <code>--open</code>.</p>
+            </div>
+            <div class="feature">
+                <h3>No Installation</h3>
+                <p>A single self-contained EXE with the .NET runtime bundled in. Copy it to a tools folder, a server, or a USB stick and run — nothing touches Program Files.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Download -->
+    <div class="section">
+        <h2>⬇️ Download &amp; Run</h2>
+        <p>Grab the latest <code>NTFSFolderAudit.exe</code> from <a href="https://github.com/prodirt-llc/ntfs-folder-audit/releases" style="color:#667eea;font-weight:600;" target="_blank" rel="noopener">GitHub Releases</a>. There's no installer — copy it and run.</p>
+        <p style="margin-top:0.75rem;"><strong>Run it as Administrator.</strong> It works without elevation, but any folder whose ACL your account can't read comes back as access-denied (surfaced in the event log, never silently skipped).</p>
+        <p style="margin-top:0.75rem;color:#777;font-size:0.95rem;">The download is ~155 MB because the .NET runtime is bundled inside — the trade for "copy it to any server and it just runs."</p>
+    </div>
+
+    <!-- Who it's for -->
+    <div class="section">
+        <h2>👤 Who It's For</h2>
+        <div class="who-grid">
+            <div class="who-card"><h4>MSP Technicians</h4><p>Audit a client file server fast — drop the EXE on the box, scan, export a report, done. Free to use in paid client work.</p></div>
+            <div class="who-card"><h4>IT Admins</h4><p>Document permissions before a migration and catch broken inheritance before it becomes a support ticket.</p></div>
+            <div class="who-card"><h4>Sysadmins</h4><p>Compare permissions across a share and its backup to verify a migration landed correctly — instant diff.</p></div>
+            <div class="who-card"><h4>Compliance &amp; Audit</h4><p>Produce readable permission reports for reviews without writing a line of PowerShell.</p></div>
+        </div>
+    </div>
+
+    <!-- Requirements -->
+    <div class="section">
+        <h2>📋 Requirements</h2>
+        <ul class="specs-list">
+            <li><strong>Operating System</strong> Windows 10, Windows 11, Windows Server 2016 or newer</li>
+            <li><strong>Architecture</strong> x64</li>
+            <li><strong>Installation</strong> None — single self-contained EXE (~155 MB)</li>
+            <li><strong>.NET Runtime</strong> Bundled — no separate install needed</li>
+            <li><strong>Privileges</strong> Run as Administrator for full ACL access</li>
+            <li><strong>Network</strong> None — the tool makes no network connections at all</li>
+        </ul>
+    </div>
+
+    <!-- License -->
+    <div class="section">
+        <h2>📜 Licence</h2>
+        <p><a href="https://github.com/prodirt-llc/ntfs-folder-audit/blob/main/LICENSE.md" style="color:#667eea;font-weight:600;" target="_blank" rel="noopener">PolyForm Shield 1.0.0</a> — free to use, not free to resell. In plain terms:</p>
+        <ul class="lic-grid">
+            <li><span class="yes">✓ Yes</span> — use it at work, on client systems, in paid engagements</li>
+            <li><span class="yes">✓ Yes</span> — share it, mirror it, hand the EXE to a colleague</li>
+            <li><span class="yes">✓ Yes</span> — read the source, modify it for your own use</li>
+            <li><span class="no">✗ No</span> — sell it, charge for access, or ship it inside a product you sell</li>
+        </ul>
+    </div>
+
+    <!-- CTA -->
+    <div style="text-align: center; margin: 3rem 0;">
+        <p style="font-size: 1.2rem; color: #666; margin-bottom: 1.5rem;">Free, single EXE, no install, no telemetry. Copy it to any server and run.</p>
+        <a href="https://github.com/prodirt-llc/ntfs-folder-audit/releases" class="cta-button" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; font-size: 1.1rem; padding: 1rem 2.5rem;">Download NTFS Folder Audit — Free →</a>
+        <p style="margin-top:1.25rem;color:#888;">Saved you an afternoon? <a href="https://paypal.me/ProDirtLLC" style="color:#667eea;font-weight:600;" target="_blank" rel="noopener">Buy me a coffee ☕</a></p>
+    </div>
+
+</div>
+
+<footer>
+    <p>© 2026 ProDirt LLC. All rights reserved.</p>
+    <p style="margin-top: 1rem;">
+        <a href="https://prodirt-llc.github.io/">More Apps</a> |
+        <a href="https://github.com/prodirt-llc/ntfs-folder-audit">GitHub</a> |
+        <a href="mailto:prodirt.co@gmail.com">Contact</a> |
+        <a href="/blog/">Developer Blog</a>
+    </p>
+    <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">A Virginia-based software company.</p>
+</footer>
+
+    <script src="/nav.js" defer></script>
+</body>
+</html>

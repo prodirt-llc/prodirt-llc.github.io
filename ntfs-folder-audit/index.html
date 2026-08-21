@@ -93,7 +93,7 @@
     <div>
         <span class="badge">🖥️ Windows</span>
         <span class="badge">Single EXE</span>
-        <span class="badge">Free &amp; Open Source</span>
+        <span class="badge">Free · Source-Available</span>
     </div>
     <h1>NTFS Folder Audit</h1>
     <p>Audit NTFS folder permissions across any local path or UNC share</p>
@@ -180,6 +180,13 @@
         <p>Grab the latest <code>NTFSFolderAudit.exe</code> from <a href="https://github.com/prodirt-llc/ntfs-folder-audit/releases" style="color:#667eea;font-weight:600;" target="_blank" rel="noopener">GitHub Releases</a>. There's no installer — copy it and run.</p>
         <p style="margin-top:0.75rem;"><strong>Run it as Administrator.</strong> It works without elevation, but any folder whose ACL your account can't read comes back as access-denied (surfaced in the event log, never silently skipped).</p>
         <p style="margin-top:0.75rem;color:#777;font-size:0.95rem;">The download is ~155 MB because the .NET runtime is bundled inside — the trade for "copy it to any server and it just runs."</p>
+
+        <div class="privacy-box" style="background:#fff8ec;border-left-color:#e0a336;">
+            <h3 style="color:#8a5a00;">⚠️ "Windows protected your PC"? That's expected.</h3>
+            <p style="color:#6a4a10;">The EXE isn't code-signed with an (expensive) EV certificate, so the first time you run it Windows <strong>SmartScreen</strong> may show a blue "Windows protected your PC" screen. That's SmartScreen not recognising a new, unsigned app yet — <strong>not a virus detection</strong>. Click <strong>More info → Run anyway</strong>. The warning fades once enough people have run the release.</p>
+        </div>
+
+        <p style="margin-top:0.75rem;"><strong>Don't take my word that it's clean.</strong> Here's the independent <a href="https://www.virustotal.com/gui/file/3be489ffe45e5a104728001ed691a7f020cf88c69ac3a99a9011233509e757df" style="color:#667eea;font-weight:600;" target="_blank" rel="noopener">VirusTotal scan of the release EXE →</a> — 70+ antivirus engines, verify it yourself.</p>
     </div>
 
     <!-- Who it's for -->
@@ -216,6 +223,7 @@
             <li><span class="yes">✓ Yes</span> — read the source, modify it for your own use</li>
             <li><span class="no">✗ No</span> — sell it, charge for access, or ship it inside a product you sell</li>
         </ul>
+        <p style="margin-top:1rem;color:#777;font-size:0.95rem;">Note: this is a <em>source-available</em> licence, not an OSI open-source one — GitHub lists it as "Other." Using it to deliver IT work to your clients is exactly what it's for; the noncompete only covers selling the software itself.</p>
     </div>
 
     <!-- CTA -->

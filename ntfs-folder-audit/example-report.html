@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NTFS Folder Audit &mdash; F:\Shares\ClientData</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#f5f5f5;color:#2c3e50}
+.header{background:#1e293b;color:white;padding:28px 24px;box-shadow:0 4px 12px rgba(0,0,0,0.15)}
+.header-brand{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;opacity:.6;margin-bottom:6px;color:#94a3b8}
+h1{font-size:26px;font-weight:600;margin-bottom:12px}
+.stats{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px}
+.stat{background:rgba(255,255,255,0.08);padding:10px 16px;border-radius:8px;border:1px solid rgba(255,255,255,0.1)}
+.stat-label{font-size:11px;opacity:.85;margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px}
+.stat-value{font-size:20px;font-weight:700}
+.path-stat{font-size:13px;font-family:monospace;word-break:break-all}
+.warning-stat{background:rgba(255,193,7,0.3);border:1px solid rgba(255,193,7,0.5)}
+.diff-changed{background:rgba(255,152,0,.3);border:1px solid rgba(255,152,0,.5)}
+.diff-left{background:rgba(33,150,243,.3);border:1px solid rgba(33,150,243,.5)}
+.diff-right{background:rgba(156,39,176,.3);border:1px solid rgba(156,39,176,.5)}
+.controls{background:white;padding:16px 24px;border-bottom:1px solid #e0e0e0;box-shadow:0 2px 4px rgba(0,0,0,0.06)}
+.search-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+input[type=text]{flex:1;min-width:280px;padding:10px 14px;border:2px solid #e0e0e0;border-radius:6px;font-size:14px;transition:border-color .2s}
+input[type=text]:focus{outline:none;border-color:#1e293b}
+button{padding:8px 16px;background:#1e293b;color:white;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600;transition:all .15s;white-space:nowrap}
+button:hover{background:#0f172a;transform:translateY(-1px)}
+.btn-warning{background:#f39c12}.btn-warning:hover{background:#e08e0b}
+.btn-secondary{background:#6c757d}.btn-secondary:hover{background:#5a6268}
+.bi-notice{margin-top:12px;background:#fff8e6;border:1px solid #f39c12;border-radius:6px;padding:10px 14px;font-size:13px;color:#856404}
+.container{padding:20px 24px;max-width:2000px;margin:0 auto}
+.tree-container{background:white;border-radius:8px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,0.08)}
+.folder-node{margin:1px 0}
+.folder-header{display:flex;align-items:center;padding:7px 10px;cursor:pointer;border-radius:4px;transition:background .12s;position:relative}
+.folder-header:hover{background:#f1f5f9}
+.expand-icon{width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;margin-right:5px;font-size:12px;font-weight:bold;color:#475569;user-select:none;flex-shrink:0;font-family:monospace}
+.expand-icon.has-children.collapsed::before{content:'[+]'}
+.expand-icon.has-children.expanded::before{content:'[-]'}
+.expand-icon.no-children{visibility:hidden}
+.folder-icon{margin-right:6px;font-size:15px;flex-shrink:0}
+.folder-name{flex:1;font-weight:500;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.perm-count{background:#e2e8f0;color:#334155;padding:2px 9px;border-radius:10px;font-size:11px;font-weight:700;margin-left:6px;flex-shrink:0}
+.perm-count.has-deny{background:#fde;color:#c0392b}
+.perm-button{background:#1e293b;color:white;padding:3px 10px;border-radius:4px;font-size:11px;border:none;cursor:pointer;margin-left:6px;flex-shrink:0;font-weight:600}
+.perm-button:hover{background:#0f172a}
+.bi-badge{color:#b8860b;font-size:12px;margin-left:6px;flex-shrink:0;white-space:nowrap;opacity:0.8}
+.ad-badge{background:#e74c3c;color:white;padding:2px 9px;border-radius:10px;font-size:10px;margin-left:6px;flex-shrink:0;white-space:nowrap}
+.folder-header.broken-inheritance{background:#fff8e6;border-left:3px solid #f39c12}
+.folder-header.broken-inheritance:hover{background:#fff0cc}
+.folder-header.access-denied{background:#fdf0f0;border-left:3px solid #e74c3c}
+.children-container{margin-left:24px;display:none}
+.children-container.expanded{display:block}
+.permissions-panel{margin:4px 0 8px 46px;background:#f8fafc;border-left:3px solid #475569;border-radius:0 4px 4px 0;display:none;overflow-x:auto}
+.permissions-panel.visible{display:block}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{background:#e9ecef;padding:7px 10px;text-align:left;font-weight:700;font-size:11px;color:#495057;white-space:nowrap;position:sticky;top:0}
+td{padding:7px 10px;border-bottom:1px solid #e9ecef;vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#f1f5f9}
+.rights-decoded{color:#2c3e50;font-weight:600;display:block}
+.rights-raw{color:#adb5bd;font-size:10px;font-family:monospace;display:block}
+.allow{color:#27ae60;font-weight:700}
+.deny{color:#e74c3c;font-weight:700}
+.inherited-yes{color:#adb5bd;font-size:11px}
+.inherited-no{color:#e67e22;font-size:11px;font-weight:600}
+.loading{text-align:center;padding:48px;color:#6c757d;font-size:16px}
+.footer{text-align:center;padding:16px;color:#adb5bd;font-size:12px;margin-top:8px}
+.footer a{color:#475569;text-decoration:none}
+.footer a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-brand">ProDirt</div>
+  <h1>Folder Permissions Report</h1>
+  <div class="stats">
+    <div class="stat"><div class="stat-label">Root Path</div><div class="stat-value path-stat">F:\Shares\ClientData</div></div>
+    <div class="stat"><div class="stat-label">Folders</div><div class="stat-value">21</div></div>
+    <div class="stat"><div class="stat-label">Permissions</div><div class="stat-value">64</div></div>
+    <div class="stat"><div class="stat-label">Errors</div><div class="stat-value">0</div></div>
+    <div class="stat warning-stat"><div class="stat-label">&#9888; Broken Inheritance</div><div class="stat-value">4</div></div>
+    <div class="stat"><div class="stat-label">Generated</div><div class="stat-value path-stat">2026-08-25 10:11</div></div>
+    <div class="stat"><div class="stat-label">Scan Time</div><div class="stat-value path-stat">0.1s</div></div>
+  </div>
+</div>
+<div class="controls">
+  <div class="search-row">
+    <input type="text" id="searchBox" placeholder="Search folders, paths, or identities...">
+    <button onclick="expandAll()">Expand All</button>
+    <button onclick="collapseAll()">Collapse All</button>
+    <button onclick="expandToLevel(1)">Level 1</button>
+    <button onclick="expandToLevel(2)">Level 2</button>
+    <button onclick="expandToLevel(3)">Level 3</button>
+    <button class="btn-warning" onclick="showBrokenOnly()" title="Show only folders with broken inheritance">&#9888; Broken Inheritance Only</button>
+    <button class="btn-secondary" onclick="exportCsv()">Export CSV</button>
+  </div>
+  <div class="bi-notice">
+  <strong>&#9888; Warning:</strong> Folders highlighted in amber have NTFS inheritance <strong>disabled</strong>.
+  Permissions on these folders are set explicitly and are not inherited from the parent.
+  This may indicate intentional security boundaries or misconfigured ACLs &mdash; review carefully.
+</div>
+</div>
+<div class="container">
+  <div id="loading" class="loading">Building tree structure...</div>
+  <div class="tree-container" id="treeContainer" style="display:none"></div>
+</div>
+<div class="footer">
+  <span>Generated by <strong>NTFS Folder Audit</strong> &nbsp;|&nbsp; <a href="https://prodirt-llc.github.io" target="_blank">prodirt-llc.github.io</a></span>
+</div>
+<script>
+const flatData = [{"p":"F:\\Shares\\ClientData","n":"ClientData","pr":"","d":0,"pm":[{"i":"NT AUTHORITY\\SYSTEM","r":"Full Control"},{"i":"BUILTIN\\Administrators","r":"Full Control"},{"i":"BUILTIN\\Users","r":"Read \u0026 Execute"}]},{"p":"F:\\Shares\\ClientData\\Accounting","n":"Accounting","pr":"F:\\Shares\\ClientData","d":1,"pm":[],"ic":3},{"p":"F:\\Shares\\ClientData\\Executive","n":"Executive","pr":"F:\\Shares\\ClientData","d":1,"pm":[],"ic":3},{"p":"F:\\Shares\\ClientData\\HR","n":"HR","pr":"F:\\Shares\\ClientData","d":1,"pm":[],"ic":3},{"p":"F:\\Shares\\ClientData\\IT","n":"IT","pr":"F:\\Shares\\ClientData","d":1,"pm":[],"ic":3},{"p":"F:\\Shares\\ClientData\\Shared","n":"Shared","pr":"F:\\Shares\\ClientData","d":1,"pm":[],"ic":3},{"p":"F:\\Shares\\ClientData\\HR\\Benefits","n":"Benefits","pr":"F:\\Shares\\ClientData\\HR","d":2,"pm":[],"ic":3},{"p":"F:\\Shares\\ClientData\\Executive\\Board Minutes","n":"Board Minutes","pr":"F:\\Shares\\ClientData\\Executive","d":2,"bi":true,"pm":[{"i":"NT AUTHORITY\\SYSTEM","r":"Full Control"},{"i":"BUILTIN\\Administrators","r":"Full Control"}]},{"p":"F:\\Shares\\ClientData\\IT\\Documentation","n":"Documentation","pr":"F:\\Shares\\ClientData\\IT","d":2,"pm":[],"ic":3},{"p":"F:\\Shares\\ClientData\\HR\\Employee Records","n":"Employee Records","pr":"F:\\Shares\\ClientData\\HR","d":2,"bi":true,"pm":[{"i":"NT AUTHORITY\\SYSTEM","r":"Full Control"},{"i":"BUILTIN\\Administrators","r":"Full Control"},{"i":"BUILTIN\\Users","r":"Read, Write Attributes"}]},{"p":"F:\\Shares\\ClientData\\Accounting\\Invoices","n":"Invoices","pr":"F:\\Shares\\ClientData\\Accounting","d":2,"pm":[],"ic":3},{"p":"F:\\Shares\\ClientData\\Accounting\\Payroll","n":"Payroll","pr":"F:\\Shares\\ClientData\\Accounting","d":2,"bi":true,"pm":[{"i":"NT AUTHORITY\\SYSTEM","r":"Full Control"},{"i":"BUILTIN\\Administrators","r":"Full Control"},{"i":"BUILTIN\\Users","r":"Read, Write Attributes"}]},{"p":"F:\\Shares\\ClientData\\HR\\Policies","n":"Policies","pr":"F:\\Shares\\ClientData\\HR","d":2,"pm":[],"ic":3},{"p":"F:\\Shares\\ClientData\\Shared\\Projects","n":"Projects","pr":"F:\\Shares\\ClientData\\Shared","d":2,"pm":[],"ic":3},{"p":"F:\\Shares\\ClientData\\Shared\\Public","n":"Public","pr":"F:\\Shares\\ClientData\\Shared","d":2,"pm":[{"i":"Everyone","r":"Read \u0026 Execute"}],"ic":3},{"p":"F:\\Shares\\ClientData\\HR\\Recruiting","n":"Recruiting","pr":"F:\\Shares\\ClientData\\HR","d":2,"pm":[],"ic":3},{"p":"F:\\Shares\\ClientData\\IT\\Scripts","n":"Scripts","pr":"F:\\Shares\\ClientData\\IT","d":2,"pm":[],"ic":3},{"p":"F:\\Shares\\ClientData\\IT\\Software","n":"Software","pr":"F:\\Shares\\ClientData\\IT","d":2,"pm":[],"ic":3},{"p":"F:\\Shares\\ClientData\\Executive\\Strategy","n":"Strategy","pr":"F:\\Shares\\ClientData\\Executive","d":2,"bi":true,"pm":[{"i":"BUILTIN\\Guests","r":"Create Files, Create Directories, Write Ext Attributes, Write Attributes, Synchronize","a":"Deny"},{"i":"NT AUTHORITY\\SYSTEM","r":"Full Control"},{"i":"BUILTIN\\Administrators","r":"Full Control"},{"i":"BUILTIN\\Users","r":"Read \u0026 Execute"}]},{"p":"F:\\Shares\\ClientData\\Shared\\Templates","n":"Templates","pr":"F:\\Shares\\ClientData\\Shared","d":2,"pm":[],"ic":3},{"p":"F:\\Shares\\ClientData\\Accounting\\Year End","n":"Year End","pr":"F:\\Shares\\ClientData\\Accounting","d":2,"pm":[],"ic":3}];
+const rootPath = "F:\\Shares\\ClientData";
+console.log('Loaded ' + flatData.length + ' folders');
+const folderMap = new Map();
+flatData.forEach(f => { f.children = []; folderMap.set(f.p, f); });
+
+// Explicit entries on this folder, plus every entry it inherits. Ancestors
+// inside the scan contribute their explicit entries; at the scan root the
+// inherited set is read from 'ri', because nothing above it was scanned.
+function resolvePerms(folder) {
+  const own = folder.pm || [];
+  const inherited = [];
+  let cur = folder;
+  while (cur) {
+    const anc = cur.pr ? folderMap.get(cur.pr) : null;
+    if (!anc) {
+      if (cur.ri) cur.ri.forEach(p => inherited.push({ p: p, src: cur.pr || cur.p }));
+      break;
+    }
+    if (anc.pm && anc.pm.length > 0) anc.pm.forEach(p => inherited.push({ p: p, src: anc.p }));
+    cur = anc;
+  }
+  return { own: own, inherited: inherited };
+}
+flatData.forEach(f => { if (f.pr && folderMap.has(f.pr)) folderMap.get(f.pr).children.push(f); });
+const rootFolder = flatData.find(f => !f.pr || f.pr === f.p) || flatData[0];
+
+function hasDenyRule(pm) { return pm && pm.some(p => p.a === 'Deny'); }
+
+function createNode(folder, parentEl) {
+  const nodeDiv = document.createElement('div');
+  nodeDiv.className = 'folder-node';
+  nodeDiv.dataset.path = folder.p;
+  nodeDiv.dataset.depth = folder.d;
+  if (folder.bi) nodeDiv.dataset.bi = '1';
+  if (folder.ad) nodeDiv.dataset.ad = '1';
+
+  const hasKids = folder.children && folder.children.length > 0;
+  const hasDeny = hasDenyRule(folder.pm);
+
+  const header = document.createElement('div');
+  let headerClass = 'folder-header';
+  if (folder.bi) headerClass += ' broken-inheritance';
+  else if (folder.ad) headerClass += ' access-denied';
+  header.className = headerClass;
+
+  const icon = document.createElement('span');
+  icon.className = hasKids ? 'expand-icon has-children collapsed' : 'expand-icon no-children';
+
+  const folderIcon = document.createElement('span');
+  folderIcon.className = 'folder-icon';
+  folderIcon.textContent = folder.ad ? '\uD83D\uDD12' : (folder.bi ? '\u26A0\uFE0F' : '\uD83D\uDCC1');
+
+  const name = document.createElement('span');
+  name.className = 'folder-name';
+  name.textContent = folder.n || folder.p;
+  name.title = folder.p;
+
+  const count = document.createElement('span');
+  count.className = 'perm-count' + (hasDeny ? ' has-deny' : '');
+  // Show explicit count + inherited count from ancestors
+  const resolved = resolvePerms(folder);
+  const ownExplicit = resolved.own.length;
+  const ancInherited = resolved.inherited.length;
+  count.textContent = ownExplicit + ancInherited;
+  if (ownExplicit === 0 && ancInherited > 0) count.title = ancInherited + ' inherited';
+  else if (ancInherited > 0) count.title = ownExplicit + ' explicit + ' + ancInherited + ' inherited';
+
+  const btn = document.createElement('button');
+  btn.className = 'perm-button';
+  btn.textContent = 'Perms';
+  btn.onclick = e => { e.stopPropagation(); togglePerms(nodeDiv); };
+
+  header.appendChild(icon);
+  header.appendChild(folderIcon);
+  header.appendChild(name);
+  header.appendChild(count);
+  header.appendChild(btn);
+
+  if (folder.bi) {
+    const badge = document.createElement('span');
+    badge.className = 'bi-badge';
+    badge.textContent = '\u26A0';
+    badge.title = 'Inheritance disabled — permissions are set explicitly on this folder, not inherited from parent.';
+    header.appendChild(badge);
+  }
+  if (folder.ad) {
+    const badge = document.createElement('span');
+    badge.className = 'ad-badge';
+    badge.textContent = '\uD83D\uDD12 Access Denied';
+    header.appendChild(badge);
+  }
+
+  if (hasKids) header.onclick = () => toggleKids(nodeDiv, icon);
+
+  const panel = document.createElement('div');
+  panel.className = 'permissions-panel';
+  {
+    const resolvedPanel = resolvePerms(folder);
+    const explicitPerms = resolvedPanel.own;
+    const inheritedRows = resolvedPanel.inherited;
+    let html = '<table><thead><tr><th>Identity</th><th>Rights</th><th>Access</th><th>Source</th></tr></thead><tbody>';
+    if (explicitPerms.length > 0) {
+      html += '<tr><td colspan="4" style="background:#f1f5f9;font-size:11px;font-weight:700;color:#334155;padding:4px 10px;letter-spacing:.5px">EXPLICIT PERMISSIONS</td></tr>';
+      explicitPerms.forEach(p => {
+        const ac = (p.a && p.a !== 'Allow') ? 'deny' : 'allow';
+        html += '<tr><td>' + escHtml(p.i) + '</td><td><span class="rights-decoded">' + escHtml(p.r) + '</span></td><td class="' + ac + '">' + (p.a||'Allow') + '</td><td><span class="inherited-no">Explicit</span></td></tr>';
+      });
+    }
+    if (inheritedRows.length > 0) {
+      html += '<tr><td colspan="4" style="background:#f8f9fc;font-size:11px;font-weight:700;color:#6c757d;padding:4px 10px;letter-spacing:.5px">INHERITED PERMISSIONS</td></tr>';
+      inheritedRows.forEach(({ p, src }) => {
+        const ac = (p.a && p.a !== 'Allow') ? 'deny' : 'allow';
+        const shortSrc = src.split('\\').pop() || src;
+        html += '<tr style="opacity:0.85"><td>' + escHtml(p.i) + '</td><td><span class="rights-decoded">' + escHtml(p.r) + '</span></td><td class="' + ac + '">' + (p.a||'Allow') + '</td><td><span class="inherited-yes" title="' + escHtml(src) + '">&#8593; ' + escHtml(shortSrc) + '</span></td></tr>';
+      });
+    }
+    if (explicitPerms.length === 0 && inheritedRows.length === 0) {
+      html += '<tr><td colspan="4" style="padding:10px;color:#6c757d">No permissions found' + (folder.ad ? ' (Access Denied)' : '') + '</td></tr>';
+    }
+    html += '</tbody></table>';
+    panel.innerHTML = html;
+  }
+
+  nodeDiv.appendChild(header);
+  nodeDiv.appendChild(panel);
+
+  if (hasKids) {
+    const cont = document.createElement('div');
+    cont.className = 'children-container';
+    folder.children.forEach(kid => createNode(kid, cont));
+    nodeDiv.appendChild(cont);
+  }
+  parentEl.appendChild(nodeDiv);
+}
+
+function escHtml(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+// Walk up the folder map to find the nearest ancestor with explicit permissions
+function findPermSource(folder) {
+  let cur = folder;
+  while (cur && cur.pr) {
+    const parent = folderMap.get(cur.pr);
+    if (!parent) break;
+    if (parent.pm && parent.pm.length > 0) return parent;
+    cur = parent;
+  }
+  return null;
+}
+function toggleKids(node, icon) {
+  const cont = node.querySelector(':scope > .children-container');
+  if (!cont) return;
+  const exp = cont.classList.toggle('expanded');
+  icon.classList.toggle('collapsed', !exp);
+  icon.classList.toggle('expanded', exp);
+}
+function togglePerms(node) { node.querySelector('.permissions-panel').classList.toggle('visible'); }
+function expandAll() {
+  document.querySelectorAll('.children-container').forEach(e => e.classList.add('expanded'));
+  document.querySelectorAll('.expand-icon.has-children').forEach(e => { e.classList.remove('collapsed'); e.classList.add('expanded'); });
+}
+function collapseAll() {
+  document.querySelectorAll('.children-container').forEach(e => e.classList.remove('expanded'));
+  document.querySelectorAll('.expand-icon.has-children').forEach(e => { e.classList.add('collapsed'); e.classList.remove('expanded'); });
+  document.querySelectorAll('.permissions-panel').forEach(e => e.classList.remove('visible'));
+}
+function expandToLevel(lvl) {
+  collapseAll();
+  document.querySelectorAll('.folder-node').forEach(n => {
+    const d = parseInt(n.dataset.depth);
+    if (d < lvl) {
+      const cont = n.querySelector(':scope > .children-container');
+      const ic = n.querySelector(':scope > .folder-header > .expand-icon.has-children');
+      if (cont && ic) { cont.classList.add('expanded'); ic.classList.remove('collapsed'); ic.classList.add('expanded'); }
+    }
+  });
+}
+function showBrokenOnly() {
+  collapseAll();
+  let found = false;
+  document.querySelectorAll('.folder-node').forEach(n => {
+    if (n.dataset.bi) {
+      n.style.display = 'block';
+      // Make ancestors visible too
+      let p = n.parentElement;
+      while (p) {
+        if (p.classList.contains('folder-node')) p.style.display = 'block';
+        if (p.classList.contains('children-container')) p.classList.add('expanded');
+        p = p.parentElement;
+      }
+      n.querySelector(':scope > .folder-header > .expand-icon')?.classList.remove('collapsed');
+      found = true;
+    }
+  });
+  // Hide non-broken nodes that weren't revealed as ancestors
+  document.querySelectorAll('.folder-node').forEach(n => {
+    if (!n.dataset.bi && n.style.display !== 'block') n.style.display = 'none';
+  });
+  if (!found) alert('No broken inheritance folders found in this scan.');
+}
+document.getElementById('searchBox').addEventListener('input', e => {
+  const term = e.target.value.toLowerCase().trim();
+  if (!term) {
+    document.querySelectorAll('.folder-node').forEach(n => n.style.display = '');
+    return;
+  }
+  document.querySelectorAll('.folder-node').forEach(n => {
+    const show = n.dataset.path.toLowerCase().includes(term)
+      || n.querySelector('.folder-name')?.textContent.toLowerCase().includes(term)
+      || Array.from(n.querySelectorAll('td')).some(td => td.textContent.toLowerCase().includes(term));
+    n.style.display = show ? 'block' : 'none';
+  });
+});
+
+function exportCsv() {
+  const rows = [['Path','Depth','BrokenInheritance','Identity','AccessType','Rights','IsInherited','Flags']];
+  flatData.forEach(f => {
+    if (!f.pm || f.pm.length === 0) {
+      rows.push([f.p, f.d, f.bi ? 'TRUE':'FALSE', '', '', '', '', '']);
+    } else {
+      f.pm.forEach(p => rows.push([f.p, f.d, f.bi?'TRUE':'FALSE', p.i, p.a, p.d||p.r, p.h, p.f]));
+    }
+  });
+  const csv = rows.map(r => r.map(c => '"' + String(c||'').replace(/"/g,'""') + '"').join(',')).join('\r\n');
+  const blob = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'folder_permissions.csv';
+  a.click();
+}
+
+document.getElementById('loading').textContent = 'Rendering tree (' + flatData.length + ' folders)...';
+setTimeout(() => {
+  if (rootFolder) createNode(rootFolder, document.getElementById('treeContainer'));
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('treeContainer').style.display = 'block';
+}, 50);
+</script>
+</body>
+</html>

@@ -30,6 +30,30 @@
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
     }
     </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Even Spacing Calculator (Online)",
+      "url": "https://prodirt-llc.github.io/evenspacing/#calculator",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Any (web browser)",
+      "browserRequirements": "Requires JavaScript",
+      "isAccessibleForFree": true,
+      "description": "Free online even spacing calculator: exact on-center spacing, clear gap, and a full mark-out list for balusters, fence pickets, shelves, studs, and more. Works in imperial fractions to 1/64 inch or metric millimetres.",
+      "featureList": [
+        "On-center spacing",
+        "Clear gap between items",
+        "Mark-out list measured from one end",
+        "Edge offsets",
+        "Item thickness and width",
+        "Imperial fractions and metric",
+        "Live layout diagram"
+      ],
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "publisher": { "@type": "Organization", "name": "ProDirt LLC" }
+    }
+    </script>
     <style>
         * {
             margin: 0;
@@ -242,6 +266,38 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* ---- Live calculator ---- */
+        .calc .calc-sub { color:#666; margin-bottom:1.5rem; }
+        .calc-grid { display:grid; grid-template-columns:340px minmax(0,1fr); gap:2rem; align-items:start; }
+        @media (max-width:768px){ .calc-grid{ grid-template-columns:minmax(0,1fr); } }
+        .unit-toggle { display:inline-flex; border:1px solid #f97316; border-radius:8px; overflow:hidden; margin-bottom:1.25rem; }
+        .unit-toggle button { padding:0.55rem 1.1rem; border:none; background:#fff; color:#f97316; font-weight:600; cursor:pointer; font-size:0.95rem; }
+        .unit-toggle button.active { background:#f97316; color:#fff; }
+        .calc-field { margin-bottom:1rem; }
+        .calc-field label { display:block; font-weight:600; color:#333; margin-bottom:0.35rem; font-size:0.9rem; }
+        .calc-field input, .calc-field select { width:100%; padding:0.7rem 0.8rem; border:1px solid #e5e7eb; border-radius:8px; font-size:1rem; background:#fff; color:#333; }
+        .calc-field input:focus, .calc-field select:focus { outline:none; border-color:#f97316; box-shadow:0 0 0 3px rgba(249,115,22,0.15); }
+        .calc-row { display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; }
+        .calc-adv-toggle { background:none; border:none; color:#f97316; font-weight:600; cursor:pointer; padding:0; margin:0.25rem 0 0.75rem; font-size:0.95rem; }
+        .calc-adv { display:none; }
+        .calc-adv.open { display:block; }
+        .result-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:0.75rem; margin-bottom:1.25rem; }
+        @media (max-width:480px){ .result-cards{ grid-template-columns:1fr 1fr; } }
+        .result-card { background:#fff7ed; border-left:4px solid #f97316; border-radius:8px; padding:0.8rem 1rem; }
+        .result-card .rc-label { font-size:0.72rem; text-transform:uppercase; letter-spacing:0.03em; color:#9a6b47; }
+        .result-card .rc-value { font-size:1.35rem; font-weight:700; color:#333; font-variant-numeric:tabular-nums; }
+        .calc-diagram { width:100%; overflow-x:auto; background:#fff; border:1px solid #eee; border-radius:8px; margin-bottom:1.25rem; padding:0.5rem; }
+        .calc-diagram svg { width:100%; height:auto; min-width:520px; display:block; }
+        .markout h4 { color:#f97316; margin-bottom:0.6rem; font-size:1.05rem; }
+        .markout ol { list-style:none; padding:0; margin:0; display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:0.15rem 1.25rem; }
+        .markout li { display:flex; justify-content:space-between; border-bottom:1px solid #f1f1f1; padding:0.28rem 0; font-variant-numeric:tabular-nums; }
+        .markout li span:first-child { color:#aaa; }
+        .markout li span:last-child { font-weight:600; color:#333; }
+        .calc-error { color:#b91c1c; background:#fef2f2; border:1px solid #fecaca; border-radius:8px; padding:1rem; }
+        .calc-cta { margin-top:1.75rem; padding-top:1.25rem; border-top:1px solid #eee; color:#666; }
+        .calc-cta a { color:#f97316; font-weight:600; text-decoration:none; }
+        .calc-cta a:hover { text-decoration:underline; }
     </style>
 </head>
 <body>
@@ -254,6 +310,55 @@
     </div>
 
     <div class="container">
+        <div class="section calc" id="calculator">
+            <h2>Free Online Calculator</h2>
+            <p class="calc-sub">Enter your run and get exact on-center spacing, a full mark-out list, and a live layout diagram — no install, right here in your browser.</p>
+            <div class="calc-grid">
+                <div class="calc-inputs">
+                    <div class="unit-toggle" id="unitToggle">
+                        <button type="button" data-unit="in" class="active">Imperial (in)</button>
+                        <button type="button" data-unit="mm">Metric (mm)</button>
+                    </div>
+                    <div class="calc-field">
+                        <label for="calcLength">Total length (<span class="unit-label">in</span>)</label>
+                        <input type="number" id="calcLength" inputmode="decimal" placeholder="e.g. 96" value="96">
+                    </div>
+                    <div class="calc-field">
+                        <label for="calcCount">Number of items</label>
+                        <input type="number" id="calcCount" inputmode="numeric" placeholder="e.g. 8" value="8">
+                    </div>
+                    <button type="button" class="calc-adv-toggle" id="advToggle">+ Advanced options</button>
+                    <div class="calc-adv" id="calcAdv">
+                        <div class="calc-row">
+                            <div class="calc-field">
+                                <label for="calcLeft">Left offset</label>
+                                <input type="number" id="calcLeft" inputmode="decimal" placeholder="0" value="">
+                            </div>
+                            <div class="calc-field">
+                                <label for="calcRight">Right offset</label>
+                                <input type="number" id="calcRight" inputmode="decimal" placeholder="0" value="">
+                            </div>
+                        </div>
+                        <div class="calc-row">
+                            <div class="calc-field">
+                                <label for="calcThick">Item width / thickness</label>
+                                <input type="number" id="calcThick" inputmode="decimal" placeholder="0" value="1.5">
+                            </div>
+                            <div class="calc-field" id="precField">
+                                <label for="calcPrec">Round to</label>
+                                <select id="calcPrec">
+                                    <option value="16">1/16"</option>
+                                    <option value="32">1/32"</option>
+                                    <option value="64">1/64"</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="calc-output" id="calcOutput"></div>
+            </div>
+            <p class="calc-cta">Working on the jobsite? <a href="https://play.google.com/store/apps/details?id=even.spacingcalculator">Get the free Android app</a> — it works offline, saves your calculation history, and a one-time Pro unlock exports a print-ready PDF cut sheet you can print for the shop or text to the crew.</p>
+        </div>
         <section class="app-shots" data-dir="shots" data-max="10" data-title="Screenshots" hidden></section>
         <div class="section">
             <h2>Perfect Spacing, Every Time</h2>
@@ -462,6 +567,114 @@
         </p>
         <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">A Virginia-based software company.</p>
     </footer>
+    <script>
+    (function(){
+        var unit='in', prec=16;
+        var len=document.getElementById('calcLength'),
+            count=document.getElementById('calcCount'),
+            left=document.getElementById('calcLeft'),
+            right=document.getElementById('calcRight'),
+            thick=document.getElementById('calcThick'),
+            precSel=document.getElementById('calcPrec'),
+            precField=document.getElementById('precField'),
+            out=document.getElementById('calcOutput');
+
+        function gcd(a,b){ return b===0?a:gcd(b,a%b); }
+        function imperial(v,d){
+            var neg=v<0; v=Math.abs(v);
+            var whole=Math.floor(v), num=Math.round((v-whole)*d);
+            if(num===d){ whole++; num=0; }
+            var s;
+            if(num===0) s=whole+'"';
+            else { var g=gcd(num,d), n=num/g, dd=d/g; s=(whole>0?whole+' '+n+'/'+dd:n+'/'+dd)+'"'; }
+            return (neg?'-':'')+s;
+        }
+        function fmt(v){ return unit==='mm' ? Math.round(v)+' mm' : imperial(v,prec); }
+
+        function buildSVG(marks, oc, w, L, n){
+            var W=820,H=210, ml=60, mr=60, ppu=(W-ml-mr)/L;
+            var topR=78, botR=138, cy=108;
+            var ink='#334155', dim='#64748b', acc='#ea580c', hair='#cbd5e1';
+            function x(u){ return ml+u*ppu; }
+            var s='<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,-apple-system,sans-serif">';
+            s+='<line x1="'+ml+'" y1="'+topR+'" x2="'+(W-mr)+'" y2="'+topR+'" stroke="'+ink+'" stroke-width="1.5"/>';
+            s+='<line x1="'+ml+'" y1="'+botR+'" x2="'+(W-mr)+'" y2="'+botR+'" stroke="'+ink+'" stroke-width="1.5"/>';
+            s+='<line x1="'+ml+'" y1="'+(topR-8)+'" x2="'+ml+'" y2="'+(botR+8)+'" stroke="'+ink+'" stroke-width="2"/>';
+            s+='<line x1="'+(W-mr)+'" y1="'+(topR-8)+'" x2="'+(W-mr)+'" y2="'+(botR+8)+'" stroke="'+ink+'" stroke-width="2"/>';
+            var itemPx=w*ppu;
+            for(var i=0;i<marks.length;i++){
+                var px=x(marks[i]);
+                if(itemPx>=3) s+='<rect x="'+(px-itemPx/2)+'" y="'+topR+'" width="'+itemPx+'" height="'+(botR-topR)+'" fill="'+ink+'" opacity="0.85"/>';
+                else s+='<line x1="'+px+'" y1="'+topR+'" x2="'+px+'" y2="'+botR+'" stroke="'+ink+'" stroke-width="2"/>';
+            }
+            if(marks.length>=2){
+                var x1=x(marks[0]), x2=x(marks[marks.length-1]), dy=topR-24, midx=(x1+x2)/2;
+                s+='<line x1="'+x1+'" y1="'+dy+'" x2="'+x2+'" y2="'+dy+'" stroke="'+dim+'" stroke-width="1"/>';
+                s+='<path d="M'+x1+' '+dy+' l7 -3 l0 6 z" fill="'+dim+'"/>';
+                s+='<path d="M'+x2+' '+dy+' l-7 -3 l0 6 z" fill="'+dim+'"/>';
+                s+='<line x1="'+x1+'" y1="'+(topR-4)+'" x2="'+x1+'" y2="'+(dy-3)+'" stroke="'+hair+'" stroke-width="0.75"/>';
+                s+='<line x1="'+x2+'" y1="'+(topR-4)+'" x2="'+x2+'" y2="'+(dy-3)+'" stroke="'+hair+'" stroke-width="0.75"/>';
+                var lbl=(n-1)+' SPA @ '+fmt(oc)+' O.C.';
+                s+='<rect x="'+(midx-95)+'" y="'+(dy-14)+'" width="190" height="16" fill="#fff"/>';
+                s+='<text x="'+midx+'" y="'+(dy-2)+'" text-anchor="middle" font-size="12" fill="'+ink+'">'+lbl+'</text>';
+            }
+            var cxr=x(L/2);
+            s+='<line x1="'+cxr+'" y1="'+(topR-6)+'" x2="'+cxr+'" y2="'+(botR+6)+'" stroke="'+acc+'" stroke-width="1.2" stroke-dasharray="6 3"/>';
+            s+='<text x="'+cxr+'" y="'+(botR+22)+'" text-anchor="middle" font-size="11" font-weight="600" fill="'+acc+'">CENTER '+fmt(L/2)+'</text>';
+            s+='<text x="'+ml+'" y="'+(botR+22)+'" text-anchor="middle" font-size="10" fill="'+dim+'">0</text>';
+            s+='<text x="'+(W-mr)+'" y="'+(botR+22)+'" text-anchor="middle" font-size="10" fill="'+dim+'">'+fmt(L)+'</text>';
+            // clear-gap labels drawn last so their white knockout covers the CENTER line in the middle bay
+            if(w>0 && marks.length>=2 && (oc-w)*ppu>=40){
+                for(var j=0;j<marks.length-1;j++){
+                    var mx=x((marks[j]+marks[j+1])/2);
+                    s+='<rect x="'+(mx-26)+'" y="'+(cy-8)+'" width="52" height="15" fill="#fff"/>';
+                    s+='<text x="'+mx+'" y="'+(cy+3)+'" text-anchor="middle" font-size="11" fill="'+dim+'">'+fmt(oc-w)+'</text>';
+                }
+            }
+            return s+'</svg>';
+        }
+
+        function render(){
+            var L=parseFloat(len.value), n=parseInt(count.value,10);
+            var lo=parseFloat(left.value)||0, ro=parseFloat(right.value)||0, w=parseFloat(thick.value)||0;
+            if(lo<0)lo=0; if(ro<0)ro=0; if(w<0)w=0;
+            if(!(L>0)||!(n>=2)){ out.innerHTML='<div class="calc-error">Enter a total length and at least 2 items to see your spacing.</div>'; return; }
+            var avail=L-lo-ro;
+            if(avail<=0){ out.innerHTML='<div class="calc-error">Your offsets ('+fmt(lo)+' + '+fmt(ro)+') are larger than the run. Reduce them.</div>'; return; }
+            var spacing = w>0 ? (avail-n*w)/(n-1) : avail/(n-1);
+            if(spacing<0){ out.innerHTML='<div class="calc-error">Those items are too wide to fit '+n+' across that run.</div>'; return; }
+            var oc=spacing+w, first=lo+w/2;
+            var marks=[]; for(var i=0;i<n;i++) marks.push(first+oc*i);
+
+            var html='<div class="result-cards">'+
+                '<div class="result-card"><div class="rc-label">On-center</div><div class="rc-value">'+fmt(oc)+'</div></div>'+
+                '<div class="result-card"><div class="rc-label">Center of run</div><div class="rc-value">'+fmt(L/2)+'</div></div>'+
+                (w>0?'<div class="result-card"><div class="rc-label">Clear gap</div><div class="rc-value">'+fmt(spacing)+'</div></div>':'')+
+                '</div>';
+            html+='<div class="calc-diagram">'+buildSVG(marks,oc,w,L,n)+'</div>';
+            html+='<div class="markout"><h4>Mark-out — from the left end, to each center</h4><ol>';
+            for(var k=0;k<marks.length;k++) html+='<li><span>'+(k+1)+'.</span><span>'+fmt(marks[k])+'</span></li>';
+            html+='</ol></div>';
+            out.innerHTML=html;
+        }
+
+        document.getElementById('unitToggle').addEventListener('click',function(e){
+            var b=e.target.closest('button'); if(!b)return;
+            unit=b.getAttribute('data-unit');
+            [].forEach.call(this.querySelectorAll('button'),function(x){ x.classList.toggle('active',x===b); });
+            [].forEach.call(document.querySelectorAll('.unit-label'),function(x){ x.textContent=unit; });
+            precField.style.display = unit==='mm' ? 'none' : 'block';
+            render();
+        });
+        document.getElementById('advToggle').addEventListener('click',function(){
+            var a=document.getElementById('calcAdv'); a.classList.toggle('open');
+            this.textContent=(a.classList.contains('open')?'− ':'+ ')+'Advanced options';
+        });
+        precSel.addEventListener('change',function(){ prec=parseInt(this.value,10); render(); });
+        [len,count,left,right,thick].forEach(function(el){ el.addEventListener('input',render); });
+        render();
+    })();
+    </script>
     <script src="/nav.js" defer></script>
     <script src="/screenshots.js" defer></script>
 </body>

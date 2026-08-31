@@ -185,6 +185,37 @@
         </div>
     </div>
 
+    <!-- How-to (SEO: informational intent) -->
+    <div class="section">
+        <h2>How to Audit NTFS Folder Permissions</h2>
+        <p>Auditing NTFS permissions means answering three questions for every folder on a share: <strong>who</strong> has access, <strong>what level</strong> of access they have, and <strong>where it comes from</strong> — inherited from a parent, or set explicitly on that folder. Here's the manual way, and the fast way.</p>
+
+        <h3 style="margin-top:1.5rem;color:#333;">The manual way — Security tab, icacls, or PowerShell</h3>
+        <p>For a single folder, right-click it → <strong>Properties → Security → Advanced</strong>. That shows the access control list (ACL), the owner, and whether inheritance is enabled. Fine for one folder — tedious across a whole share.</p>
+        <p style="margin-top:0.75rem;">From a command prompt, <code>icacls</code> dumps the ACL for a folder or a whole tree:</p>
+        <pre>:: One folder
+icacls "D:\Shares\Finance"
+
+:: The whole tree, to a file
+icacls "D:\Shares\Finance" /T &gt; acl-report.txt</pre>
+        <p style="margin-top:0.75rem;">Or PowerShell with <code>Get-Acl</code>:</p>
+        <pre>Get-ChildItem "D:\Shares\Finance" -Recurse -Directory |
+  Get-Acl | Select-Object Path, Owner,
+    @{ n='Access'; e={ $_.AccessToString } }</pre>
+        <p style="margin-top:0.75rem;">Both work — but on a real file server you're now reading raw ACE text, resolving SIDs by hand, and there's no quick way to spot which folders <strong>broke inheritance</strong> or to hand a client something readable. That's the gap this tool closes.</p>
+
+        <h3 style="margin-top:1.5rem;color:#333;">The fast way — one scan</h3>
+        <p>NTFS Folder Audit performs the same audit in a single pass:</p>
+        <ol style="margin:0.75rem 0 0 1.5rem;color:#555;line-height:1.9;">
+            <li>Point it at a local path or UNC share and choose a scan depth.</li>
+            <li>It builds a permissions grid — identity, access type, decoded rights, and inheritance state for every folder.</li>
+            <li>One click filters the tree to only <strong>broken-inheritance</strong> folders — the first thing worth reviewing in any audit.</li>
+            <li>It surfaces ownership and <strong>orphaned SIDs</strong> left behind by deleted accounts.</li>
+            <li>Export a self-contained interactive <strong>HTML report</strong> (or CSV) to hand to the client or attach to a ticket.</li>
+        </ol>
+        <p style="margin-top:1rem;">No PowerShell, no manual SID lookups, no folder-by-folder clicking. <a href="https://github.com/prodirt-llc/ntfs-folder-audit/releases" style="color:#667eea;font-weight:600;" target="_blank" rel="noopener">Download it free and scan a share in about a minute →</a></p>
+    </div>
+
     <!-- Download -->
     <div class="section">
         <h2>⬇️ Download &amp; Run</h2>
@@ -235,6 +266,35 @@
             <li><span class="no">✗ No</span> — sell it, charge for access, or ship it inside a product you sell</li>
         </ul>
         <p style="margin-top:1rem;color:#777;font-size:0.95rem;">Note: this is a <em>source-available</em> licence, not an OSI open-source one — GitHub lists it as "Other." Using it to deliver IT work to your clients is exactly what it's for; the noncompete only covers selling the software itself.</p>
+    </div>
+
+    <!-- FAQ (SEO: long-tail queries) -->
+    <div class="section">
+        <h2>NTFS Permissions Auditing — FAQ</h2>
+
+        <h3 style="margin-top:1.25rem;color:#333;">How do I audit NTFS folder permissions?</h3>
+        <p style="color:#555;">Scan the folder or share, then for every folder check who has access, their access level, and whether it's inherited or set explicitly — paying special attention to broken inheritance and unresolved (orphaned) SIDs. You can do it by hand with the Security tab, <code>icacls</code>, or PowerShell's <code>Get-Acl</code> (see the walkthrough above), or run NTFS Folder Audit to do the whole share in one scan and export a report.</p>
+
+        <h3 style="margin-top:1.25rem;color:#333;">How can I see who has access to a shared folder or UNC path?</h3>
+        <p style="color:#555;">Point the tool at the UNC path (e.g. <code>\\server\share</code>) and scan. The permissions grid lists every identity with access to each folder, the rights they hold, and where those rights came from — no need to open the Security tab folder by folder.</p>
+
+        <h3 style="margin-top:1.25rem;color:#333;">What is broken NTFS inheritance, and why does it matter?</h3>
+        <p style="color:#555;">A folder has "broken" inheritance when someone disabled inheritance and set permissions directly on it, so it no longer follows its parent. It's the usual source of "why can this person still see this folder?" surprises, so it's the first thing to review in an audit. The tool flags every broken-inheritance folder and can filter the tree to show only those.</p>
+
+        <h3 style="margin-top:1.25rem;color:#333;">Do I need administrator rights to audit permissions?</h3>
+        <p style="color:#555;">No — it runs without elevation. But run it <strong>as Administrator</strong> to read every folder's ACL; any folder your account can't read is listed in an access-denied event log rather than silently skipped, so you always know what you missed.</p>
+
+        <h3 style="margin-top:1.25rem;color:#333;">Can I export an NTFS permissions report to HTML or CSV?</h3>
+        <p style="color:#555;">Yes. It exports a self-contained interactive <strong>HTML report</strong> — searchable, expandable, no external dependencies — that you can email to a client, or a flat <strong>CSV</strong> for a spreadsheet or ticketing system. See the <a href="example-report.html" style="color:#667eea;font-weight:600;" target="_blank" rel="noopener">example report</a>.</p>
+
+        <h3 style="margin-top:1.25rem;color:#333;">Is it safe to run on a client's file server?</h3>
+        <p style="color:#555;">Yes. It makes <strong>no network connections</strong> — no telemetry, no analytics, no data leaves the machine. It reads the filesystem and writes the report you asked for. Drop it on an isolated or air-gapped network and it behaves identically.</p>
+
+        <h3 style="margin-top:1.25rem;color:#333;">Is there a free NTFS permissions reporter / auditor?</h3>
+        <p style="color:#555;">This is one. NTFS Folder Audit is free — no licence key, no trial timer, no feature gating. If you've used paid permission-reporting tools before, this covers the core audit — scan, flag broken inheritance, compare two paths, and export a report — at no cost, and it's free to use in paid client work.</p>
+
+        <h3 style="margin-top:1.25rem;color:#333;">How is this different from icacls or PowerShell Get-Acl?</h3>
+        <p style="color:#555;">Same underlying data, far less work. Instead of raw ACE text and manual SID resolution, you get a readable grid with decoded rights and inheritance state, one-click broken-inheritance filtering, orphaned-SID detection, side-by-side comparison of two paths, and a client-ready report — without writing or maintaining a script.</p>
     </div>
 
     <!-- CTA -->

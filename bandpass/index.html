@@ -30,6 +30,44 @@
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
     }
     </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do I find out what frequency a hum or noise is?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Open a live spectrogram and let the noise play. A steady hum shows up as a bright, unmoving horizontal band, and where it sits is its frequency. BandPass shows this in real time and lets you isolate that frequency to confirm it by ear." }
+        },
+        {
+          "@type": "Question",
+          "name": "What causes a 60 Hz or 50 Hz hum?",
+          "acceptedAnswer": { "@type": "Answer", "text": "A steady 50 or 60 Hz hum, often with harmonics at 100/120 or 180 Hz, is almost always electrical: a ground loop, a transformer, a dimmer, or powerline noise. A low rumble under about 150 Hz is more likely mechanical, such as HVAC, a fan, a pump, or a motor." }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I find where a hum or buzz is coming from?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Isolate its frequency with a band-pass filter and walk around listening. The isolated noise gets louder as you approach the source. Hearing only that sound is what makes it findable, and it is what BandPass adds over a graph-only spectrum analyzer." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is there an app to isolate a specific sound frequency and hear it?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. BandPass lets you touch-drag a band-pass filter around a frequency range and hear only that range in real time through your phone, so the mystery noise is separated from everything else." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can BandPass help diagnose a car, appliance, or HVAC noise?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Isolate the rattle, whine, or hum's frequency to identify it and locate the source. BandPass is built for automotive, HVAC and appliance, and building-noise diagnostics, not just for audio production." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is BandPass free?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. The real-time filter and both visualizations, the spectrogram and the waterfall, are free with no ads and no subscription. Custom presets and recording/playback are a one-time Pro unlock." }
+        }
+      ]
+    }
+    </script>
     <style>
         * {
             margin: 0;
@@ -300,6 +338,54 @@
                 <li style="margin-bottom: 0.75rem;"><strong>Fine-Tune & Listen:</strong> Drag the handles to narrow in on the band you want. Increase gain to amplify quiet sounds. The filtered audio plays in real-time.</li>
                 <li style="margin-bottom: 0.75rem;"><strong>Record & Analyze:</strong> Tap the record button to capture raw audio. Play back recordings later and adjust filters to isolate different sounds from the same recording.</li>
             </ol>
+        </div>
+
+        <div class="section">
+            <h2>How to Identify a Mystery Hum, Buzz, or Rattle — and Find Where It's Coming From</h2>
+            <p>There's a noise, and you can't tell what it is or where it's coming from. Your phone's mic plus a filter can pin it down. Here's the method.</p>
+
+            <h3 style="margin-top:1.5rem; color:#FF6B00;">1. See the frequency</h3>
+            <p>Open the live spectrogram and let the noise play. A steady hum shows up as a bright, unmoving horizontal band — that's its frequency. Note where it sits.</p>
+
+            <h3 style="margin-top:1.5rem; color:#FF6B00;">2. Read the clue — what the frequency tells you</h3>
+            <ul style="margin:0.5rem 0 0 1.5rem; color:#444; line-height:1.9;">
+                <li><strong>A steady ~50 or 60 Hz hum</strong> (with harmonics at 100/120, 180 Hz…): almost always <strong>electrical</strong> — a ground loop, a transformer, a dimmer, or powerline noise.</li>
+                <li><strong>A buzz with lots of high-frequency harmonics:</strong> often <strong>EMI</strong> — a bad cable, a wall dimmer, an LED driver.</li>
+                <li><strong>A low rumble under ~150 Hz:</strong> usually <strong>mechanical</strong> — HVAC, a fan, a pump, a motor, a compressor.</li>
+            </ul>
+
+            <h3 style="margin-top:1.5rem; color:#FF6B00;">3. Isolate it and listen — the part a graph can't do</h3>
+            <p>Touch-drag a <strong>band-pass filter</strong> around that frequency and listen through your phone. Now you hear <em>only</em> the mystery noise, stripped of everything else in the room — which is how you confirm you've found the right sound.</p>
+
+            <h3 style="margin-top:1.5rem; color:#FF6B00;">4. Hunt the source</h3>
+            <p>Keep the filter on and walk around. The isolated noise gets <strong>louder as you near the source</strong> — the panel, the appliance, the duct, the fixture. A spectrum analyzer shows you the frequency; <em>hearing</em> it isolated is what lets you actually walk it down.</p>
+
+            <div style="background:#fff8f0; border-left:4px solid #FF8E00; border-radius:0 8px 8px 0; padding:1rem 1.25rem; margin:1.25rem 0; color:#6a3a00;">
+                🎧 <strong>Ear check:</strong> when you isolate high-frequency tones on headphones, keep the volume down — a narrow band can be louder than it seems.
+            </div>
+
+            <p style="margin-top:1.25rem;"><strong>BandPass</strong> does all four: a live spectrogram and waterfall to find the frequency, and a touch-drag band-pass filter to isolate and hear it in real time — so you can identify what's humming and track down where. <a href="https://play.google.com/store/apps/details?id=com.bandpass">Get BandPass free on Google Play →</a></p>
+        </div>
+
+        <div class="section">
+            <h2>Noise Identification FAQ</h2>
+            <h3 style="margin-top:1.25rem; color:#FF6B00;">How do I find out what frequency a hum or noise is?</h3>
+            <p>Open a live spectrogram and look for the steady bright band — that's the frequency. BandPass shows it in real time and lets you isolate it to confirm by ear.</p>
+
+            <h3 style="margin-top:1.25rem; color:#FF6B00;">What causes a 60 Hz (or 50 Hz) hum?</h3>
+            <p>Usually electrical — a ground loop, a transformer, a dimmer, or powerline noise, often with harmonics at 120 and 180 Hz. A low rumble under ~150 Hz is more likely HVAC or a motor.</p>
+
+            <h3 style="margin-top:1.25rem; color:#FF6B00;">How do I find where a hum or buzz is coming from?</h3>
+            <p>Isolate its frequency with a band-pass filter and walk around listening — it gets louder near the source. Hearing only that sound is what makes it findable, and it's what BandPass adds over a graph-only analyzer.</p>
+
+            <h3 style="margin-top:1.25rem; color:#FF6B00;">Is there an app to isolate a specific sound frequency and hear it?</h3>
+            <p>Yes — BandPass lets you touch-drag a band-pass filter and hear only that range in real time, separating the noise from everything else.</p>
+
+            <h3 style="margin-top:1.25rem; color:#FF6B00;">Can it help diagnose a car, appliance, or HVAC noise?</h3>
+            <p>Yes — isolate the rattle, whine, or hum's frequency to identify it and locate the source. It's built for automotive, HVAC, and building-noise diagnostics, not just audio production.</p>
+
+            <h3 style="margin-top:1.25rem; color:#FF6B00;">Is BandPass free?</h3>
+            <p>The real-time filter and both visualizations (spectrogram and waterfall) are free — no ads, no subscription. Custom presets and recording/playback are a one-time Pro unlock.</p>
         </div>
 
         <div class="section">

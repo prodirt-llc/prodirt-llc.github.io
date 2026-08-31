@@ -85,6 +85,22 @@
         .safety strong { color: #7a5c00; }
         footer { background: rgba(0,0,0,0.35); color: #b8c4d8; text-align: center; padding: 2rem 1rem; margin-top: 3rem; }
         footer a { color: #f5c518; text-decoration: none; }
+        .calc-tap { display:block; width:100%; border:none; border-radius:12px; padding:1.5rem; font-size:1.3rem; font-weight:800; cursor:pointer; color:#1c2c4a; background:#f5c518; transition:background .15s, transform .05s; }
+        .calc-tap:active { transform:scale(0.99); }
+        .calc-tap.armed { background:#3a4a6a; color:#fff; }
+        .calc-inrow { display:flex; gap:.5rem; flex-wrap:wrap; align-items:center; margin:1rem 0; color:#555; }
+        .calc-temp { width:80px; padding:.45rem; border:1px solid #ccc; border-radius:6px; }
+        .calc-out { text-align:center; margin-top:1.25rem; }
+        .calc-dist { font-size:2.6rem; font-weight:800; color:#1c2c4a; line-height:1; }
+        .calc-km { color:#555; font-size:1.1rem; margin-top:.25rem; }
+        .calc-secs { color:#888; font-size:.9rem; margin-top:.25rem; }
+        .calc-safety { margin-top:1rem; padding:.85rem 1rem; border-radius:8px; font-weight:600; text-align:left; }
+        .calc-safety.close { background:#fdecea; color:#a3271b; border-left:5px solid #e74c3c; }
+        .calc-safety.mid { background:#fff8e6; color:#7a5c00; border-left:5px solid #e6a700; }
+        .calc-safety.far { background:#eef7ee; color:#1e7a3a; border-left:5px solid #2d7a2d; }
+        .calc-reset { background:none; border:1px solid #ccc; border-radius:8px; padding:.5rem 1rem; cursor:pointer; color:#555; margin-top:1rem; }
+        .calc-note { color:#555; font-size:.95rem; margin-top:1.25rem; }
+        .calc-note a { color:#1c2c4a; font-weight:700; }
     </style>
 </head>
 <body>
@@ -97,6 +113,23 @@
     </header>
 
     <div class="container">
+        <div class="card" id="calc">
+            <h2>⚡ Lightning Distance Calculator</h2>
+            <p style="color:#555;">See the flash, then tap. Hear the thunder, tap again. It times the flash-to-bang gap and works out how far away the strike hit — right here in your browser, no install.</p>
+            <div class="calc-inrow">
+                <label>Air temp <input type="number" id="calcTemp" class="calc-temp" value="68"> °F</label>
+                <span style="color:#999;font-size:.9rem;">— fine-tunes the speed of sound</span>
+            </div>
+            <button id="calcBtn" class="calc-tap">⚡ Tap when you SEE the flash</button>
+            <div class="calc-out" id="calcOut" hidden>
+                <div class="calc-dist" id="calcMiles">—</div>
+                <div class="calc-km" id="calcKm"></div>
+                <div class="calc-secs" id="calcSecs"></div>
+                <div class="calc-safety" id="calcSafety"></div>
+                <button class="calc-reset" id="calcReset">↺ Measure another</button>
+            </div>
+            <p class="calc-note">Counting by hand works for one bolt. <strong>Strike Analyzer</strong> detects the flash and the thunder for you, corrects for temperature automatically, logs every strike, and tells you whether the storm is <strong>approaching or moving away</strong> — and roughly when it'll be overhead. <a href="https://play.google.com/store/apps/details?id=com.prodirt.strikeanalyzer">Get it free on Google Play →</a></p>
+        </div>
         <section class="app-shots" data-dir="shots" data-max="10" data-title="Screenshots" hidden></section>
         <div class="card">
             <h2>Features</h2>
@@ -165,6 +198,18 @@
                 <h3>Can it tell me if it's safe to be outside?</h3>
                 <p>No — Strike Analyzer is not a safety device and its distances are estimates. If you can hear thunder, you're close enough to be struck. When thunder roars, go indoors.</p>
             </div>
+            <div class="feature" style="margin-bottom:1rem;">
+                <h3>What is the 30-30 rule for lightning?</h3>
+                <p>A National Weather Service guideline: if you count 30 seconds or fewer between the flash and the thunder, the lightning is within about six miles — go indoors. Then wait 30 minutes after the last thunder before heading back out. Use the 30-30 rule itself for safety calls, not any app's number.</p>
+            </div>
+            <div class="feature" style="margin-bottom:1rem;">
+                <h3>How long should you wait after thunder before going outside?</h3>
+                <p>Thirty minutes after the last clap of thunder, per the National Weather Service. Storms can still throw strikes several miles beyond the rain, so don't head back out on the first quiet gap.</p>
+            </div>
+            <div class="feature" style="margin-bottom:1rem;">
+                <h3>How can I tell if a storm is getting closer or moving away?</h3>
+                <p>Take a few measurements over a few minutes: if the flash-to-bang gap is shrinking, the storm is coming toward you; if it's growing, it's moving off. Strike Analyzer reads this automatically — its Storm Trend shows approaching, receding, or steady from your logged strikes, with the storm's speed and a rough time until it's overhead.</p>
+            </div>
             <div class="feature">
                 <h3>Is Strike Analyzer free?</h3>
                 <p>Yes, free with a small banner ad. A one-time Pro purchase (no subscription) removes ads and unlocks your complete strike history.</p>
@@ -185,6 +230,35 @@
             <a href="mailto:prodirt.co@gmail.com">Contact</a>
         </p>
     </footer>
+    <script>
+    (function(){
+        var btn=document.getElementById('calcBtn'), out=document.getElementById('calcOut');
+        var miles=document.getElementById('calcMiles'), km=document.getElementById('calcKm'),
+            secsEl=document.getElementById('calcSecs'), safety=document.getElementById('calcSafety'),
+            reset=document.getElementById('calcReset'), tempEl=document.getElementById('calcTemp');
+        if(!btn) return;
+        var flashAt=null;
+        function speedMs(){ var f=parseFloat(tempEl.value); if(isNaN(f)) f=68; var c=(f-32)*5/9; return 331.3+0.606*c; }
+        function idle(){ flashAt=null; btn.classList.remove('armed'); btn.textContent='⚡ Tap when you SEE the flash'; }
+        btn.addEventListener('click', function(){
+            if(flashAt===null){ flashAt=performance.now(); btn.classList.add('armed'); btn.textContent='🔊 Tap when you HEAR the thunder'; out.hidden=true; }
+            else {
+                var secs=(performance.now()-flashAt)/1000; idle();
+                var m=speedMs()*secs, mi=m/1609.344, kmv=m/1000;
+                miles.textContent=mi.toFixed(1)+' mi';
+                km.textContent='≈ '+kmv.toFixed(1)+' km away';
+                secsEl.textContent=secs.toFixed(1)+' seconds, flash to bang';
+                safety.className='calc-safety '+(mi<=6?'close':(mi<=10?'mid':'far'));
+                safety.textContent = mi<=6
+                    ? '⚠️ Within ~6 miles — the storm is close. Seek shelter now (NWS 30-30 rule).'
+                    : (mi<=10 ? 'The storm is in your area — stay alert and be ready to move indoors.'
+                              : 'Distant for now — keep measuring to see if the gap is shrinking.');
+                out.hidden=false;
+            }
+        });
+        reset.addEventListener('click', function(){ idle(); out.hidden=true; });
+    })();
+    </script>
     <script src="/nav.js" defer></script>
     <script src="/screenshots.js" defer></script>
 </body>

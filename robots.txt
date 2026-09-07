@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 
+Sitemap: https://prodirt-llc.github.io/sitemap-1.xml
 Sitemap: https://prodirt-llc.github.io/sitemap.xml

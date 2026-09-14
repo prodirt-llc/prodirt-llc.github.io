@@ -65,3 +65,42 @@
     document.addEventListener('DOMContentLoaded', mount);
   }
 })();
+
+/* ---- Cloudflare Web Analytics (cookieless, aggregate) ---- */
+(function () {
+  try {
+    var b = document.createElement('script');
+    b.type = 'module';
+    b.defer = true;
+    b.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+    b.setAttribute('data-cf-beacon', '{"token": "52431eae2e6a497bb3d2050647354635"}');
+    document.head.appendChild(b);
+  } catch (e) {}
+})();
+
+/* ---- Play install-referrer passthrough ----
+   Carries utm_* from the page URL into every Play Store link's ?referrer= so
+   installs are attributable in Play Console; defaults to a site tag otherwise. */
+(function () {
+  function tagPlayLinks() {
+    try {
+      var qs = new URLSearchParams(window.location.search);
+      var keys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+      var parts = [];
+      keys.forEach(function (k) { var v = qs.get(k); if (v) parts.push(k + '=' + v); });
+      if (!parts.length) { parts = ['utm_source=prodirt_site', 'utm_medium=web']; }
+      var referrer = encodeURIComponent(parts.join('&'));
+      var links = document.querySelectorAll('a[href*="play.google.com/store/apps/details"]');
+      for (var i = 0; i < links.length; i++) {
+        var href = links[i].getAttribute('href');
+        if (!href || href.indexOf('referrer=') !== -1) continue;
+        links[i].setAttribute('href', href + (href.indexOf('?') !== -1 ? '&' : '?') + 'referrer=' + referrer);
+      }
+    } catch (e) {}
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', tagPlayLinks);
+  } else {
+    tagPlayLinks();
+  }
+})();

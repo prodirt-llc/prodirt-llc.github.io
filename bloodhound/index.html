@@ -296,5 +296,26 @@
     </footer>
     <script src="/nav.js" defer></script>
     <script src="/screenshots.js" defer></script>
+    <script>
+    /* Play install-referrer passthrough: carry UTM params from this page's URL into the
+       Play Store link's ?referrer= so installs (esp. from paid campaigns) are attributable
+       in Play Console. Defaults to a site tag when no UTMs are present. */
+    (function () {
+      try {
+        var qs = new URLSearchParams(window.location.search);
+        var keys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+        var parts = [];
+        keys.forEach(function (k) { var v = qs.get(k); if (v) parts.push(k + '=' + v); });
+        if (!parts.length) { parts = ['utm_source=prodirt_site', 'utm_medium=web']; }
+        var referrer = encodeURIComponent(parts.join('&'));
+        var links = document.querySelectorAll('a[href*="play.google.com/store/apps/details"]');
+        for (var i = 0; i < links.length; i++) {
+          var href = links[i].getAttribute('href');
+          if (!href || href.indexOf('referrer=') !== -1) continue;
+          links[i].setAttribute('href', href + (href.indexOf('?') !== -1 ? '&' : '?') + 'referrer=' + referrer);
+        }
+      } catch (e) {}
+    })();
+    </script>
 </body>
 </html>

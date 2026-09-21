@@ -51,8 +51,7 @@
     <li>Your kites stay on your device, unless you back them up to your own Google Drive (Android) or
       sign in to the web app to save them to your account.</li>
     <li>Your location is only used to look up the weather, and is sent to the weather service for that.</li>
-    <li>The Android app sends anonymous usage statistics to Google Analytics for Firebase. The web app
-      doesn't use analytics.</li>
+    <li>Neither version uses analytics or tracking.</li>
     <li>You can delete a web account and every kite in it from Settings, at any time.</li>
   </ul>
 </div>
@@ -100,14 +99,10 @@
   in the places described under "Your kites" above. Kite Force doesn't access any other photos.
 </p>
 
-<h3>Usage statistics (Android app only)</h3>
+<h3>Analytics</h3>
 <p>
-  The Android app includes <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">Google
-  Analytics for Firebase</a>, which automatically records things like app installs and opens, how long
-  sessions last, which screens are used, device model, Android version, app version, approximate country
-  (from your IP address) and a random ID for the installation. It doesn't use the advertising ID and isn't
-  linked to your kites. We use it to see how many people use Kite Force and which parts are worth
-  improving. The web app doesn't use analytics.
+  Neither the Android app nor the web app uses analytics, advertising IDs or tracking. (Android versions
+  before 1.48 included Google Analytics for Firebase; it was removed in 1.48.)
 </p>
 
 <h3>Purchases (Android app only)</h3>
@@ -128,8 +123,6 @@
   <tr><th>Service</th><th>What it receives</th><th>Used by</th></tr>
   <tr><td><a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">Google Firebase</a> (Authentication, Firestore, Hosting)</td>
       <td>Account details and saved kites if you sign in; standard web request data (IP address, browser) when loading the site</td><td>Web app</td></tr>
-  <tr><td><a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">Google Analytics for Firebase</a></td>
-      <td>Anonymous usage statistics, described above</td><td>Android app</td></tr>
   <tr><td><a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Play and Google Drive</a></td>
       <td>Purchases; your backups, in your own Drive</td><td>Android app</td></tr>
   <tr><td><a href="https://open-meteo.com/en/terms" target="_blank" rel="noopener">Open-Meteo</a></td>
@@ -159,8 +152,6 @@
   <li><strong>Web app without an account:</strong> clearing the site's data in your browser removes your kites.</li>
   <li><strong>Android app:</strong> uninstalling removes everything stored on your phone. Drive backups
     stay in your Google Drive until you delete the "KiteForcePro Backups" folder.</li>
-  <li><strong>Usage statistics:</strong> Google Analytics keeps event data for a limited time (two months
-    by default) and then deletes it.</li>
 </ul>
 <p>
   You can also email <a href="mailto:prodirt.co@gmail.com">prodirt.co@gmail.com</a> to ask what we

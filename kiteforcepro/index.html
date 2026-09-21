@@ -21,7 +21,7 @@
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
       "name": "Kite Force",
-      "operatingSystem": "Android",
+      "operatingSystem": "Android, Web",
       "applicationCategory": "SportsApplication",
       "description": "Professional kite pull force calculator using real aerodynamic equations and live weather. Line strength recommendations and 5-day forecast.",
       "url": "https://prodirt-llc.github.io/kiteforcepro/",
@@ -67,7 +67,12 @@
         {
           "@type": "Question",
           "name": "Is Kite Force free?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Kite Force is free to save up to 5 kites with live wind, pull-force calculation, and line-strength recommendations. A one-time Pro unlock adds unlimited kites and automatic backup. No subscription." }
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Kite Force is free to save up to 5 kites with live wind, pull-force calculation, and line-strength recommendations. A one-time Unlimited upgrade on Android adds unlimited kites and Google Drive backup. No subscription." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is there a Kite Force app for iPhone?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Kite Force runs in the browser at kiteforce.web.app, free, with your kite library, live wind, pull force and line size. On iPhone, open it in Safari and choose Share, then Add to Home Screen, and it works like an app. It reads and writes the same backup files as the Android app." }
         }
       ]
     }
@@ -115,6 +120,17 @@
             font-weight: 600;
             font-size: 1.1rem;
             transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .cta-button.alt {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+            margin: 0.5rem 0 0 0.5rem;
+        }
+        .cta-button.alt.on-light {
+            color: #0EA5E9;
+            border-color: #0EA5E9;
         }
 
         .cta-button:hover {
@@ -283,6 +299,7 @@
         <h1>Kite Force</h1>
         <p>Calculate exactly how hard your kite will pull — and the line strength you need to fly it safely</p>
         <a href="https://play.google.com/store/apps/details?id=com.kiteforcepro" class="cta-button">Download on Google Play</a>
+        <a href="https://kiteforce.web.app" class="cta-button alt">Use it on iPhone or the web</a>
     </div>
 
     <div class="container">
@@ -295,7 +312,7 @@
                 <h3>🔬 Real Aerodynamic Science</h3>
                 <p>Unlike simple estimators, Kite Force uses the standard aerodynamic equation:</p>
                 <code>F = ½ × ρ × V² × Cd × A</code>
-                <p>Air density (ρ) is derived from real-time temperature and pressure via the ideal gas law — not a sea-level assumption. Drag coefficients (Cd) are tuned per kite type — Quad-Line (1.6), Parafoil (1.5), Delta (1.2), Box (0.9) — and adjusted for angle of attack.</p>
+                <p>Air density (ρ) is derived from real-time temperature and pressure via the ideal gas law — not a sea-level assumption. Drag coefficients (Cd) are tuned per kite type — Quad-Line (1.6), Parafoil (1.5), Delta (0.95), Box (0.9) — and adjusted for angle of attack. The delta figure is calibrated against real pull measurements from field testing, and you can set your own coefficient for any kite.</p>
             </div>
         </div>
 
@@ -328,8 +345,8 @@
                 </div>
 
                 <div class="feature">
-                    <h3>Metric & Imperial Support</h3>
-                    <p>Switch units instantly between mph ↔ m/s, °F ↔ °C, inHg ↔ hPa. All calculations and displays update in real-time. Your preferences are saved automatically.</p>
+                    <h3>Metric & Freedom Units</h3>
+                    <p>Switch units instantly between mph ↔ m/s, °F ↔ °C, inHg ↔ hPa. All calculations and displays update in real-time. Each kite remembers the units it was measured in, so switching never changes its size.</p>
                 </div>
 
                 <div class="feature">
@@ -442,7 +459,10 @@
             <p>It varies by day and location — wind often builds through midday and eases around dawn and dusk, but the only way to really know is an hour-by-hour forecast. Kite Force shows <strong>hourly wind for the next 24 hours</strong> (plus a 5-day outlook), so you can pick the window when the wind actually suits your kite.</p>
 
             <h3 style="margin-top:1.25rem; color:#0284C7;">Is Kite Force free?</h3>
-            <p>Yes — free to save up to 5 kites with live wind, pull-force calculation, and line-strength recommendations. A one-time Pro unlock adds unlimited kites and automatic backup. No subscription.</p>
+            <p>Yes — free to save up to 5 kites with live wind, pull-force calculation, and line-strength recommendations. A one-time Unlimited upgrade on Android adds unlimited kites and Google Drive backup. No subscription.</p>
+
+            <h3 style="margin-top:1.25rem; color:#0284C7;">Is there a Kite Force app for iPhone?</h3>
+            <p>Yes — Kite Force runs in the browser at <a href="https://kiteforce.web.app">kiteforce.web.app</a>, free, with your kite library, live wind, pull force and line size. On iPhone, open it in Safari, tap <strong>Share → Add to Home Screen</strong>, and it works like an app. It reads and writes the same backup files as the Android app, so you can move your kites between them.</p>
         </div>
 
         <div class="section">
@@ -450,7 +470,7 @@
             <p>Like all ProDirt apps, Kite Force follows our core principles:</p>
             <ul style="margin-top: 1rem; margin-left: 2rem; color: #666;">
                 <li style="margin-bottom: 0.5rem;"><strong>No Subscriptions:</strong> One-time purchase. Your tools shouldn't expire.</li>
-                <li style="margin-bottom: 0.5rem;"><strong>Privacy First:</strong> Your kite data stays on your device. No cloud uploads, no tracking.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Privacy First:</strong> No ads, and your data is never sold. Your kites stay on your device unless you back them up to your own Google Drive or sign in on the web. <a href="privacy.html">Privacy policy</a>.</li>
                 <li style="margin-bottom: 0.5rem;"><strong>Works Offline:</strong> No internet required for calculations. Use it anywhere, anytime.</li>
                 <li style="margin-bottom: 0.5rem;"><strong>Built by People Who Care:</strong> Created by kite flyers who understand the need for accurate force calculations.</li>
             </ul>
@@ -458,6 +478,7 @@
 
         <div style="text-align: center; margin: 3rem 0;">
             <a href="https://play.google.com/store/apps/details?id=com.kiteforcepro" class="cta-button">Get Kite Force on Google Play</a>
+            <a href="https://kiteforce.web.app" class="cta-button alt on-light">Use it on iPhone or the web</a>
         </div>
     </div>
 

@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kite Force – Privacy Policy</title>
+  <meta name="description" content="What the Kite Force Android app and the Kite Force web app collect, where it is stored, and how to delete it." />
+  <link rel="canonical" href="https://prodirt-llc.github.io/kiteforcepro/privacy.html" />
 
   <style>
     body {
@@ -17,129 +19,180 @@
     }
     h1 { color: #1a6faf; }
     h2 { color: #2c3e50; margin-top: 2rem; border-bottom: 1px solid #ddd; padding-bottom: 0.3rem; }
+    h3 { color: #2c3e50; margin: 1.4rem 0 0.2rem; font-size: 1.05rem; }
     a { color: #1a6faf; }
+    .summary { background: #eef6fc; border-left: 4px solid #1a6faf; padding: 0.8rem 1.2rem; border-radius: 4px; }
+    .summary ul { margin: 0.4rem 0; padding-left: 1.2rem; }
+    table { border-collapse: collapse; width: 100%; font-size: 0.95rem; }
+    th, td { text-align: left; vertical-align: top; padding: 0.5rem 0.6rem; border-bottom: 1px solid #ddd; }
+    th { background: #f0f3f6; }
     footer { margin-top: 3rem; font-size: 0.85rem; color: #777; }
   </style>
 </head>
 <body>
 
 <h1>Kite Force – Privacy Policy</h1>
-<p><em>Effective date: 2025-11-26 &nbsp;|&nbsp; Last updated: 2026-02-24</em></p>
+<p><em>Effective date: 2025-11-26 &nbsp;|&nbsp; Last updated: 2026-09-21</em></p>
 
 <p>
-  This privacy policy applies to the <strong>Kite Force</strong> app (referred to as "Application")
-  for mobile devices, created by <strong>ProDirt</strong> (referred to as "Service Provider").
-  This service is provided "AS IS".
-</p>
-
-<h2>Information Collection and Use</h2>
-<p>
-  Kite Force does not collect analytics, usage data, or personal information about you. It contains
-  no advertising and no third-party tracking. The only device features it uses &mdash; location, camera,
-  and optional Google Drive backup &mdash; are described in the sections below, and each is used solely
-  to provide the feature you have requested.
-</p>
-
-<h2>Location Information</h2>
-<p>
-  The Application requests access to your device's location in order to fetch live, local weather data
-  (wind speed, temperature, and barometric pressure) and to display a live wind map relevant to your
-  area. This location data is used only on-device to make the weather API request and is not stored,
-  shared, or transmitted to the Service Provider's servers.
-</p>
-
-<h2>Camera and Photo Gallery Access</h2>
-<p>
-  The Application may request access to your device's camera and photo gallery so that you can attach
-  a photo to a kite profile you have saved. Photos are stored locally on your device only and are
-  never transmitted to the Service Provider or any third-party server.
-</p>
-
-<h2>Kite Data and Local Storage</h2>
-<p>
-  All kite profiles, measurements, and configuration data you enter are stored locally on your device.
-  The Service Provider does not have access to this data. The Application provides backup and restore
-  features (including Google Drive integration) to help you safeguard your data; these features are
-  initiated solely by you and are governed by Google's privacy policies when Google Drive is used.
-</p>
-
-<h2>In-App Purchases and Financial Data</h2>
-<p>
-  The Application offers a one-time "Pro" purchase that unlocks additional features, including
-  automatic Google Drive backups and the ability to save more than 5 kite profiles. All financial
-  transactions and payment processing are handled exclusively by the Google Play Billing System. The
-  Service Provider does not collect, process, or store any personal financial information such as
-  credit card numbers or billing addresses.
-</p>
-
-<h2>Third-Party Services</h2>
-<p>
-  The Application uses third-party services that have their own privacy policies governing how they
-  handle data. These include:
+  This policy covers both versions of <strong>Kite Force</strong>, made by <strong>ProDirt LLC</strong>
+  ("we", "us"):
 </p>
 <ul>
-  <li><a href="https://policies.google.com/privacy" target="_blank">Google Play Services</a></li>
-  <li><a href="https://policies.google.com/privacy" target="_blank">Google Drive (when used for backup)</a></li>
+  <li>the <strong>Android app</strong> on Google Play, and</li>
+  <li>the <strong>web app</strong> at <a href="https://kiteforce.web.app">kiteforce.web.app</a>, used in a browser or
+    added to an iPhone home screen.</li>
+</ul>
+
+<div class="summary">
+  <strong>The short version</strong>
+  <ul>
+    <li>No ads, no advertising ID, and we never sell your data.</li>
+    <li>Your kites stay on your device, unless you back them up to your own Google Drive (Android) or
+      sign in to the web app to save them to your account.</li>
+    <li>Your location is only used to look up the weather, and is sent to the weather service for that.</li>
+    <li>The Android app sends anonymous usage statistics to Google Analytics for Firebase. The web app
+      doesn't use analytics.</li>
+    <li>You can delete a web account and every kite in it from Settings, at any time.</li>
+  </ul>
+</div>
+
+<h2>Information we collect and why</h2>
+
+<h3>Your kites</h3>
+<p>
+  The kites you save (names, shape, measurements, wind rating, notes, line strength, repair notes and
+  any photo you attach) are used to calculate pull and line size. Where they're kept depends on how you
+  use Kite Force:
+</p>
+<ul>
+  <li><strong>Android app:</strong> on your phone. If you turn on Google Drive backup, a copy (photos
+    included) goes to a folder in <em>your own</em> Google Drive. We can't see it.</li>
+  <li><strong>Web app without an account:</strong> in your browser's storage on that device only.</li>
+  <li><strong>Web app with an account:</strong> in Google Cloud Firestore (United States), under your
+    account, so they're available on every device you sign in on. Security rules let only your
+    account read or change them. Photos are shrunk before they're saved.</li>
+</ul>
+
+<h3>Your account (web app only, optional)</h3>
+<p>
+  If you create an account, Google Firebase Authentication stores your <strong>email address</strong>.
+  With email sign-in, your password is stored by Firebase in hashed form, and we never see it. With
+  "Continue with Google", Firebase receives the name, email address and profile picture link from your
+  Google account. We use your email only to sign you in and to send account emails you ask for, such as
+  a password reset. The Android app has no accounts.
+</p>
+
+<h3>Location</h3>
+<p>
+  Kite Force uses your location to fetch live wind, temperature and air pressure for where you are.
+  Your coordinates are sent to <a href="https://open-meteo.com/en/terms" target="_blank" rel="noopener">Open-Meteo</a>
+  to get the forecast. On Android, they're also sent to <a href="https://www.windy.com/privacy" target="_blank" rel="noopener">Windy</a>
+  to draw the wind map. The web app only asks for your location when you tap "My location". If you
+  search for a place instead, the text you type is sent to Open-Meteo's place search. The last place you
+  used is remembered on your device so the weather loads faster next time. We don't keep a location
+  history, and your location is never sent to us.
+</p>
+
+<h3>Photos and camera</h3>
+<p>
+  You can attach a photo to a kite with your camera or photo library. The photo is stored with that kite,
+  in the places described under "Your kites" above. Kite Force doesn't access any other photos.
+</p>
+
+<h3>Usage statistics (Android app only)</h3>
+<p>
+  The Android app includes <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">Google
+  Analytics for Firebase</a>, which automatically records things like app installs and opens, how long
+  sessions last, which screens are used, device model, Android version, app version, approximate country
+  (from your IP address) and a random ID for the installation. It doesn't use the advertising ID and isn't
+  linked to your kites. We use it to see how many people use Kite Force and which parts are worth
+  improving. The web app doesn't use analytics.
+</p>
+
+<h3>Purchases (Android app only)</h3>
+<p>
+  The one-time <strong>Unlimited</strong> upgrade (unlimited kites and Google Drive backup) is sold
+  through Google Play. Google handles all payment details. We never see your card number or billing
+  address, only whether the upgrade has been purchased.
+</p>
+
+<h3>Flight session logs (Android app only)</h3>
+<p>
+  Sessions you record (conditions over time and any pull readings you enter) are stored on your phone.
+  They only leave it if you choose to share or export them.
+</p>
+
+<h2>Services we rely on</h2>
+<table>
+  <tr><th>Service</th><th>What it receives</th><th>Used by</th></tr>
+  <tr><td><a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">Google Firebase</a> (Authentication, Firestore, Hosting)</td>
+      <td>Account details and saved kites if you sign in; standard web request data (IP address, browser) when loading the site</td><td>Web app</td></tr>
+  <tr><td><a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">Google Analytics for Firebase</a></td>
+      <td>Anonymous usage statistics, described above</td><td>Android app</td></tr>
+  <tr><td><a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Play and Google Drive</a></td>
+      <td>Purchases; your backups, in your own Drive</td><td>Android app</td></tr>
+  <tr><td><a href="https://open-meteo.com/en/terms" target="_blank" rel="noopener">Open-Meteo</a></td>
+      <td>Coordinates, or place names you search for</td><td>Both</td></tr>
+  <tr><td><a href="https://www.windy.com/privacy" target="_blank" rel="noopener">Windy</a></td>
+      <td>Coordinates, to show the wind map</td><td>Android app</td></tr>
+  <tr><td><a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub</a></td>
+      <td>A request for the kite events list (your IP address, like any web request)</td><td>Android app</td></tr>
+  <tr><td><a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">Cloudflare (cdnjs)</a></td>
+      <td>A request for the file-reading code used when you import or back up kites</td><td>Web app</td></tr>
+</table>
+<p>
+  The web app's "Help fund a kite" button opens PayPal. Anything you do there is covered by
+  <a href="https://www.paypal.com/us/legalhub/privacy-full" target="_blank" rel="noopener">PayPal's privacy policy</a>,
+  and we don't receive anything unless you choose to send a payment.
+</p>
+<p>
+  We don't sell or rent your information, and we don't share it with anyone except the services above.
+  The only exception is when the law requires it, for example a valid court order.
+</p>
+
+<h2>Keeping and deleting your data</h2>
+<ul>
+  <li><strong>Web account:</strong> go to <em>Settings → Delete account</em>. This immediately deletes
+    your account and every kite saved in it. If Firebase asks you to sign in again first, that's a
+    safety check.</li>
+  <li><strong>Web app without an account:</strong> clearing the site's data in your browser removes your kites.</li>
+  <li><strong>Android app:</strong> uninstalling removes everything stored on your phone. Drive backups
+    stay in your Google Drive until you delete the "KiteForcePro Backups" folder.</li>
+  <li><strong>Usage statistics:</strong> Google Analytics keeps event data for a limited time (two months
+    by default) and then deletes it.</li>
 </ul>
 <p>
-  The Service Provider may share your information with third parties only as described in this policy,
-  or as required by law (e.g., to comply with a subpoena or similar legal process), to protect the
-  rights or safety of users, or with trusted service providers working on the Service Provider's behalf
-  who have agreed to adhere to this privacy policy.
-</p>
-
-<h2>Opt-Out Rights</h2>
-<p>
-  You can stop all collection of information by the Application by uninstalling it using the standard
-  uninstall process available on your mobile device or through the app marketplace.
-</p>
-
-<h2>Data Retention</h2>
-<p>
-  The Service Provider will retain any User Provided data for as long as you use the Application and
-  for a reasonable time thereafter. To request deletion of data you have provided, please contact the
-  Service Provider at
-  <a href="mailto:prodirt.co@gmail.com">prodirt.co@gmail.com</a> and they will respond within a
-  reasonable time.
-</p>
-
-<h2>Children's Privacy</h2>
-<p>
-  The Service Provider does not knowingly collect personally identifiable information from children
-  under 13 years of age. If you are a parent or guardian and believe your child has provided personal
-  information, please contact the Service Provider at
-  <a href="mailto:prodirt.co@gmail.com">prodirt.co@gmail.com</a> so the necessary actions can be taken.
+  You can also email <a href="mailto:prodirt.co@gmail.com">prodirt.co@gmail.com</a> to ask what we
+  hold about you or to have it deleted. We'll get back to you as soon as we can.
 </p>
 
 <h2>Security</h2>
 <p>
-  The Service Provider is committed to safeguarding the confidentiality of your information and
-  provides physical, electronic, and procedural safeguards to protect information it processes and
-  maintains.
+  Everything Kite Force sends travels over encrypted HTTPS connections. Passwords are handled and hashed
+  by Firebase Authentication. The web app's database rules only allow each account to read and write its
+  own kites. No system is perfectly secure, but we take care to protect what we hold.
 </p>
 
-<h2>Changes to This Policy</h2>
+<h2>Children</h2>
 <p>
-  This Privacy Policy may be updated from time to time. The Service Provider will notify you of any
-  changes by updating this page. You are advised to review this policy periodically, as continued use
-  of the Application constitutes acceptance of any changes.
+  Kite Force is for a general audience and isn't directed at children under 13. We don't knowingly
+  collect personal information from children under 13. If you believe a child has created a web account,
+  email <a href="mailto:prodirt.co@gmail.com">prodirt.co@gmail.com</a> and we'll delete it.
 </p>
 
-<h2>Your Consent</h2>
+<h2>Changes to this policy</h2>
 <p>
-  By using the Application, you are consenting to the processing of your information as set forth in
-  this Privacy Policy, now and as amended.
+  If this policy changes, we'll update this page and the "Last updated" date above.
 </p>
 
-<h2>Contact Us</h2>
+<h2>Contact</h2>
 <p>
-  If you have any questions about privacy while using the Application, or questions about these
-  practices, please contact the Service Provider by email at
-  <a href="mailto:prodirt.co@gmail.com">prodirt.co@gmail.com</a>.
+  Questions about privacy in Kite Force: <a href="mailto:prodirt.co@gmail.com">prodirt.co@gmail.com</a>.
 </p>
 
 <footer>
-  <p>Kite Force is developed by ProDirt &nbsp;|&nbsp; prodirt.co@gmail.com</p>
+  <p>Kite Force is developed by ProDirt LLC, Virginia, USA &nbsp;|&nbsp; prodirt.co@gmail.com</p>
 </footer><script src="/nav.js" defer></script>
 
 </body>

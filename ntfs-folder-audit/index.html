@@ -102,6 +102,10 @@
         <a href="https://github.com/prodirt-llc/ntfs-folder-audit/releases" class="cta-button">Download Free →</a>
         <a href="https://github.com/prodirt-llc/ntfs-folder-audit" class="cta-button secondary">View on GitHub</a>
     </div>
+    <p style="margin-top:1.5rem;color:rgba(255,255,255,0.92);font-size:1.05rem;">
+        Or install it from the Windows Package Manager:
+    </p>
+    <code style="display:inline-block;margin-top:0.5rem;background:rgba(0,0,0,0.28);color:#fff;padding:0.7rem 1.2rem;border-radius:6px;font-size:1.05rem;font-family:Consolas,'Courier New',monospace;">winget install ProDirt.NTFSFolderAudit</code>
 </div>
 
 <div class="container">
@@ -219,7 +223,11 @@ icacls "D:\Shares\Finance" /T &gt; acl-report.txt</pre>
     <!-- Download -->
     <div class="section">
         <h2>⬇️ Download &amp; Run</h2>
-        <p>Grab the latest <code>NTFSFolderAudit.exe</code> from <a href="https://github.com/prodirt-llc/ntfs-folder-audit/releases" style="color:#667eea;font-weight:600;" target="_blank" rel="noopener">GitHub Releases</a>. There's no installer — copy it and run.</p>
+        <p><strong>Easiest — install from the Windows Package Manager.</strong> It's built into Windows 10 and 11, so this is one line in any terminal:</p>
+        <code style="display:block;margin:0.75rem 0;background:#1e293b;color:#e2e8f0;padding:0.9rem 1.2rem;border-radius:6px;font-family:Consolas,'Courier New',monospace;overflow-x:auto;">winget install ProDirt.NTFSFolderAudit</code>
+        <p style="color:#555;">That installs it as a portable command, so you can then run <code>ntfsfolderaudit</code> from any terminal. It also downloads outside the browser, which avoids the SmartScreen prompt described below.</p>
+
+        <p style="margin-top:1rem;"><strong>Or download it directly.</strong> Grab the latest <code>NTFSFolderAudit.exe</code> from <a href="https://github.com/prodirt-llc/ntfs-folder-audit/releases" style="color:#667eea;font-weight:600;" target="_blank" rel="noopener">GitHub Releases</a>. There's no installer — copy it and run.</p>
         <p style="margin-top:0.75rem;"><strong>Run it as Administrator.</strong> It works without elevation, but any folder whose ACL your account can't read comes back as access-denied (surfaced in the event log, never silently skipped).</p>
         <p style="margin-top:0.75rem;color:#777;font-size:0.95rem;">The download is ~155 MB because the .NET runtime is bundled inside — the trade for "copy it to any server and it just runs."</p>
 
@@ -248,7 +256,7 @@ icacls "D:\Shares\Finance" /T &gt; acl-report.txt</pre>
         <ul class="specs-list">
             <li><strong>Operating System</strong> Windows 10, Windows 11, Windows Server 2016 or newer</li>
             <li><strong>Architecture</strong> x64</li>
-            <li><strong>Installation</strong> None — single self-contained EXE (~155 MB)</li>
+            <li><strong>Installation</strong> None — single self-contained EXE (~155 MB), or <code>winget install ProDirt.NTFSFolderAudit</code></li>
             <li><strong>.NET Runtime</strong> Bundled — no separate install needed</li>
             <li><strong>Privileges</strong> Run as Administrator for full ACL access</li>
             <li><strong>Network</strong> None — the tool makes no network connections at all</li>
@@ -301,6 +309,7 @@ icacls "D:\Shares\Finance" /T &gt; acl-report.txt</pre>
     <div style="text-align: center; margin: 3rem 0;">
         <p style="font-size: 1.2rem; color: #666; margin-bottom: 1.5rem;">Free, single EXE, no install, no telemetry. Copy it to any server and run.</p>
         <a href="https://github.com/prodirt-llc/ntfs-folder-audit/releases" class="cta-button" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; font-size: 1.1rem; padding: 1rem 2.5rem;">Download NTFS Folder Audit — Free →</a>
+        <p style="margin-top:1.25rem;color:#666;">or <code style="background:#f4f4f5;padding:0.3rem 0.6rem;border-radius:4px;font-family:Consolas,'Courier New',monospace;">winget install ProDirt.NTFSFolderAudit</code></p>
         <p style="margin-top:1.25rem;color:#888;">Saved you an afternoon? <a href="https://paypal.me/ProDirtLLC" style="color:#667eea;font-weight:600;" target="_blank" rel="noopener">Buy me a coffee ☕</a></p>
     </div>
 

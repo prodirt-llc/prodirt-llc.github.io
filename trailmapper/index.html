@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="TrailMapper - GPS trail recording and mapping for property owners and trail builders. Export KML and GPX. No subscriptions.">
+    <meta name="description" content="TrailMapper - GPS trail recording and mapping for property owners and trail builders. USGS 3DEP LiDAR terrain layer, satellite and topo maps, KML and GPX export. No subscriptions.">
     <title>TrailMapper - GPS Trail Recording for Property Owners | Free Android App</title>
     <link rel="canonical" href="https://prodirt-llc.github.io/trailmapper/">
     <meta property="og:type" content="website">
@@ -54,6 +54,11 @@
           "@type": "Question",
           "name": "Can I export my trails to Google Earth or a GPS unit?",
           "acceptedAnswer": { "@type": "Answer", "text": "Yes. Export to KML or GPX. Open them in Google Earth, load them onto a GPS, or hand a client the file when the trail work is done." }
+        },
+        {
+          "@type": "Question",
+          "name": "Does TrailMapper have a LiDAR or terrain map layer?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. TrailMapper includes a USGS 3DEP layer — a LiDAR-derived hillshade that shows the land's true relief: ridges, draws, benches, and drainages. Use it as the base map or as a semi-transparent terrain overlay on top of satellite or topo. It renders live from USGS's public-domain elevation data, so it stays sharp at any zoom. Coverage is the United States." }
         },
         {
           "@type": "Question",
@@ -159,6 +164,10 @@
                     <p>A layers panel toggles trails, POIs, and boundaries on or off independently — and doubles as a locator: tap any trail, POI, or boundary by name and the map flies straight to it.</p>
                 </div>
                 <div class="feature">
+                    <h3>3DEP LiDAR Terrain</h3>
+                    <p>Read the land before you walk it. Choose your base map — standard, OpenTopo, USGS topo, or Esri satellite — or the new USGS 3DEP layer: a LiDAR-derived hillshade that shows every ridge, draw, bench, and creek bottom in relief. It renders live so it stays sharp at any zoom, and it can also ride as a semi-transparent terrain overlay on top of satellite or topo. Public-domain USGS data — US coverage.</p>
+                </div>
+                <div class="feature">
                     <h3>KML and GPX Export</h3>
                     <p>Export your full trail network as KML or GPX. Works directly with Google Earth, Google My Maps, OnX, and most other mapping tools.</p>
                 </div>
@@ -246,6 +255,9 @@
 
             <h3 style="margin-top:1.25rem; color:#1a3a1a;">Can I export my trails to Google Earth or a GPS unit?</h3>
             <p>Yes — export to KML or GPX. Open them in Google Earth, load them onto a GPS, or hand a client the file when the trail work is done.</p>
+
+            <h3 style="margin-top:1.25rem; color:#1a3a1a;">Does TrailMapper have a LiDAR or terrain map layer?</h3>
+            <p>Yes. There's a USGS 3DEP layer — a LiDAR-derived hillshade that shows the land's true relief: ridges, draws, benches, and drainages. Run it as the base map, or drop it as a semi-transparent terrain overlay on top of satellite or topo to read the ground and the shape of the land at once. It renders live from USGS's public-domain elevation data, so it stays sharp at any zoom. Coverage is the United States.</p>
 
             <h3 style="margin-top:1.25rem; color:#1a3a1a;">Does it work offline with no cell service?</h3>
             <p>Yes. Map tiles cache for field use and all recording happens on your device, so you can map deep in the backcountry with no signal.</p>

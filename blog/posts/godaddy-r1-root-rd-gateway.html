@@ -50,7 +50,7 @@
     <div class="hero-inner">
         <a href="../index.html" class="back-link">← Back to ProDirt Blog</a>
         <div class="post-meta">
-            <span class="post-date">August 19, 2026</span>
+            <span class="post-date">August 19, 2026 · Updated October 1, 2026</span>
             <span class="post-tag">IT</span>
         </div>
         <h1>GoDaddy R1 Root Breaks RD Gateway: Fixing the Untrusted Certificate Chain</h1>
@@ -67,6 +67,13 @@
         <p>
             Same server, same cert, different clients. That's the tell that it's not the certificate — it's the <em>chain</em>.
         </p>
+
+        <div class="callout warning">
+            ⚡ <strong>Skip the fluff — just fix it.</strong> We packaged this entire fix into one idempotent PowerShell script, <code>Fix-GoDaddyR1Chain.ps1</code>. It scans <code>My</code> and <code>WebHosting</code> for affected certs, installs the R1→G2 cross-cert (validated by thumbprint before it trusts anything), evicts the self-signed root, and prints the resulting chain plus your RD/IIS bindings. It handles both the GoDaddy and Starfield hierarchies and is safe to run twice. Dry-run first, then apply, then reboot:
+            <pre><code>.\Fix-GoDaddyR1Chain.ps1 -CheckOnly
+.\Fix-GoDaddyR1Chain.ps1</code></pre>
+            Grab it here: <a href="https://github.com/CodeBlue-Technology-LLC/Scripts/tree/main/GoDaddyR1CertRepair" target="_blank" rel="noopener">CodeBlue-Technology-LLC/Scripts → GoDaddyR1CertRepair</a>. Want to understand each step — or fixing an air-gapped box you can't pull a script onto? The manual walkthrough is below.
+        </div>
 
         <h2>What Was Actually Happening</h2>
         <p>
@@ -96,11 +103,17 @@
         <p>Run these as administrator on the gateway — all PowerShell.</p>
 
         <h3>1. Confirm what the server is chaining to</h3>
-        <pre><code>$b = Get-ChildItem Cert:\LocalMachine\My | ? { $_.Subject -like "*yourdomain.com*" }
-$c = New-Object Security.Cryptography.X509Certificates.X509Chain
-$c.Build($b) | Out-Null
-$c.ChainElements | % { "{0}`n   -> {1}" -f $_.Certificate.Subject, $_.Certificate.Issuer }</code></pre>
-        <p>If the last element's subject <em>and</em> issuer are both <code>GoDaddy TLS Root CA - R1</code>, that's your broken chain.</p>
+        <pre><code>$b = Get-ChildItem Cert:\LocalMachine\My |
+  ? { $_.Subject -like "*yourdomain.com*" -and $_.HasPrivateKey } |
+  Sort-Object NotAfter -Descending | Select-Object -First 1
+if (-not $b) {
+  Write-Warning "No matching certificate in LocalMachine\My - check the domain filter."
+} else {
+  $c = New-Object Security.Cryptography.X509Certificates.X509Chain
+  $c.Build($b) | Out-Null
+  $c.ChainElements | % { "{0}`n   -> {1}" -f $_.Certificate.Subject, $_.Certificate.Issuer }
+}</code></pre>
+        <p>The <code>Select-Object -First 1</code> matters: if the box has more than one cert for that name — an old one alongside the renewal — this keeps the newest with a private key instead of handing <code>Build()</code> an array and throwing <code>Cannot convert the "System.Object[]" value … to type X509Certificate2</code>. If the last element's subject <em>and</em> issuer are both <code>GoDaddy TLS Root CA - R1</code>, that's your broken chain.</p>
 
         <h3>2. Pull GoDaddy's intermediate bundle and import it</h3>
         <pre><code>[Net.ServicePointManager]::SecurityProtocol = 'Tls12'
